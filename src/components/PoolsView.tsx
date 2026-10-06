@@ -221,6 +221,37 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
     throw new Error('Transaction confirmation timed out.');
   };
 
+  const getBufferedGasParams = async (txParams: { from: string; to: string; data: string }) => {
+    try {
+      const ethereum = (window as any).ethereum;
+      if (!ethereum) return {};
+      const gpHex = await ethereum.request({ method: 'eth_gasPrice' });
+      const currentPrice = gpHex && gpHex !== '0x' ? BigInt(gpHex) : 100_000_000n;
+      const priorityFee = 50_000_000n; // 0.05 Gwei
+      const maxFee = (currentPrice * 200n) / 100n + priorityFee;
+
+      const gasConfig: any = {
+        maxFeePerGas: '0x' + maxFee.toString(16),
+        maxPriorityFeePerGas: '0x' + priorityFee.toString(16)
+      };
+
+      try {
+        const estHex = await ethereum.request({
+          method: 'eth_estimateGas',
+          params: [txParams]
+        });
+        if (estHex && estHex !== '0x') {
+          const bufferedGas = (BigInt(estHex) * 125n) / 100n;
+          gasConfig.gas = '0x' + bufferedGas.toString(16);
+        }
+      } catch {}
+
+      return gasConfig;
+    } catch {
+      return {};
+    }
+  };
+
   // Step 1: Approve USDC
   const handleApprove = async () => {
     if (!userAddress) {
@@ -243,12 +274,14 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
       const paddedAmount = amountUnits.toString(16).padStart(64, '0');
       const approveData = '0x095ea7b3' + paddedSpender + paddedAmount;
 
+      const gasConfig = await getBufferedGasParams({ from: userAddress, to: usdcAddress, data: approveData });
       const tx = await (window as any).ethereum.request({
         method: 'eth_sendTransaction',
         params: [{
           from: userAddress,
           to: usdcAddress,
-          data: approveData
+          data: approveData,
+          ...gasConfig
         }]
       });
 
@@ -295,12 +328,14 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
       // depositLP(uint256) selector: 0xeb37acfc
       const depositData = '0xeb37acfc' + paddedAmount;
 
+      const gasConfig = await getBufferedGasParams({ from: userAddress, to: poolAddress, data: depositData });
       const tx = await (window as any).ethereum.request({
         method: 'eth_sendTransaction',
         params: [{
           from: userAddress,
           to: poolAddress,
-          data: depositData
+          data: depositData,
+          ...gasConfig
         }]
       });
 
@@ -356,12 +391,14 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
       // withdrawLP(uint256) selector: 0xe4456ecb
       const withdrawData = '0xe4456ecb' + paddedShares;
 
+      const gasConfig = await getBufferedGasParams({ from: userAddress, to: poolAddress, data: withdrawData });
       const tx = await (window as any).ethereum.request({
         method: 'eth_sendTransaction',
         params: [{
           from: userAddress,
           to: poolAddress,
-          data: withdrawData
+          data: withdrawData,
+          ...gasConfig
         }]
       });
 

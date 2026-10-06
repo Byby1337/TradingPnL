@@ -69,11 +69,48 @@ export const TradingVaultModal: React.FC<TradingVaultModalProps> = ({
           method: 'eth_getTransactionReceipt',
           params: [txHash]
         });
-        if (receipt && receipt.blockNumber) return receipt;
-      } catch (e) {}
+        if (receipt && receipt.blockNumber) {
+          if (receipt.status === '0x0' || receipt.status === 0) {
+            throw new Error(isRu ? 'Транзакция отклонена смарт-контрактом (revert)' : 'Transaction reverted on-chain');
+          }
+          return receipt;
+        }
+      } catch (e: any) {
+        if (e?.message?.includes('revert')) throw e;
+      }
       await new Promise(r => setTimeout(r, 1500));
     }
     return null;
+  };
+
+  const getBufferedGasParams = async (ethereum: any, txParams: { from: string; to: string; data: string }) => {
+    try {
+      const gpHex = await ethereum.request({ method: 'eth_gasPrice' });
+      const currentPrice = gpHex && gpHex !== '0x' ? BigInt(gpHex) : 100_000_000n;
+      // 2x buffer on base fee + 0.05 Gwei priority fee to absorb rapid Arbitrum block baseFee fluctuations
+      const priorityFee = 50_000_000n; // 0.05 Gwei
+      const maxFee = (currentPrice * 200n) / 100n + priorityFee;
+
+      const gasConfig: any = {
+        maxFeePerGas: '0x' + maxFee.toString(16),
+        maxPriorityFeePerGas: '0x' + priorityFee.toString(16)
+      };
+
+      try {
+        const estHex = await ethereum.request({
+          method: 'eth_estimateGas',
+          params: [txParams]
+        });
+        if (estHex && estHex !== '0x') {
+          const bufferedGas = (BigInt(estHex) * 125n) / 100n;
+          gasConfig.gas = '0x' + bufferedGas.toString(16);
+        }
+      } catch {}
+
+      return gasConfig;
+    } catch {
+      return {};
+    }
   };
 
   const handleDeposit = async () => {
@@ -107,9 +144,10 @@ export const TradingVaultModal: React.FC<TradingVaultModalProps> = ({
         const paddedApproveAmount = approveUnits.toString(16).padStart(64, '0');
         const approveData = '0x095ea7b3' + paddedVault + paddedApproveAmount;
 
+        const approveGas = await getBufferedGasParams(ethereum, { from: userAddress, to: usdcAddress, data: approveData });
         const approveTx = await ethereum.request({
           method: 'eth_sendTransaction',
-          params: [{ from: userAddress, to: usdcAddress, data: approveData }]
+          params: [{ from: userAddress, to: usdcAddress, data: approveData, ...approveGas }]
         });
         setStatusText(isRu ? 'Ожидание подтверждения Approve в сети...' : 'Waiting for Approve confirmation...');
         await waitForTxReceipt(approveTx);
@@ -122,9 +160,10 @@ export const TradingVaultModal: React.FC<TradingVaultModalProps> = ({
       const paddedAmount = amountUnits.toString(16).padStart(64, '0');
       const depositData = '0xb6b55f25' + paddedAmount;
 
+      const depositGas = await getBufferedGasParams(ethereum, { from: userAddress, to: vaultAddress, data: depositData });
       const txHash = await ethereum.request({
         method: 'eth_sendTransaction',
-        params: [{ from: userAddress, to: vaultAddress, data: depositData }]
+        params: [{ from: userAddress, to: vaultAddress, data: depositData, ...depositGas }]
       });
 
       setStatusText(isRu ? 'Транзакция отправлена! Ожидание блока...' : 'Transaction submitted! Waiting for block...');
@@ -205,9 +244,10 @@ export const TradingVaultModal: React.FC<TradingVaultModalProps> = ({
 
       const withdrawData = '0xfaa9a8e5' + amountUnits + feeUnits + nonceUnits + expiryUnits + vUnits + rUnits + sUnits;
 
+      const withdrawGas = await getBufferedGasParams(ethereum, { from: userAddress, to: vaultAddress, data: withdrawData });
       const txHash = await ethereum.request({
         method: 'eth_sendTransaction',
-        params: [{ from: userAddress, to: vaultAddress, data: withdrawData }]
+        params: [{ from: userAddress, to: vaultAddress, data: withdrawData, ...withdrawGas }]
       });
 
       setStatusText(isRu ? 'Вывод отправлен в сеть! Ожидание блока...' : 'Withdrawal submitted! Waiting for block...');
