@@ -1,7 +1,13 @@
 const fs = require('fs');
 const path = require('path');
 const { Pool } = require('pg');
-const sqlite3 = require('sqlite3').verbose();
+let sqlite3 = null;
+try {
+  sqlite3 = require('sqlite3').verbose();
+} catch (err) {
+  // Safe fallback: when PostgreSQL is used (e.g. Render production), sqlite3 native driver is not needed
+  sqlite3 = null;
+}
 const Redis = require('ioredis');
 const crypto = require('crypto');
 
@@ -84,6 +90,9 @@ async function initDb() {
   }
 
   // SQLite Engine (Exact same schema & SQL tables)
+  if (!sqlite3) {
+    throw new Error('SQLite3 native driver is unavailable and no PostgreSQL connection was established.');
+  }
   const dbPath = path.join(__dirname, 'trading.sqlite');
   sqliteDb = new sqlite3.Database(dbPath);
   console.log('🗄️ [Database] Running SQL database engine at:', dbPath);
