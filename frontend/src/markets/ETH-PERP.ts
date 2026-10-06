@@ -1,0 +1,30 @@
+import { MarketConfig } from './BTC-PERP';
+
+export const ETH_PERP: MarketConfig = {
+  ticker: 'ETH-PERP',
+  name: 'Ethereum',
+  category: 'crypto',
+  baseAsset: 'ETH',
+  quoteAsset: 'USDC',
+  pairId: 2,
+  tvSymbol: 'COINBASE:ETHUSD',
+  cbProduct: 'ETH-USD',
+  pythFeedId: '0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace',
+  tickSize: 0.01,
+  stepSize: 0.01,
+  minOrderSize: 0.01,
+  maxOrderSize: 1000.0,
+  maxLeverage: 100,
+  defaultLeverage: 20,
+  initialMarginBps: 100,
+  maintenanceMarginBps: 50,
+  makerFeeBps: 2,
+  takerFeeBps: 5.5,
+  strikeRound: 50,
+  baseIV: 0.62,
+  expiryPresets: ['1h', '4h', '24h'],
+  priceDecimals: 2,
+  sizeDecimals: 3,
+  badge: 'Smart Contracts',
+  description: 'Ethereum Perpetual contract settled in USDC with real-time Pyth oracle verification.'
+};

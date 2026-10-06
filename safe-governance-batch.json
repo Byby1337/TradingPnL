@@ -1,0 +1,81 @@
+{
+  "version": "1.0",
+  "chainId": "421614",
+  "createdAt": 1791237622223,
+  "meta": {
+    "name": "TradingPnL H1 Governance Acceptance Batch",
+    "description": "Accepts admin ownership across all TradingPnL protocol contracts after 48h timelock.",
+    "txBuilderVersion": "1.16.5",
+    "createdFromSafeAddress": "0x076561b7daBE988bC886387B8dd155c96CC20E58"
+  },
+  "transactions": [
+    {
+      "to": "0x63118023f7806121817B04d4af24C7925876Ae39",
+      "value": "0",
+      "data": "0x0e18b681",
+      "contractMethod": {
+        "name": "acceptAdmin",
+        "payable": false,
+        "inputs": []
+      }
+    },
+    {
+      "to": "0x41E3747db1EF0A0A64b9dD4a11fFd1564fBF2eEB",
+      "value": "0",
+      "data": "0x0e18b681",
+      "contractMethod": {
+        "name": "acceptAdmin",
+        "payable": false,
+        "inputs": []
+      }
+    },
+    {
+      "to": "0x63aE03E85C5369d98117A5386c5eE07aE2aA0b01",
+      "value": "0",
+      "data": "0x0e18b681",
+      "contractMethod": {
+        "name": "acceptAdmin",
+        "payable": false,
+        "inputs": []
+      }
+    },
+    {
+      "to": "0x0915c8C8aF4d1878D2D2174feaF136C1A49bf217",
+      "value": "0",
+      "data": "0x0e18b681",
+      "contractMethod": {
+        "name": "acceptAdmin",
+        "payable": false,
+        "inputs": []
+      }
+    },
+    {
+      "to": "0x61aAcA46eE84550E5E581d47AC843854c513DfBe",
+      "value": "0",
+      "data": "0x0e18b681",
+      "contractMethod": {
+        "name": "acceptAdmin",
+        "payable": false,
+        "inputs": []
+      }
+    },
+    {
+      "to": "0xd75E692a2B5c1B0059E2107FAAb9e933D4Ecc22c",
+      "value": "0",
+      "data": "0xb4d5855c000000000000000000000000076561b7dabe988bc886387b8dd155c96cc20e58",
+      "contractMethod": {
+        "name": "completeAdminTransfer",
+        "payable": false,
+        "inputs": [
+          {
+            "name": "newAdmin",
+            "type": "address"
+          }
+        ]
+      },
+      "contractInputsValues": {
+        "newAdmin": "0x076561b7daBE988bC886387B8dd155c96CC20E58"
+      }
+    }
+  ]
+}

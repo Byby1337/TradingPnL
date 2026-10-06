@@ -1,0 +1,30 @@
+import { MarketConfig } from './BTC-PERP';
+
+export const SPY_PERP: MarketConfig = {
+  ticker: 'SPY-PERP',
+  name: 'S&P 500 ETF',
+  category: 'stocks',
+  baseAsset: 'SPY',
+  quoteAsset: 'USDC',
+  pairId: 6,
+  tvSymbol: 'AMEX:SPY',
+  cbProduct: 'SPY',
+  pythFeedId: '0x2b89b9dc8fdf9f34709a5b106b472f0f39bb6ca9ce04b0fd7f2e971688e2e53b',
+  tickSize: 0.01,
+  stepSize: 0.1,
+  minOrderSize: 0.1,
+  maxOrderSize: 5000.0,
+  maxLeverage: 20,
+  defaultLeverage: 10,
+  initialMarginBps: 500,
+  maintenanceMarginBps: 250,
+  makerFeeBps: 0,
+  takerFeeBps: 3.5,
+  strikeRound: 1,
+  baseIV: 0.22,
+  expiryPresets: ['1h', '4h', '24h'],
+  priceDecimals: 2,
+  sizeDecimals: 2,
+  badge: 'Benchmark Index',
+  description: 'SPDR S&P 500 ETF Trust Tokenized Perpetual with sub-penny tick spread and index tracking.'
+};

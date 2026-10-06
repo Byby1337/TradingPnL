@@ -1,0 +1,30 @@
+import { MarketConfig } from './BTC-PERP';
+
+export const TSLA_PERP: MarketConfig = {
+  ticker: 'TSLA-PERP',
+  name: 'Tesla Inc',
+  category: 'stocks',
+  baseAsset: 'TSLA',
+  quoteAsset: 'USDC',
+  pairId: 7,
+  tvSymbol: 'NASDAQ:TSLA',
+  cbProduct: 'TSLA',
+  pythFeedId: '0x16b0f1a9b2b2b1a8f9c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3',
+  tickSize: 0.01,
+  stepSize: 0.1,
+  minOrderSize: 0.1,
+  maxOrderSize: 3000.0,
+  maxLeverage: 20,
+  defaultLeverage: 10,
+  initialMarginBps: 500,
+  maintenanceMarginBps: 250,
+  makerFeeBps: 0,
+  takerFeeBps: 4.5,
+  strikeRound: 5,
+  baseIV: 0.58,
+  expiryPresets: ['1h', '4h', '24h'],
+  priceDecimals: 2,
+  sizeDecimals: 2,
+  badge: 'EV & Autonomous',
+  description: 'Tesla Inc Tokenized Perpetual contract traded 24/7 with instant USDC settlement.'
+};

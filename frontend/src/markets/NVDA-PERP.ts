@@ -1,0 +1,30 @@
+import { MarketConfig } from './BTC-PERP';
+
+export const NVDA_PERP: MarketConfig = {
+  ticker: 'NVDA-PERP',
+  name: 'NVIDIA Corp',
+  category: 'stocks',
+  baseAsset: 'NVDA',
+  quoteAsset: 'USDC',
+  pairId: 5,
+  tvSymbol: 'NASDAQ:NVDA',
+  cbProduct: 'NVDA',
+  pythFeedId: '0x429b82882db8ff2e342f0b74070a248f8ff4579c17df20ab889bb0c4b2b1a99d',
+  tickSize: 0.01,
+  stepSize: 0.1,
+  minOrderSize: 0.1,
+  maxOrderSize: 2000.0,
+  maxLeverage: 20,
+  defaultLeverage: 10,
+  initialMarginBps: 500,
+  maintenanceMarginBps: 250,
+  makerFeeBps: 0,
+  takerFeeBps: 4,
+  strikeRound: 2,
+  baseIV: 0.48,
+  expiryPresets: ['1h', '4h', '24h'],
+  priceDecimals: 2,
+  sizeDecimals: 2,
+  badge: 'AI & Semiconductor',
+  description: 'NVIDIA Tokenized Equity Perpetual with 0% maker fees, 24/7 trading, and 100% margin security.'
+};

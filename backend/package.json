@@ -1,0 +1,25 @@
+{
+  "name": "trading-pnl-backend",
+  "version": "1.0.0",
+  "description": "Backend Keepers, PnL Interceptor and Anti-Sybil Engine for TradingPnL",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts"
+  },
+  "dependencies": {
+    "@types/pg": "^8.23.1",
+    "dotenv": "^16.4.5",
+    "ethers": "^6.13.2",
+    "ioredis": "^5.4.1",
+    "pg": "^8.23.1",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.4",
+    "@types/ws": "^8.5.12",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  }
+}

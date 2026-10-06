@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>23Trade | Decentralized Perpetuals & 0DTE Options</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Space Grotesk', '-apple-system', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      * { box-sizing: border-box; }
+      body { font-family: 'Space Grotesk', -apple-system, sans-serif; transition: background-color 0.2s, color 0.2s; }
+      body.theme-dark { background-color: #110d0a; color: #f5efe8; }
+      body.theme-light { background-color: #f7f3ee; color: #1e1713; }
+      .theme-dark .bg-panel { background-color: #18130f; }
+      .theme-light .bg-panel { background-color: #ffffff; }
+      .theme-dark .bg-subpanel { background-color: #221b16; }
+      .theme-light .bg-subpanel { background-color: #efe8e1; }
+      .theme-dark .border-panel { border-color: #312720; }
+      .theme-light .border-panel { border-color: #ded5cb; }
+      .theme-dark .text-muted { color: #9c8f85; }
+      .theme-light .text-muted { color: #6f6258; }
+      .theme-dark .text-primary { color: #f5efe8; }
+      .theme-light .text-primary { color: #1e1713; }
+      ::-webkit-scrollbar { width: 3px; height: 3px; }
+      .theme-dark ::-webkit-scrollbar-track { background: #110d0a; }
+      .theme-dark ::-webkit-scrollbar-thumb { background: #312720; }
+      .theme-light ::-webkit-scrollbar-track { background: #f7f3ee; }
+      .numeric { font-family: 'JetBrains Mono', monospace; font-feature-settings: "tnum"; font-variant-numeric: tabular-nums; }
+      /* Hide number input spin buttons across all browsers */
+      input[type="number"]::-webkit-outer-spin-button,
+      input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      input[type="number"] {
+        -moz-appearance: textfield;
+        appearance: textfield;
+      }
+    </style>
+  </head>
+  <body class="theme-dark min-h-screen flex flex-col text-[12px] antialiased select-none">
+    <div id="root" class="min-h-screen flex flex-col"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
