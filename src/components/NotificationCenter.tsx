@@ -154,8 +154,8 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
 
   return (
     <>
-      {/* Toast Stack in Top-Right Corner */}
-      <aside aria-label="Notifications" className="fixed top-14 right-4 z-[9999] flex flex-col gap-2.5 max-w-sm sm:max-w-md w-[calc(100vw-2rem)] pointer-events-none">
+      {/* Toast Stack in Bottom-Right Corner */}
+      <aside aria-label="Notifications" className="fixed bottom-5 right-4 z-[9999] flex flex-col-reverse gap-2.5 max-w-sm sm:max-w-md w-[calc(100vw-2rem)] pointer-events-none">
         {notifications.map((item) => {
           const isError = item.type === 'error';
           const isSuccess = item.type === 'success';
