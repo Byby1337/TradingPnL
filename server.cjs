@@ -594,6 +594,19 @@ async function handleRequest(req, res) {
     return;
   }
 
+  // API: Get Market Funding Rate & Open Interest Metrics
+  if (reqPath === '/api/markets/funding' && req.method === 'GET') {
+    try {
+      const symbol = parsedUrl.searchParams.get('symbol') || 'BTC-PERP';
+      const fundingData = await db.getMarketFundingData(symbol);
+      sendJson(res, fundingData, 200, req);
+    } catch (err) {
+      console.error('[API /api/markets/funding error]:', err?.message);
+      sendJson(res, { error: 'Failed to retrieve funding metrics' }, 500, req);
+    }
+    return;
+  }
+
   // API: Get Trading Vault Status & Available Liquidity
   if (reqPath === '/api/vault/info' && req.method === 'GET') {
     try {
@@ -941,3 +954,18 @@ server.listen(PORT, BIND_HOST, () => {
   console.log(`  H-1 (Crash Protection), H-3 (Input Validation), M-2 (Payload Guard).`);
   console.log(`- Press Ctrl+C in this terminal to stop the server.\n`);
 });
+
+// Periodic Funding Settlement Loop (Hourly Epochs)
+let lastFundingHour = new Date().getUTCHours();
+setInterval(async () => {
+  const currentHour = new Date().getUTCHours();
+  if (currentHour !== lastFundingHour) {
+    lastFundingHour = currentHour;
+    try {
+      console.log(`⏱️ [Funding Engine] Triggering hourly funding settlement for UTC Hour ${currentHour}...`);
+      await db.settleFundingRates();
+    } catch (err) {
+      console.error('[Funding Engine] Settlement error:', err?.message || err);
+    }
+  }
+}, 30_000);

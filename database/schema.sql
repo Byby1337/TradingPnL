@@ -64,3 +64,16 @@ CREATE TABLE IF NOT EXISTS active_options (
 );
 
 CREATE INDEX IF NOT EXISTS idx_options_account ON active_options(account_address, status);
+
+-- 5. Funding Rate Periodic Settlements
+CREATE TABLE IF NOT EXISTS funding_settlements (
+    id VARCHAR(64) PRIMARY KEY,
+    symbol VARCHAR(32) NOT NULL,
+    funding_rate NUMERIC(10, 6) NOT NULL,
+    long_oi NUMERIC(18, 6) NOT NULL,
+    short_oi NUMERIC(18, 6) NOT NULL,
+    total_positions_settled INTEGER DEFAULT 0,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_funding_symbol ON funding_settlements(symbol, created_at DESC);

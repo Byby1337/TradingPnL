@@ -156,6 +156,17 @@ async function initDb() {
           status VARCHAR(16) DEFAULT 'ACTIVE',
           created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )
+      `);
+      sqliteDb.run(`
+        CREATE TABLE IF NOT EXISTS funding_settlements (
+          id VARCHAR(64) PRIMARY KEY,
+          symbol VARCHAR(32) NOT NULL,
+          funding_rate NUMERIC(10, 6) NOT NULL,
+          long_oi NUMERIC(18, 6) NOT NULL,
+          short_oi NUMERIC(18, 6) NOT NULL,
+          total_positions_settled INTEGER DEFAULT 0,
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
       `, (err) => {
         if (err) reject(err);
         else resolve();
@@ -215,6 +226,17 @@ const MARKET_PRICES = {
   'SPY-PERP': 760,
   'TSLA-PERP': 354
 };
+
+const MARKET_RISK_LIMITS = {
+  'BTC-PERP': { maxOi: 100_000, maxSingleNotional: 10_000, maxLeverage: 100 },
+  'ETH-PERP': { maxOi: 60_000,  maxSingleNotional: 6_000,  maxLeverage: 100 },
+  'SOL-PERP': { maxOi: 30_000,  maxSingleNotional: 3_000,  maxLeverage: 50 },
+  'DOGE-PERP': { maxOi: 20_000, maxSingleNotional: 2_000,  maxLeverage: 50 },
+  'NVDA-PERP': { maxOi: 25_000, maxSingleNotional: 2_500,  maxLeverage: 20 },
+  'TSLA-PERP': { maxOi: 25_000, maxSingleNotional: 2_500,  maxLeverage: 20 },
+  'SPY-PERP':  { maxOi: 50_000, maxSingleNotional: 5_000,  maxLeverage: 20 }
+};
+const DEFAULT_RISK_LIMIT = { maxOi: 25_000, maxSingleNotional: 2_500, maxLeverage: 20 };
 
 async function withTx(fn) {
   if (isPostgres && pgPool) {
@@ -467,6 +489,24 @@ async function openPosition({ address, symbol, side, leverage, margin }) {
   const base = symbol.replace(/-PERP$/, '');
 
   const notional = numMargin * numLev;
+  const riskLimit = MARKET_RISK_LIMITS[symbol] || DEFAULT_RISK_LIMIT;
+  if (numLev > riskLimit.maxLeverage) {
+    throw new AppError(400, `Max leverage for ${symbol} is ${riskLimit.maxLeverage}x`);
+  }
+  if (notional > riskLimit.maxSingleNotional) {
+    throw new AppError(400, `Position size $${notional.toFixed(2)} exceeds single position limit of $${riskLimit.maxSingleNotional.toLocaleString()} for ${symbol}`);
+  }
+
+  // Check Open Interest (OI) Cap for this market
+  const oiRows = await query(
+    `SELECT COALESCE(SUM(margin * leverage), 0) AS total_oi FROM positions WHERE symbol = $1 AND status = 'OPEN'`,
+    [symbol]
+  );
+  const currentTotalOi = Number(oiRows[0]?.total_oi || 0);
+  if (currentTotalOi + notional > riskLimit.maxOi) {
+    throw new AppError(400, `Market Open Interest cap reached ($${riskLimit.maxOi.toLocaleString()} max). Current: $${currentTotalOi.toFixed(2)}, Requested: $${notional.toFixed(2)}`);
+  }
+
   const openFee = Number((notional * 0.00055).toFixed(2)); // 0.055% Taker Fee
   const totalRequired = Number((numMargin + openFee).toFixed(2));
 
@@ -684,6 +724,105 @@ async function recordWithdraw({ address, amount, fee = 0, txHash = null }) {
   });
 }
 
+async function getMarketFundingData(symbol) {
+  const normSymbol = (symbol || 'BTC-PERP').toUpperCase();
+  const riskLimit = MARKET_RISK_LIMITS[normSymbol] || DEFAULT_RISK_LIMIT;
+
+  const oiRows = await query(
+    `SELECT side, COALESCE(SUM(margin * leverage), 0) AS notional FROM positions WHERE symbol = $1 AND status = 'OPEN' GROUP BY side`,
+    [normSymbol]
+  );
+  let longOi = 0;
+  let shortOi = 0;
+  for (const r of oiRows) {
+    if (r.side === 'Long') longOi = Number(r.notional);
+    if (r.side === 'Short') shortOi = Number(r.notional);
+  }
+  const totalOi = longOi + shortOi;
+
+  // Imbalance calculation: clamp((Long - Short) / max(Total, 2000) * 0.0004, -0.0004, 0.0004) + baseline 0.0001 (0.01% / 8h)
+  const imbalanceRatio = totalOi > 0 ? (longOi - shortOi) / Math.max(totalOi, 2000) : 0;
+  let fundingRate = 0.0001 + (imbalanceRatio * 0.0004); // baseline 0.01%
+  fundingRate = Math.max(-0.0005, Math.min(0.0005, fundingRate)); // clamped between -0.05% and +0.05%
+
+  const now = Date.now();
+  const nextFundingTime = Math.ceil(now / 3600000) * 3600000;
+  const secondsLeft = Math.max(0, Math.floor((nextFundingTime - now) / 1000));
+
+  return {
+    symbol: normSymbol,
+    longOi: Number(longOi.toFixed(2)),
+    shortOi: Number(shortOi.toFixed(2)),
+    totalOi: Number(totalOi.toFixed(2)),
+    maxOi: riskLimit.maxOi,
+    maxSingleNotional: riskLimit.maxSingleNotional,
+    fundingRate: Number(fundingRate.toFixed(6)),
+    fundingRatePercent: (fundingRate * 100).toFixed(4) + '%',
+    nextFundingTime,
+    secondsLeft
+  };
+}
+
+async function settleFundingRates() {
+  const symbols = Object.keys(MARKET_PRICES);
+  const results = [];
+
+  for (const symbol of symbols) {
+    try {
+      const data = await getMarketFundingData(symbol);
+      const rate = data.fundingRate;
+
+      // Fetch all open positions for this symbol
+      const openPositions = await query(
+        `SELECT id, account_address, side, margin, leverage FROM positions WHERE symbol = $1 AND status = 'OPEN'`,
+        [symbol]
+      );
+
+      if (openPositions.length === 0) continue;
+
+      let settledCount = 0;
+      await withTx(async tx => {
+        for (const pos of openPositions) {
+          const notional = Number(pos.margin) * Number(pos.leverage);
+          const payment = Number((notional * Math.abs(rate)).toFixed(4));
+          if (payment <= 0) continue;
+
+          let deltaPnl = 0;
+          if (rate > 0) {
+            // Positive funding: Longs pay, Shorts receive
+            deltaPnl = pos.side === 'Long' ? -payment : payment;
+          } else if (rate < 0) {
+            // Negative funding: Shorts pay, Longs receive
+            deltaPnl = pos.side === 'Short' ? -payment : payment;
+          }
+
+          if (deltaPnl !== 0) {
+            await tx(
+              'UPDATE accounts SET realized_pnl = realized_pnl + $1, updated_at = CURRENT_TIMESTAMP WHERE address = $2',
+              [deltaPnl, pos.account_address]
+            );
+            settledCount++;
+          }
+        }
+
+        const settlementId = `fund-${crypto.randomUUID()}`;
+        await tx(
+          `INSERT INTO funding_settlements (id, symbol, funding_rate, long_oi, short_oi, total_positions_settled)
+           VALUES ($1, $2, $3, $4, $5, $6)`,
+          [settlementId, symbol, rate, data.longOi, data.shortOi, settledCount]
+        );
+      });
+
+      console.log(`⏱️ [Funding Settle] ${symbol}: Rate ${(rate * 100).toFixed(4)}%, Settled ${settledCount} positions.`);
+      results.push({ symbol, rate, settledCount });
+    } catch (e) {
+      console.error(`[Funding Settle Error] ${symbol}:`, e.message);
+    }
+  }
+
+  return results;
+}
+
 module.exports = {
   initDb,
   query,
@@ -698,6 +837,9 @@ module.exports = {
   getHourlyPoolParticipants,
   setLiveMarketPrice,
   getTrustedMark,
-  getPlatformVolumes
+  getPlatformVolumes,
+  getMarketFundingData,
+  settleFundingRates,
+  MARKET_RISK_LIMITS
 };
 

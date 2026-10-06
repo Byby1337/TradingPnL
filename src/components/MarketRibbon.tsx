@@ -79,6 +79,56 @@ export const MarketRibbon: React.FC<MarketRibbonProps> = ({
   const [marketFilter, setMarketFilter] = useState<'all' | 'crypto' | 'stocks'>('all');
   const menuRef = useRef<HTMLDivElement>(null);
 
+  const [fundingData, setFundingData] = useState<{
+    fundingRatePercent: string;
+    fundingRate: number;
+    secondsLeft: number;
+    totalOi: number;
+    maxOi: number;
+  }>({
+    fundingRatePercent: '+0.0100%',
+    fundingRate: 0.0001,
+    secondsLeft: 3600,
+    totalOi: 0,
+    maxOi: 100000
+  });
+
+  const [countdownStr, setCountdownStr] = useState<string>('00:00');
+
+  useEffect(() => {
+    let active = true;
+    const fetchFunding = async () => {
+      try {
+        const res = await fetch(`/api/markets/funding?symbol=${encodeURIComponent(currentMarket.ticker)}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (active) {
+            setFundingData(data);
+          }
+        }
+      } catch {}
+    };
+
+    fetchFunding();
+    const interval = setInterval(fetchFunding, 15000);
+    return () => {
+      active = false;
+      clearInterval(interval);
+    };
+  }, [currentMarket.ticker]);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const now = Date.now();
+      const nextHour = Math.ceil(now / 3600000) * 3600000;
+      const diffSec = Math.max(0, Math.floor((nextHour - now) / 1000));
+      const m = Math.floor(diffSec / 60);
+      const s = diffSec % 60;
+      setCountdownStr(`${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -261,8 +311,20 @@ export const MarketRibbon: React.FC<MarketRibbonProps> = ({
         </div>
       </div>
 
-      <div className="hidden md:flex items-center gap-4 text-[10px] text-muted">
-        <div>Hourly Pool: <span className="text-primary font-semibold">None</span></div>
+      <div className="hidden md:flex items-center gap-3 text-[11px] font-mono">
+        <div className="flex items-center gap-1.5 bg-[#1b140f] px-2.5 py-0.5 rounded border border-[#30251c]" title="Periodic funding rate applied between Long and Short positions">
+          <span className="text-muted text-[10px] font-sans">Funding:</span>
+          <span className={`font-semibold ${fundingData.fundingRate >= 0 ? 'text-[#0ecb81]' : 'text-[#f6465d]'}`}>
+            {fundingData.fundingRate >= 0 ? '+' : ''}{fundingData.fundingRatePercent}
+          </span>
+          <span className="text-muted text-[10px] font-sans ml-0.5">in {countdownStr}</span>
+        </div>
+
+        <div className="flex items-center gap-1.5 bg-[#1b140f] px-2.5 py-0.5 rounded border border-[#30251c]" title={`Max Open Interest Cap: ${formatVolume(fundingData.maxOi)}`}>
+          <span className="text-muted text-[10px] font-sans">OI:</span>
+          <span className="text-primary font-bold">{formatVolume(fundingData.totalOi)}</span>
+          <span className="text-muted text-[9px]">/ {formatVolume(fundingData.maxOi)}</span>
+        </div>
       </div>
     </div>
   );
