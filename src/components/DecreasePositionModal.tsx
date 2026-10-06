@@ -110,27 +110,27 @@ export const DecreasePositionModal: React.FC<DecreasePositionModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fadeIn">
       <div 
-        className="bg-[#140f0c] border border-[#2b221a] rounded-2xl w-full max-w-[420px] p-5 text-[#f5efe8] shadow-2xl relative overflow-hidden"
+        className="bg-panel border border-panel rounded-2xl w-full max-w-[420px] p-5 text-primary shadow-2xl relative overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-[#251e18]">
-          <h3 className="text-base font-semibold text-[#f5efe8]">
+        <div className="flex items-center justify-between pb-4 border-b border-panel">
+          <h3 className="text-base font-semibold text-primary">
             Market: {position.side} {position.base}/USD Decrease
           </h3>
           <button
             onClick={onClose}
-            className="text-[#998b7e] hover:text-[#f5efe8] transition-colors p-1 rounded-lg hover:bg-[#201813]"
+            className="text-muted hover:text-primary transition-colors p-1 rounded-lg hover:bg-subpanel"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Amount Input Box */}
-        <div className="mt-4 bg-[#1b140f] border border-[#30251c] rounded-xl p-3.5 focus-within:border-[#ff5c00] transition-colors">
-          <div className="text-[11px] font-medium text-[#998b7e] uppercase tracking-wider mb-1.5 flex justify-between">
+        <div className="mt-4 bg-subpanel border border-panel rounded-xl p-3.5 focus-within:border-amber-500 transition-colors">
+          <div className="text-[11px] font-medium text-muted uppercase tracking-wider mb-1.5 flex justify-between">
             <span>{isRu ? 'Закрыть объем' : 'Close'}</span>
-            <span className="text-[#a89d91]">
+            <span className="text-muted">
               Max: ${totalSizeUsd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD
             </span>
           </div>
@@ -141,9 +141,9 @@ export const DecreasePositionModal: React.FC<DecreasePositionModalProps> = ({
               placeholder="0.00"
               value={closeAmountUsd}
               onChange={(e) => handleAmountInputChange(e.target.value)}
-              className="bg-transparent text-2xl font-bold font-mono text-[#f5efe8] outline-none w-full placeholder:text-[#52453a]"
+              className="bg-transparent text-2xl font-bold font-mono text-primary outline-none w-full placeholder:text-muted/50"
             />
-            <span className="text-sm font-bold text-[#b8ab9e] ml-2 select-none">USD</span>
+            <span className="text-sm font-bold text-muted ml-2 select-none">USD</span>
           </div>
         </div>
 
@@ -158,19 +158,19 @@ export const DecreasePositionModal: React.FC<DecreasePositionModalProps> = ({
                 step="1"
                 value={percent}
                 onChange={(e) => handlePercentChange(parseFloat(e.target.value))}
-                className="w-full h-1.5 bg-[#2a2018] rounded-lg appearance-none cursor-pointer accent-[#ff5c00]"
+                className="w-full h-1.5 rounded-lg appearance-none cursor-pointer accent-amber-500"
               />
-              <div className="flex justify-between text-[10px] text-[#85776a] font-mono mt-1 select-none">
-                <span onClick={() => handlePercentChange(0)} className="cursor-pointer hover:text-white">0%</span>
-                <span onClick={() => handlePercentChange(25)} className="cursor-pointer hover:text-white">25%</span>
-                <span onClick={() => handlePercentChange(50)} className="cursor-pointer hover:text-white">50%</span>
-                <span onClick={() => handlePercentChange(75)} className="cursor-pointer hover:text-white">75%</span>
-                <span onClick={() => handlePercentChange(100)} className="cursor-pointer hover:text-white">100%</span>
+              <div className="flex justify-between text-[10px] text-muted font-mono mt-1 select-none">
+                <span onClick={() => handlePercentChange(0)} className="cursor-pointer hover:text-primary">0%</span>
+                <span onClick={() => handlePercentChange(25)} className="cursor-pointer hover:text-primary">25%</span>
+                <span onClick={() => handlePercentChange(50)} className="cursor-pointer hover:text-primary">50%</span>
+                <span onClick={() => handlePercentChange(75)} className="cursor-pointer hover:text-primary">75%</span>
+                <span onClick={() => handlePercentChange(100)} className="cursor-pointer hover:text-primary">100%</span>
               </div>
             </div>
 
             <div className="flex items-center gap-1.5 flex-shrink-0">
-              <span className="bg-[#241a13] border border-[#382b21] px-2 py-0.5 rounded text-[11px] font-mono text-[#d6c7b8]">
+              <span className="bg-subpanel border border-panel px-2 py-0.5 rounded text-[11px] font-mono text-primary">
                 {percent.toFixed(1)}%
               </span>
               <button
@@ -178,8 +178,8 @@ export const DecreasePositionModal: React.FC<DecreasePositionModalProps> = ({
                 onClick={() => handlePercentChange(100)}
                 className={`px-2 py-0.5 rounded text-[11px] font-bold font-mono transition-colors ${
                   percent === 100 
-                    ? 'bg-[#ff5c00] text-white' 
-                    : 'bg-[#2b2017] hover:bg-[#3d2e21] text-[#e0cfbe]'
+                    ? 'bg-amber-500 text-white' 
+                    : 'bg-subpanel hover:bg-panel text-primary border border-panel'
                 }`}
               >
                 Max
@@ -190,14 +190,14 @@ export const DecreasePositionModal: React.FC<DecreasePositionModalProps> = ({
 
         {/* Keep Leverage Switch */}
         <div className="mt-4 flex items-center justify-between py-2 px-1">
-          <span className="text-xs text-[#d6c7b8] font-medium select-none">
+          <span className="text-xs text-primary font-medium select-none">
             {isRu ? `Сохранять плечо ${position.leverage}x` : `Keep Leverage at ${position.leverage}x`}
           </span>
           <button
             type="button"
             onClick={() => setKeepLeverage(!keepLeverage)}
             className={`w-11 h-6 flex items-center rounded-full p-1 cursor-pointer transition-colors duration-200 ${
-              keepLeverage ? 'bg-[#ff5c00]' : 'bg-[#2b2017]'
+              keepLeverage ? 'bg-amber-500' : 'bg-subpanel border border-panel'
             }`}
           >
             <div
@@ -213,7 +213,7 @@ export const DecreasePositionModal: React.FC<DecreasePositionModalProps> = ({
           {validAmount <= 0 ? (
             <button
               disabled
-              className="w-full py-3.5 bg-[#1d1611] text-[#6e5f52] border border-[#2b2018] rounded-xl font-bold text-sm cursor-not-allowed select-none"
+              className="w-full py-3.5 bg-subpanel text-muted border border-panel rounded-xl font-bold text-sm cursor-not-allowed select-none"
             >
               {isRu ? 'Введите сумму закрытия' : 'Enter an amount'}
             </button>
@@ -221,7 +221,7 @@ export const DecreasePositionModal: React.FC<DecreasePositionModalProps> = ({
             <button
               onClick={handleSubmit}
               disabled={isSubmitting}
-              className="w-full py-3.5 bg-[#ff5c00] hover:bg-[#ff701e] text-white font-bold text-sm rounded-xl transition shadow-[0_0_20px_rgba(255,92,0,0.3)] active:scale-[0.99] flex items-center justify-center gap-2"
+              className="w-full py-3.5 bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm rounded-xl transition shadow-sm active:scale-[0.99] flex items-center justify-center gap-2"
             >
               {isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
               <span>
@@ -234,25 +234,25 @@ export const DecreasePositionModal: React.FC<DecreasePositionModalProps> = ({
         </div>
 
         {/* Summary Info Rows */}
-        <div className="mt-4 pt-3 border-t border-[#251e18] space-y-2 text-xs">
+        <div className="mt-4 pt-3 border-t border-panel space-y-2 text-xs">
           <div className="flex items-center justify-between">
-            <span className="text-[#998b7e]">{isRu ? 'К получению' : 'Receive'}</span>
+            <span className="text-muted">{isRu ? 'К получению' : 'Receive'}</span>
             <div className="flex items-center gap-1 font-mono">
-              <span className="font-semibold text-[#f5efe8]">
+              <span className="font-semibold text-primary">
                 {receiveUsdc.toFixed(4)} USDC (${receiveUsdc.toFixed(2)})
               </span>
             </div>
           </div>
 
           <div className="flex items-center justify-between">
-            <span className="text-[#998b7e]">{isRu ? 'Цена ликвидации' : 'Liquidation Price'}</span>
-            <span className="font-mono text-[#d6c7b8]">
+            <span className="text-muted">{isRu ? 'Цена ликвидации' : 'Liquidation Price'}</span>
+            <span className="font-mono text-muted">
               ${position.liqPrice.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals })} → {newLiqPriceText}
             </span>
           </div>
 
           <div className="flex items-center justify-between">
-            <span className="text-[#998b7e]">{isRu ? 'Чистый PnL' : 'Net PnL'}</span>
+            <span className="text-muted">{isRu ? 'Чистый PnL' : 'Net PnL'}</span>
             <span className={`font-mono font-semibold ${isProfit ? 'text-[#0ecb81]' : 'text-[#f6465d]'}`}>
               {netPnl >= 0 ? '+' : ''}${netPnl.toFixed(2)} ({roe >= 0 ? '+' : ''}{roe.toFixed(2)}%)
             </span>
@@ -263,16 +263,16 @@ export const DecreasePositionModal: React.FC<DecreasePositionModalProps> = ({
             <button
               type="button"
               onClick={() => setShowExecutionDetails(!showExecutionDetails)}
-              className="w-full flex items-center justify-between text-[#998b7e] hover:text-[#d6c7b8] transition-colors py-1 select-none"
+              className="w-full flex items-center justify-between text-muted hover:text-primary transition-colors py-1 select-none"
             >
               <span>{isRu ? 'Детали исполнения' : 'Execution Details'}</span>
               {showExecutionDetails ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
             </button>
             {showExecutionDetails && (
-              <div className="mt-1.5 p-2.5 bg-[#17110d] rounded-lg border border-[#2b2017] space-y-1.5 text-[11px] font-mono text-[#a89d91]">
+              <div className="mt-1.5 p-2.5 bg-subpanel rounded-lg border border-panel space-y-1.5 text-[11px] font-mono text-muted">
                 <div className="flex justify-between">
                   <span>{isRu ? 'Цена исполнения (Mark)' : 'Execution Mark Price'}</span>
-                  <span className="text-[#f5efe8]">${mark.toFixed(decimals)}</span>
+                  <span className="text-primary">${mark.toFixed(decimals)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>{isRu ? 'Грязный PnL' : 'Gross PnL'}</span>
@@ -294,23 +294,23 @@ export const DecreasePositionModal: React.FC<DecreasePositionModalProps> = ({
         </div>
 
         {/* Bottom Position Metrics Bar */}
-        <div className="mt-4 pt-3 border-t border-[#251e18] flex items-center justify-between text-[11px] font-mono text-[#a89d91]">
+        <div className="mt-4 pt-3 border-t border-panel flex items-center justify-between text-[11px] font-mono text-muted">
           <div>
-            <div className="text-[#7a6d61] text-[10px] uppercase">{isRu ? 'Плечо' : 'Leverage'}</div>
-            <div className="text-[#f5efe8] font-bold">{position.leverage}x</div>
+            <div className="text-muted text-[10px] uppercase">{isRu ? 'Плечо' : 'Leverage'}</div>
+            <div className="text-primary font-bold">{position.leverage}x</div>
           </div>
           <div>
-            <div className="text-[#7a6d61] text-[10px] uppercase">{isRu ? 'Размер' : 'Size'}</div>
-            <div className="text-[#f5efe8] font-bold">
+            <div className="text-muted text-[10px] uppercase">{isRu ? 'Размер' : 'Size'}</div>
+            <div className="text-primary font-bold">
               ${totalSizeUsd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </div>
           </div>
           <div className="text-right">
-            <div className="text-[#7a6d61] text-[10px] uppercase flex items-center justify-end gap-1">
+            <div className="text-muted text-[10px] uppercase flex items-center justify-end gap-1">
               <span>{isRu ? 'Залог (USDC)' : 'Collateral (USDC)'}</span>
-              <Info className="w-2.5 h-2.5 text-[#7a6d61]" />
+              <Info className="w-2.5 h-2.5 text-muted" />
             </div>
-            <div className="text-[#f5efe8] font-bold">
+            <div className="text-primary font-bold">
               ${initialMargin.toFixed(2)}
             </div>
           </div>

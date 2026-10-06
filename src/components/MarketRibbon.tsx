@@ -312,7 +312,7 @@ export const MarketRibbon: React.FC<MarketRibbonProps> = ({
       </div>
 
       <div className="hidden md:flex items-center gap-3 text-[11px] font-mono">
-        <div className="flex items-center gap-1.5 bg-[#1b140f] px-2.5 py-0.5 rounded border border-[#30251c]" title="Periodic funding rate applied between Long and Short positions">
+        <div className="flex items-center gap-1.5 bg-subpanel px-2.5 py-0.5 rounded border border-panel" title="Periodic funding rate applied between Long and Short positions">
           <span className="text-muted text-[10px] font-sans">Funding:</span>
           <span className={`font-semibold ${fundingData.fundingRate >= 0 ? 'text-[#0ecb81]' : 'text-[#f6465d]'}`}>
             {fundingData.fundingRate >= 0 ? '+' : ''}{fundingData.fundingRatePercent}
@@ -320,7 +320,7 @@ export const MarketRibbon: React.FC<MarketRibbonProps> = ({
           <span className="text-muted text-[10px] font-sans ml-0.5">in {countdownStr}</span>
         </div>
 
-        <div className="flex items-center gap-1.5 bg-[#1b140f] px-2.5 py-0.5 rounded border border-[#30251c]" title={`Max Open Interest Cap: ${formatVolume(fundingData.maxOi)}`}>
+        <div className="flex items-center gap-1.5 bg-subpanel px-2.5 py-0.5 rounded border border-panel" title={`Max Open Interest Cap: ${formatVolume(fundingData.maxOi)}`}>
           <span className="text-muted text-[10px] font-sans">OI:</span>
           <span className="text-primary font-bold">{formatVolume(fundingData.totalOi)}</span>
           <span className="text-muted text-[9px]">/ {formatVolume(fundingData.maxOi)}</span>

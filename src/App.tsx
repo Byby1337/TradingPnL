@@ -715,7 +715,7 @@ export const App: React.FC = () => {
   const bookColSpan = bookWidth === 'wide' ? 'lg:col-span-4' : bookWidth === 'compact' ? 'lg:col-span-2' : 'lg:col-span-3';
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#110d0a] text-[#f5efe8]">
+    <div className="min-h-screen flex flex-col bg-panel text-primary">
       <Navbar
         currentSection={currentSection}
         onSelectSection={(s: any) => setCurrentSection(s)}

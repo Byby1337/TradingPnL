@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MARKETS } from '../constants/markets';
 import { Position } from '../types';
+import { LanguageCode, TRANSLATIONS, Translations } from '../i18n/translations';
 import {
   Coins,
   Trophy,
@@ -19,14 +20,7 @@ interface HourlyPoolViewProps {
   userBalance: number;
   positions: Position[];
   onNavigateToTrade?: () => void;
-  labels?: {
-    hourlyPool?: string;
-    allPairs?: string;
-    crypto?: string;
-    stocks?: string;
-    symbol?: string;
-    positions?: string;
-  };
+  labels?: Partial<Translations>;
   currentLang?: string;
 }
 
@@ -52,6 +46,13 @@ export const HourlyPoolView: React.FC<HourlyPoolViewProps> = ({
   labels,
   currentLang = 'en'
 }) => {
+  const langKey = (currentLang as LanguageCode) || 'en';
+  const t: Translations = TRANSLATIONS[langKey] || TRANSLATIONS.en;
+
+  const [epochNumber, setEpochNumber] = useState<number>(() => {
+    const PLATFORM_GENESIS = new Date('2026-10-02T00:00:00Z').getTime();
+    return Math.max(1, Math.floor((Date.now() - PLATFORM_GENESIS) / 3600000) + 1);
+  });
   const [selectedPair, setSelectedPair] = useState<string>('all');
   const [copiedAddress, setCopiedAddress] = useState<string | null>(null);
   const [secondsRemaining, setSecondsRemaining] = useState<number>(() => {
@@ -96,8 +97,13 @@ export const HourlyPoolView: React.FC<HourlyPoolViewProps> = ({
         const res = await fetch(`/api/hourly-pool?pair=${selectedPair}`);
         if (res.ok) {
           const data = await res.json();
-          if (isMounted && data && Array.isArray(data.participants)) {
-            setDbParticipants(data.participants);
+          if (isMounted && data) {
+            if (typeof data.epoch === 'number') {
+              setEpochNumber(data.epoch);
+            }
+            if (Array.isArray(data.participants)) {
+              setDbParticipants(data.participants);
+            }
           }
         }
       } catch (err) {
@@ -163,42 +169,40 @@ export const HourlyPoolView: React.FC<HourlyPoolViewProps> = ({
     .reduce((sum, p) => sum + p.poolContributionUsdc, 0);
 
   return (
-    <div className="flex-1 bg-[#110d0a] text-[#f5efe8] p-4 lg:p-6 overflow-y-auto font-sans">
+    <div className="flex-1 bg-panel text-primary p-4 lg:p-6 overflow-y-auto font-sans">
       <div className="max-w-7xl mx-auto space-y-6">
 
         {/* Hero Section */}
-        <div className="bg-gradient-to-r from-[#1c140d] via-[#221810] to-[#17100a] border border-[#3b2d22] rounded-2xl p-6 relative overflow-hidden shadow-2xl">
+        <div className="bg-subpanel border border-panel rounded-2xl p-6 relative overflow-hidden shadow-sm">
           <div className="absolute right-0 top-0 bottom-0 w-96 bg-[radial-gradient(circle_at_right,rgba(217,119,6,0.15),transparent_70%)] pointer-events-none" />
 
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <span className="px-2.5 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-400 text-[11px] font-bold flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-amber-400" />
-                  Epoch #{Math.floor(Date.now() / 3600000)} Live
+                <span className="px-2.5 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-500 dark:text-amber-400 text-[11px] font-bold flex items-center gap-1.5 font-mono">
+                  <span className="w-2 h-2 rounded-full bg-amber-500 dark:bg-amber-400" />
+                  {t.epochText} #{epochNumber} Live
                 </span>
                 <span className="text-muted text-xs font-mono">Arbitrum Sepolia</span>
               </div>
-              <h1 className="text-2xl lg:text-3xl font-extrabold tracking-tight text-white flex items-center gap-2.5">
-                Hourly Sheriff Lottery Pool
-                <Trophy className="w-6 h-6 text-amber-400" />
+              <h1 className="text-2xl lg:text-3xl font-extrabold tracking-tight text-primary flex items-center gap-2.5">
+                {t.hourlyPoolTitle}
+                <Trophy className="w-6 h-6 text-amber-500 dark:text-amber-400" />
               </h1>
               <p className="text-muted text-xs max-w-2xl leading-relaxed">
-                {currentLang === 'ru'
-                  ? 'Часовая лотерея «Шериф часа»: 10%–20% PnL с закрытых прибыльных сделок покупают 1 билет Шерифа (правило: 1 кошелёк = 1 билет на пару, кулдаун победы 24ч). Победитель часа получает статус Шерифа и 0.01% с торгового оборота пары, а со сгоревших билетов: 50% возвращается трейдерам (Soft Loss), 25% уходит в Treasury и 25% аккумулируется в месячный SuperJackpot.'
-                  : 'Hourly Sheriff Lottery: 10%–20% PnL from closed winning trades enters a Sheriff ticket (1 wallet = 1 ticket per pair, 24h win cooldown). The hourly winner earns the Sheriff title and 0.01% of the pair\'s trading volume, while unallocated tickets provide 50% soft-loss rebates to traders, 25% to Treasury, and 25% to the monthly SuperJackpot.'}
+                {t.hourlyPoolDesc}
               </p>
             </div>
 
             {/* Countdown Badge & Action */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 bg-[#140e0a]/80 p-4 rounded-xl border border-[#35271d]">
-              <div className="flex items-center gap-3 pr-4 sm:border-r border-[#35271d]">
-                <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 bg-panel p-4 rounded-xl border border-panel shadow-sm">
+              <div className="flex items-center gap-3 pr-4 sm:border-r border-panel">
+                <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500 dark:text-amber-400">
                   <Clock className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-[10px] text-muted font-mono uppercase tracking-wider">Next Settlement In</div>
-                  <div className="text-2xl font-bold font-mono text-amber-400 tracking-wider">
+                  <div className="text-[10px] text-muted font-mono uppercase tracking-wider">{t.nextSettlementIn}</div>
+                  <div className="text-2xl font-bold font-mono text-amber-500 dark:text-amber-400 tracking-wider">
                     {formatCountdown(secondsRemaining)}
                   </div>
                 </div>
@@ -207,9 +211,9 @@ export const HourlyPoolView: React.FC<HourlyPoolViewProps> = ({
               {onNavigateToTrade && (
                 <button
                   onClick={onNavigateToTrade}
-                  className="px-4 py-2.5 bg-gradient-to-r from-[#d97706] to-[#b45309] hover:brightness-110 text-white rounded-xl font-bold text-xs shadow-lg transition flex items-center justify-center gap-2"
+                  className="px-4 py-2.5 bg-gradient-to-r from-[#d97706] to-[#b45309] hover:brightness-110 text-white rounded-xl font-bold text-xs shadow-md transition flex items-center justify-center gap-2"
                 >
-                  <span>Trade to Participate</span>
+                  <span>{t.tradeToParticipate}</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               )}
@@ -217,33 +221,33 @@ export const HourlyPoolView: React.FC<HourlyPoolViewProps> = ({
           </div>
 
           {/* Quick Metrics Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-6 pt-6 border-t border-[#31251b]">
-            <div className="bg-subpanel/50 border border-panel rounded-xl p-3">
-              <span className="text-muted text-[11px] block mb-1">Total Hourly Prize Pot</span>
-              <span className="text-lg lg:text-xl font-bold font-mono text-amber-400">
-                {activeParticipantsCount === 0 ? 'None' : `$${totalPoolSize.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USDC`}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-6 pt-6 border-t border-panel">
+            <div className="bg-panel border border-panel rounded-xl p-3 shadow-sm">
+              <span className="text-muted text-[11px] block mb-1">{t.totalPrizePot}</span>
+              <span className="text-lg lg:text-xl font-bold font-mono text-amber-500 dark:text-amber-400">
+                {activeParticipantsCount === 0 ? t.none : `$${totalPoolSize.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USDC`}
               </span>
             </div>
 
-            <div className="bg-subpanel/50 border border-panel rounded-xl p-3">
-              <span className="text-muted text-[11px] block mb-1">Participating Wallets</span>
+            <div className="bg-panel border border-panel rounded-xl p-3 shadow-sm">
+              <span className="text-muted text-[11px] block mb-1">{t.participatingWallets}</span>
               <span className="text-lg lg:text-xl font-bold font-mono text-primary flex items-center gap-1.5">
                 <Users className="w-4 h-4 text-muted" />
-                {activeParticipantsCount === 0 ? 'None' : activeParticipantsCount}
+                {activeParticipantsCount === 0 ? t.none : activeParticipantsCount}
               </span>
             </div>
 
-            <div className="bg-subpanel/50 border border-panel rounded-xl p-3">
-              <span className="text-muted text-[11px] block mb-1">Sheriff (1 Winner) Payout</span>
+            <div className="bg-panel border border-panel rounded-xl p-3 shadow-sm">
+              <span className="text-muted text-[11px] block mb-1">{t.sheriffWinnerPayout}</span>
               <span className="text-lg lg:text-xl font-bold font-mono text-[#0ecb81]">
-                {activeParticipantsCount === 0 ? 'None' : `$${(totalPoolSize * 0.50).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USDC`}
+                {activeParticipantsCount === 0 ? t.none : `$${(totalPoolSize * 0.50).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USDC`}
               </span>
             </div>
 
-            <div className="bg-subpanel/50 border border-panel rounded-xl p-3">
-              <span className="text-muted text-[11px] block mb-1">Your Active Routing</span>
+            <div className="bg-panel border border-panel rounded-xl p-3 shadow-sm">
+              <span className="text-muted text-[11px] block mb-1">{t.yourActiveRouting}</span>
               <span className="text-lg lg:text-xl font-bold font-mono text-primary">
-                {userContribution > 0 ? `$${userContribution.toFixed(2)} USDC` : 'None'}
+                {userContribution > 0 ? `$${userContribution.toFixed(2)} USDC` : t.none}
               </span>
             </div>
           </div>
@@ -255,12 +259,12 @@ export const HourlyPoolView: React.FC<HourlyPoolViewProps> = ({
             onClick={() => setSelectedPair('all')}
             className={`px-3.5 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap flex items-center gap-2 ${
               selectedPair === 'all'
-                ? 'bg-amber-500/20 text-amber-400 border border-amber-500/40 shadow-sm'
+                ? 'bg-amber-500/20 text-amber-500 dark:text-amber-400 border border-amber-500/40 shadow-sm'
                 : 'bg-subpanel text-muted hover:text-primary border border-panel'
             }`}
           >
-            <span>{labels?.allPairs || 'All Pairs'}</span>
-            <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-black/30 font-mono">
+            <span>{t.allPairs}</span>
+            <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-panel text-muted border border-panel font-mono">
               {allParticipants.length}
             </span>
           </button>
@@ -275,7 +279,7 @@ export const HourlyPoolView: React.FC<HourlyPoolViewProps> = ({
                 onClick={() => setSelectedPair(m.ticker)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition whitespace-nowrap flex items-center gap-2 ${
                   isSel
-                    ? 'bg-amber-500/20 text-amber-400 border border-amber-500/40 shadow-sm'
+                    ? 'bg-amber-500/20 text-amber-500 dark:text-amber-400 border border-amber-500/40 shadow-sm'
                     : 'bg-subpanel text-muted hover:text-primary border border-panel'
                 }`}
               >
@@ -283,11 +287,11 @@ export const HourlyPoolView: React.FC<HourlyPoolViewProps> = ({
                   <img src={m.icon} alt="" className="w-4 h-4 rounded-full object-contain" />
                 )}
                 <span>{m.base}</span>
-                <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-amber-500/10 text-amber-400 font-mono">
+                <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-amber-500/10 text-amber-500 dark:text-amber-400 font-mono">
                   {m.maxLeverage}x
                 </span>
                 {count > 0 && (
-                  <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-black/30 text-muted font-mono">
+                  <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-panel text-muted border border-panel font-mono">
                     {count}
                   </span>
                 )}
@@ -297,23 +301,23 @@ export const HourlyPoolView: React.FC<HourlyPoolViewProps> = ({
         </div>
 
         {/* Participating Wallets Table */}
-        <div className="bg-panel border border-panel rounded-2xl overflow-hidden shadow-xl">
-          <div className="p-4 border-b border-panel flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-subpanel/30">
+        <div className="bg-panel border border-panel rounded-2xl overflow-hidden shadow-sm">
+          <div className="p-4 border-b border-panel flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-subpanel/50">
             <div>
               <h2 className="text-sm font-bold text-primary flex items-center gap-2">
-                <span>Participating Wallets & Distributions</span>
+                <span>{t.walletsAndDistributions}</span>
                 <span className="text-xs font-normal text-muted font-mono">
-                  ({filteredParticipants.length} active entries)
+                  ({filteredParticipants.length} {t.activeEntries})
                 </span>
               </h2>
               <p className="text-[11px] text-muted">
-                List of trader wallets currently contributing settlement PnL for {selectedPair === 'all' ? 'all markets' : selectedPair}.
+                {t.contributingListDesc} {selectedPair === 'all' ? t.allPairs : selectedPair}.
               </p>
             </div>
 
             <div className="flex items-center gap-2 text-xs font-mono text-muted">
               <span className="w-2 h-2 rounded-full bg-[#0ecb81]" />
-              <span>Real-Time Epoch Sync</span>
+              <span>{t.realTimeSync}</span>
             </div>
           </div>
 
@@ -321,23 +325,23 @@ export const HourlyPoolView: React.FC<HourlyPoolViewProps> = ({
             <table className="w-full text-left font-mono text-xs numeric">
               <thead>
                 <tr className="text-muted border-b border-panel text-[11px] bg-subpanel/40 font-sans">
-                  <th className="py-3 px-4 font-normal">Rank</th>
-                  <th className="py-3 px-4 font-normal">Wallet Address</th>
-                  <th className="py-3 px-4 font-normal">Trading Pair</th>
-                  <th className="py-3 px-4 font-normal">Route Volume</th>
-                  <th className="py-3 px-4 font-normal">Pool Share</th>
-                  <th className="py-3 px-4 font-normal">PnL Contribution</th>
-                  <th className="py-3 px-4 font-normal">Est. Payout</th>
-                  <th className="py-3 px-4 font-normal text-right">Status</th>
+                  <th className="py-3 px-4 font-normal">{t.rank}</th>
+                  <th className="py-3 px-4 font-normal">{t.walletAddress}</th>
+                  <th className="py-3 px-4 font-normal">{t.tradingPair}</th>
+                  <th className="py-3 px-4 font-normal">{t.routeVolume}</th>
+                  <th className="py-3 px-4 font-normal">{t.poolShare}</th>
+                  <th className="py-3 px-4 font-normal">{t.pnlContribution}</th>
+                  <th className="py-3 px-4 font-normal">{t.estPayout}</th>
+                  <th className="py-3 px-4 font-normal text-right">{t.status}</th>
                 </tr>
               </thead>
-              <tbody className="divide-y border-panel">
+              <tbody className="divide-y divide-panel">
                 {participantsWithShare.length === 0 ? (
                   <tr>
                     <td colSpan={8} className="py-14 text-center font-sans">
                       <div className="flex flex-col items-center justify-center gap-1.5 text-muted">
-                        <span className="font-mono text-sm font-bold text-amber-500/80">None</span>
-                        <span className="text-xs">No active participants recorded in the database for this epoch.</span>
+                        <span className="font-mono text-sm font-bold text-amber-500/80">{t.none}</span>
+                        <span className="text-xs">{t.noActiveParticipants}</span>
                       </div>
                     </td>
                   </tr>
@@ -375,17 +379,17 @@ export const HourlyPoolView: React.FC<HourlyPoolViewProps> = ({
                         {/* Address */}
                         <td className="py-3.5 px-4 font-mono">
                           <div className="flex items-center gap-1.5">
-                            <span className={isCurrentUser ? 'text-amber-400 font-bold' : 'text-primary'}>
+                            <span className={isCurrentUser ? 'text-amber-500 dark:text-amber-400 font-bold' : 'text-primary'}>
                               {p.address.slice(0, 6)}...{p.address.slice(-4)}
                             </span>
                             {isCurrentUser && (
-                              <span className="px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-400 text-[9px] font-bold">
-                                YOU
+                              <span className="px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-500 dark:text-amber-400 text-[9px] font-bold">
+                                {t.youBadge}
                               </span>
                             )}
                             <button
                               onClick={() => handleCopy(p.address)}
-                              className="p-1 hover:text-amber-400 text-muted transition"
+                              className="p-1 hover:text-amber-500 dark:hover:text-amber-400 text-muted transition"
                               title="Copy address"
                             >
                               {copiedAddress === p.address ? (
@@ -409,7 +413,7 @@ export const HourlyPoolView: React.FC<HourlyPoolViewProps> = ({
                             )}
                             <span className="text-primary font-semibold">{p.pair}</span>
                             {market && (
-                              <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 font-bold">
+                              <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-amber-500/10 text-amber-500 dark:text-amber-400 border border-amber-500/20 font-bold">
                                 {market.maxLeverage}x
                               </span>
                             )}
@@ -424,13 +428,13 @@ export const HourlyPoolView: React.FC<HourlyPoolViewProps> = ({
                         {/* Pool Share */}
                         <td className="py-3.5 px-4">
                           <div className="flex items-center gap-1.5">
-                            <div className="w-12 h-1.5 bg-subpanel rounded-full overflow-hidden">
+                            <div className="w-12 h-1.5 bg-subpanel rounded-full overflow-hidden border border-panel">
                               <div
                                 className="h-full bg-amber-400 rounded-full"
                                 style={{ width: `${Math.min(100, p.poolSharePct * 3)}%` }}
                               />
                             </div>
-                            <span className="font-bold text-amber-400">{p.poolSharePct.toFixed(1)}%</span>
+                            <span className="font-bold text-amber-500 dark:text-amber-400">{p.poolSharePct.toFixed(1)}%</span>
                           </div>
                         </td>
 
@@ -440,14 +444,14 @@ export const HourlyPoolView: React.FC<HourlyPoolViewProps> = ({
                         </td>
 
                         {/* Est Payout */}
-                        <td className="py-3.5 px-4 text-amber-400 font-bold">
+                        <td className="py-3.5 px-4 text-amber-500 dark:text-amber-400 font-bold">
                           ${p.estPayoutUsdc.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USDC
                         </td>
 
                         {/* Status */}
                         <td className="py-3.5 px-4 text-right">
                           <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#0ecb81]/15 text-[#0ecb81] border border-[#0ecb81]/30">
-                            {p.status}
+                            {p.status === 'Active' ? t.active : p.status}
                           </span>
                         </td>
                       </tr>

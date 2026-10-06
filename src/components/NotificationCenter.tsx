@@ -170,20 +170,20 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
             : 'border-sky-500/50';
 
           const bgGradient = isError
-            ? 'from-red-950/90 via-[#18130f]/95 to-[#18130f]/95'
+            ? 'bg-panel border-red-500/50 shadow-red-500/10'
             : isSuccess
-            ? 'from-emerald-950/90 via-[#18130f]/95 to-[#18130f]/95'
+            ? 'bg-panel border-emerald-500/50 shadow-emerald-500/10'
             : isWarning
-            ? 'from-amber-950/90 via-[#18130f]/95 to-[#18130f]/95'
-            : 'from-sky-950/90 via-[#18130f]/95 to-[#18130f]/95';
+            ? 'bg-panel border-amber-500/50 shadow-amber-500/10'
+            : 'bg-panel border-sky-500/50 shadow-sky-500/10';
 
           const badgeColor = isError
-            ? 'bg-red-500/20 text-red-400 border-red-500/30'
+            ? 'bg-red-500/20 text-red-500 border-red-500/30'
             : isSuccess
-            ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30'
+            ? 'bg-emerald-500/20 text-emerald-500 border-emerald-500/30'
             : isWarning
-            ? 'bg-amber-500/20 text-amber-400 border-amber-500/30'
-            : 'bg-sky-500/20 text-sky-400 border-sky-500/30';
+            ? 'bg-amber-500/20 text-amber-500 border-amber-500/30'
+            : 'bg-sky-500/20 text-sky-500 border-sky-500/30';
 
           const badgeLabel = isError
             ? (isRu ? 'ОШИБКА' : 'FAILED')
@@ -199,7 +199,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
           return (
             <div
               key={item.id}
-              className={`pointer-events-auto bg-gradient-to-br ${bgGradient} ${borderColor} border rounded-lg p-3.5 shadow-2xl backdrop-blur-md transition-all duration-200 font-sans text-xs`}
+              className={`pointer-events-auto ${bgGradient} border rounded-lg p-3.5 shadow-2xl backdrop-blur-md transition-all duration-200 font-sans text-xs`}
             >
               {/* Header */}
               <div className="flex items-center justify-between gap-2 mb-1.5">
@@ -223,7 +223,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
               </div>
 
               {/* Message */}
-              <p className="text-[#d8cebe] leading-relaxed text-[12px] whitespace-pre-line mb-2">
+              <p className="text-primary/90 leading-relaxed text-[12px] whitespace-pre-line mb-2">
                 {item.message}
               </p>
 
@@ -281,11 +281,11 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
       {/* Cyberpunk Modal Dialog for Critical / On-chain Failures */}
       {modalItem && (
         <div className="fixed inset-0 z-[10000] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in font-sans">
-          <div className="bg-[#18130f] border border-red-500/50 rounded-xl shadow-[0_0_50px_rgba(246,70,93,0.25)] max-w-lg w-full overflow-hidden flex flex-col">
+          <div className="bg-panel border border-red-500/50 rounded-xl shadow-[0_0_50px_rgba(246,70,93,0.25)] max-w-lg w-full overflow-hidden flex flex-col text-primary">
             {/* Modal Header */}
-            <div className="px-5 py-4 bg-gradient-to-r from-red-950/60 to-[#18130f] border-b border-[#312720] flex items-center justify-between">
+            <div className="px-5 py-4 bg-subpanel border-b border-panel flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-red-500/20 border border-red-500/40 flex items-center justify-center text-red-400 shrink-0">
+                <div className="w-8 h-8 rounded-full bg-red-500/20 border border-red-500/40 flex items-center justify-center text-red-500 shrink-0">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                   </svg>
@@ -294,7 +294,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
                   <h3 className="font-bold text-sm text-primary">
                     {modalItem.title}
                   </h3>
-                  <span className="text-[10px] font-mono text-red-400 font-bold uppercase tracking-wider">
+                  <span className="text-[10px] font-mono text-red-500 font-bold uppercase tracking-wider">
                     {modalItem.type === 'error' ? 'EVM / RPC Failure' : 'Execution Notice'}
                   </span>
                 </div>
@@ -312,14 +312,14 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
 
             {/* Modal Body */}
             <div className="p-5 flex flex-col gap-4 text-xs">
-              <p className="text-[#e2d8ca] text-[13px] leading-relaxed whitespace-pre-line">
+              <p className="text-primary/90 text-[13px] leading-relaxed whitespace-pre-line">
                 {modalItem.message}
               </p>
 
               {/* Raw Details Accordion */}
               {modalItem.rawError && (
-                <div className="border border-[#312720] rounded-lg bg-[#110d0a]/80 overflow-hidden">
-                  <div className="flex items-center justify-between px-3 py-2 bg-[#1c1612] border-b border-[#312720]/50">
+                <div className="border border-panel rounded-lg bg-subpanel overflow-hidden">
+                  <div className="flex items-center justify-between px-3 py-2 bg-subpanel border-b border-panel">
                     <button
                       onClick={() => setShowModalRaw(!showModalRaw)}
                       className="text-[11px] font-mono text-muted hover:text-primary flex items-center gap-1.5 transition"
@@ -329,13 +329,13 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
                     </button>
                     <button
                       onClick={() => handleCopy(modalItem.rawError!, modalItem.id, true)}
-                      className="text-[11px] font-mono text-amber-400 hover:text-amber-300 transition"
+                      className="text-[11px] font-mono text-amber-500 hover:text-amber-600 transition"
                     >
                       {modalCopied ? (isRu ? 'Скопировано' : 'Copied') : (isRu ? 'Копировать трейс' : 'Copy trace')}
                     </button>
                   </div>
                   {showModalRaw && (
-                    <pre className="p-3 font-mono text-[11px] text-red-300/90 whitespace-pre-wrap break-all max-h-48 overflow-y-auto select-all bg-[#0d0907]">
+                    <pre className="p-3 font-mono text-[11px] text-red-500 whitespace-pre-wrap break-all max-h-48 overflow-y-auto select-all bg-panel">
                       {modalItem.rawError}
                     </pre>
                   )}
@@ -344,11 +344,11 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
             </div>
 
             {/* Modal Footer */}
-            <div className="px-5 py-3.5 bg-[#120e0b] border-t border-[#312720] flex items-center justify-end gap-2.5">
+            <div className="px-5 py-3.5 bg-subpanel border-t border-panel flex items-center justify-end gap-2.5">
               {modalItem.rawError && (
                 <button
                   onClick={() => handleCopy(modalItem.rawError!, modalItem.id, true)}
-                  className="px-3.5 py-2 border border-[#312720] hover:border-muted text-muted hover:text-primary rounded text-xs font-medium transition"
+                  className="px-3.5 py-2 border border-panel hover:border-muted text-muted hover:text-primary rounded text-xs font-medium transition"
                 >
                   {modalCopied ? (isRu ? 'Скопировано!' : 'Copied!') : (isRu ? 'Скопировать ошибку' : 'Copy Error')}
                 </button>

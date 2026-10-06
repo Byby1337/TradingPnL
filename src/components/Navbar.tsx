@@ -224,7 +224,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           href="https://faucet.circle.com/"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-1.5 px-2.5 py-1 bg-[#16120e] hover:bg-[#221b14] text-[#38bdf8] hover:text-[#7dd3fc] border border-[#38bdf8]/30 hover:border-[#38bdf8]/50 rounded-lg text-xs font-semibold transition shadow-sm group"
+          className="flex items-center gap-1.5 px-2.5 py-1 bg-subpanel hover:bg-panel text-sky-600 dark:text-[#38bdf8] hover:text-sky-700 dark:hover:text-[#7dd3fc] border border-sky-500/30 hover:border-sky-500/50 rounded-lg text-xs font-semibold transition shadow-sm group"
           title="Get Arbitrum Sepolia USDC from Circle Official Faucet"
         >
           <span>Faucet USDC</span>

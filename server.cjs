@@ -573,9 +573,12 @@ async function handleRequest(req, res) {
     const pair = String(rawPair).replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 32);
     try {
       const participants = await db.getHourlyPoolParticipants(pair);
+      const PLATFORM_GENESIS = new Date('2026-10-02T00:00:00Z').getTime();
+      const epoch = Math.max(1, Math.floor((Date.now() - PLATFORM_GENESIS) / 3600000) + 1);
       sendJson(res, {
         success: true,
         pair,
+        epoch,
         participants,
         count: participants.length
       });

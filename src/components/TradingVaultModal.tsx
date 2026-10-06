@@ -280,38 +280,38 @@ export const TradingVaultModal: React.FC<TradingVaultModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fadeIn">
       <div 
-        className="bg-[#140f0c] border border-[#2b221a] rounded-2xl w-full max-w-[440px] p-5 text-[#f5efe8] shadow-2xl relative overflow-hidden"
+        className="bg-panel border border-panel rounded-2xl w-full max-w-[440px] p-5 text-primary shadow-2xl relative overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-[#251e18]">
+        <div className="flex items-center justify-between pb-3 border-b border-panel">
           <div className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500 font-bold text-xs">
               <Shield className="w-3.5 h-3.5 text-amber-400" />
             </div>
             <div>
-              <h3 className="text-base font-semibold text-[#f5efe8]">
+              <h3 className="text-base font-semibold text-primary">
                 {isRu ? 'Торговый депозит' : 'Trading Vault Account'}
               </h3>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="text-[#998b7e] hover:text-[#f5efe8] transition-colors p-1 rounded-lg hover:bg-[#201813]"
+            className="text-muted hover:text-primary transition-colors p-1 rounded-lg hover:bg-subpanel"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Tab Switcher */}
-        <div className="grid grid-cols-2 gap-1 mt-4 p-1 bg-[#1a130e] rounded-xl border border-[#2d2117]">
+        <div className="grid grid-cols-2 gap-1 mt-4 p-1 bg-subpanel rounded-xl border border-panel">
           <button
             type="button"
             onClick={() => { setTab('deposit'); setStatus('idle'); }}
             className={`py-2 text-xs font-semibold rounded-lg flex items-center justify-center gap-1.5 transition-all ${
               tab === 'deposit'
-                ? 'bg-[#291e15] text-[#0ecb81] border border-[#0ecb81]/30 shadow-sm'
-                : 'text-muted hover:text-primary hover:bg-[#201711]'
+                ? 'bg-panel text-[#0ecb81] border border-[#0ecb81]/30 shadow-sm'
+                : 'text-muted hover:text-primary hover:bg-panel'
             }`}
           >
             <ArrowDownCircle className="w-4 h-4" />
@@ -322,8 +322,8 @@ export const TradingVaultModal: React.FC<TradingVaultModalProps> = ({
             onClick={() => { setTab('withdraw'); setStatus('idle'); }}
             className={`py-2 text-xs font-semibold rounded-lg flex items-center justify-center gap-1.5 transition-all ${
               tab === 'withdraw'
-                ? 'bg-[#291e15] text-amber-400 border border-amber-500/30 shadow-sm'
-                : 'text-muted hover:text-primary hover:bg-[#201711]'
+                ? 'bg-panel text-amber-500 border border-amber-500/30 shadow-sm'
+                : 'text-muted hover:text-primary hover:bg-panel'
             }`}
           >
             <ArrowUpCircle className="w-4 h-4" />
@@ -332,19 +332,19 @@ export const TradingVaultModal: React.FC<TradingVaultModalProps> = ({
         </div>
 
         {/* Balance Display */}
-        <div className="mt-4 p-3 bg-[#18110c] rounded-xl border border-[#2b2017] space-y-1.5 font-mono text-xs">
+        <div className="mt-4 p-3 bg-subpanel rounded-xl border border-panel space-y-1.5 font-mono text-xs">
           <div className="flex justify-between text-muted">
             <span>{isRu ? 'USDC в кошельке (MetaMask):' : 'Wallet Balance (MetaMask):'}</span>
             <span className="text-primary font-semibold">${rawWalletBalance.toFixed(2)} USDC</span>
           </div>
-          <div className="flex justify-between text-muted border-t border-[#251e18] pt-1.5">
+          <div className="flex justify-between text-muted border-t border-panel pt-1.5">
             <span>{isRu ? 'Баланс трейдера (Trading Vault):' : 'Trader Balance (Trading Vault):'}</span>
             <span className="text-[#0ecb81] font-bold">${userBalance.toFixed(2)} USDC</span>
           </div>
           {tab === 'withdraw' && vaultLiquidity !== null && (
-            <div className="flex justify-between text-muted border-t border-[#251e18] pt-1.5">
+            <div className="flex justify-between text-muted border-t border-panel pt-1.5">
               <span>{isRu ? 'Доступная ликвидность:' : 'Available Liquidity:'}</span>
-              <span className={`font-semibold ${vaultLiquidity < userBalance ? 'text-amber-400' : 'text-primary'}`}>
+              <span className={`font-semibold ${vaultLiquidity < userBalance ? 'text-amber-500' : 'text-primary'}`}>
                 ${vaultLiquidity.toFixed(2)} USDC
               </span>
             </div>
@@ -352,10 +352,10 @@ export const TradingVaultModal: React.FC<TradingVaultModalProps> = ({
         </div>
 
         {/* Input Box */}
-        <div className="mt-4 bg-[#1b140f] border border-[#30251c] rounded-xl p-3 focus-within:border-amber-500 transition-colors">
+        <div className="mt-4 bg-subpanel border border-panel rounded-xl p-3 focus-within:border-amber-500 transition-colors">
           <div className="text-[11px] font-medium text-muted uppercase tracking-wider mb-1 flex justify-between">
             <span>{tab === 'deposit' ? (isRu ? 'Сумма депозита' : 'Deposit Amount') : (isRu ? 'Сумма вывода' : 'Withdraw Amount')}</span>
-            <span className="text-[#a89d91] font-mono">
+            <span className="text-muted font-mono">
               Max: ${tab === 'deposit' ? rawWalletBalance.toFixed(2) : maxWithdrawable.toFixed(2)}
             </span>
           </div>
@@ -366,9 +366,9 @@ export const TradingVaultModal: React.FC<TradingVaultModalProps> = ({
               placeholder="0.00"
               value={amount}
               onChange={(e) => setAmount(e.target.value.replace(/[^0-9.]/g, ''))}
-              className="bg-transparent text-xl font-bold font-mono text-[#f5efe8] outline-none w-full"
+              className="bg-transparent text-xl font-bold font-mono text-primary outline-none w-full"
             />
-            <span className="text-sm font-semibold text-amber-400 font-mono ml-2">USDC</span>
+            <span className="text-sm font-semibold text-amber-500 font-mono ml-2">USDC</span>
           </div>
         </div>
 
@@ -382,7 +382,7 @@ export const TradingVaultModal: React.FC<TradingVaultModalProps> = ({
                 const maxVal = tab === 'deposit' ? rawWalletBalance : maxWithdrawable;
                 setAmount(((maxVal * pct) / 100).toFixed(2));
               }}
-              className="flex-1 py-1 bg-[#1d1510] hover:bg-[#271d15] border border-[#302318] rounded-lg text-muted hover:text-primary transition-colors text-[11px]"
+              className="flex-1 py-1 bg-panel hover:bg-subpanel border border-panel rounded-lg text-muted hover:text-primary transition-colors text-[11px]"
             >
               {pct === 100 ? 'MAX' : `${pct}%`}
             </button>

@@ -94,6 +94,15 @@ export interface Translations {
   estPayout: string;
   status: string;
   active: string;
+  sheriffWinnerPayout: string;
+  none: string;
+  epochText: string;
+  realTimeSync: string;
+  walletsAndDistributions: string;
+  activeEntries: string;
+  contributingListDesc: string;
+  noActiveParticipants: string;
+  youBadge: string;
 }
 
 export const TRANSLATIONS: Record<LanguageCode, Translations> = {
@@ -168,8 +177,8 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
     normal: 'Normal',
     wide: 'Wide',
 
-    hourlyPoolTitle: 'Hourly Settlement Pool',
-    hourlyPoolDesc: 'Every hour, 10% of settlement PnL from perpetual trades across all pairs routes into this high-frequency pool.',
+    hourlyPoolTitle: 'Hourly Sheriff Lottery Pool',
+    hourlyPoolDesc: 'Hourly Sheriff Lottery: 10%–20% PnL from closed winning trades enters a Sheriff ticket (1 wallet = 1 ticket per pair, 24h win cooldown). The hourly winner earns the Sheriff title and 0.01% of the pair\'s trading volume, while unallocated tickets provide 50% soft-loss rebates to traders, 25% to Treasury, and 25% to the monthly SuperJackpot.',
     nextSettlementIn: 'Next Settlement In',
     tradeToParticipate: 'Trade to Participate',
     totalPrizePot: 'Total Hourly Prize Pot',
@@ -184,7 +193,16 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
     pnlContribution: 'PnL Contribution',
     estPayout: 'Est. Payout',
     status: 'Status',
-    active: 'Active'
+    active: 'Active',
+    sheriffWinnerPayout: 'Sheriff (1 Winner) Payout',
+    none: 'None',
+    epochText: 'Epoch',
+    realTimeSync: 'Real-Time Epoch Sync',
+    walletsAndDistributions: 'Participating Wallets & Distributions',
+    activeEntries: 'active entries',
+    contributingListDesc: 'List of trader wallets currently contributing settlement PnL for',
+    noActiveParticipants: 'No active participants recorded in the database for this epoch.',
+    youBadge: 'YOU'
   },
 
   ru: {
@@ -258,8 +276,8 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
     normal: 'Стандартный',
     wide: 'Широкий',
 
-    hourlyPoolTitle: 'Часовой пул расчётов',
-    hourlyPoolDesc: 'Каждый час 10% от расчётного PnL сделок со всех пар направляется в этот пул для распределения между участниками.',
+    hourlyPoolTitle: 'Часовой лотерейный пул Шерифа',
+    hourlyPoolDesc: 'Часовая лотерея «Шериф часа»: 10%–20% PnL с закрытых прибыльных сделок покупают 1 билет Шерифа (правило: 1 кошелёк = 1 билет на пару, кулдаун победы 24ч). Победитель часа получает статус Шерифа и 0.01% с торгового оборота пары, а со сгоревших билетов: 50% возвращается трейдерам (Soft Loss), 25% уходит в Treasury и 25% аккумулируется в месячный SuperJackpot.',
     nextSettlementIn: 'До расчёта осталось',
     tradeToParticipate: 'Торговать для участия',
     totalPrizePot: 'Общий призовой пул',
@@ -274,7 +292,16 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
     pnlContribution: 'Вклад PnL',
     estPayout: 'Расч. выплата',
     status: 'Статус',
-    active: 'Активно'
+    active: 'Активно',
+    sheriffWinnerPayout: 'Выплата Шерифу (1 победитель)',
+    none: 'Нет',
+    epochText: 'Эпоха',
+    realTimeSync: 'Синхронизация эпохи в реальном времени',
+    walletsAndDistributions: 'Участники и распределение пула',
+    activeEntries: 'активных записей',
+    contributingListDesc: 'Список кошельков трейдеров, формирующих расчетный PnL для',
+    noActiveParticipants: 'В этой эпохе пока нет активных участников в базе данных.',
+    youBadge: 'ВЫ'
   },
 
   zh: {
@@ -348,8 +375,8 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
     normal: '默认',
     wide: '加宽',
 
-    hourlyPoolTitle: '每小时结算资金池',
-    hourlyPoolDesc: '每小时将所有交易对合约结算PnL的10%自动路由至此奖池，按比例分配。',
+    hourlyPoolTitle: '每小时警长彩票池',
+    hourlyPoolDesc: '每小时警长彩票：已平仓盈利交易的10%–20% PnL将自动购买1张警长彩票（规则：每个钱包每个交易对限1张彩票，中奖冷却24小时）。每小时获胜者获得警长称号及该交易对0.01%的交易量分红，未中奖彩票中50%作为软损回扣返还交易者，25%进入国库，25%累积至月度超级大奖池。',
     nextSettlementIn: '距离下次结算',
     tradeToParticipate: '去交易参与',
     totalPrizePot: '奖池总额',
@@ -364,7 +391,16 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
     pnlContribution: '贡献PnL',
     estPayout: '预估收益',
     status: '状态',
-    active: '活跃中'
+    active: '活跃中',
+    sheriffWinnerPayout: '警长奖金 (1位胜者)',
+    none: '暂无',
+    epochText: '轮次',
+    realTimeSync: '实时轮次同步',
+    walletsAndDistributions: '参与钱包与奖池分配',
+    activeEntries: '个活跃条目',
+    contributingListDesc: '当前为以下标的贡献结算PnL的交易者钱包列表：',
+    noActiveParticipants: '当前轮次数据库中暂无活跃参与者记录。',
+    youBadge: '您'
   },
 
   es: {
@@ -438,8 +474,8 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
     normal: 'Normal',
     wide: 'Ancho',
 
-    hourlyPoolTitle: 'Piscina de Liquidación Horaria',
-    hourlyPoolDesc: 'Cada hora, el 10% del PnL se transfiere a esta piscina para los participantes.',
+    hourlyPoolTitle: 'Piscina de Lotería Horaria del Sheriff',
+    hourlyPoolDesc: 'Lotería Horaria del Sheriff: 10%–20% del PnL de operaciones ganadoras cerradas compra 1 boleto del Sheriff (1 billetera = 1 boleto por par, 24h de enfriamiento). El ganador gana el título de Sheriff y el 0.01% del volumen del par, mientras que los boletos no asignados otorgan reembolsos del 50% de soft-loss a los traders, 25% a Tesorería y 25% al SuperJackpot mensual.',
     nextSettlementIn: 'Próxima Liquidación En',
     tradeToParticipate: 'Operar para Participar',
     totalPrizePot: 'Bote Total Horario',
@@ -454,7 +490,16 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
     pnlContribution: 'Aporte PnL',
     estPayout: 'Pago Estimado',
     status: 'Estado',
-    active: 'Activo'
+    active: 'Activo',
+    sheriffWinnerPayout: 'Pago al Sheriff (1 Ganador)',
+    none: 'Ninguno',
+    epochText: 'Época',
+    realTimeSync: 'Sincronización en tiempo real',
+    walletsAndDistributions: 'Billeteras participantes y distribución',
+    activeEntries: 'entradas activas',
+    contributingListDesc: 'Lista de billeteras que contribuyen PnL para',
+    noActiveParticipants: 'No hay participantes activos registrados en la base de datos para esta época.',
+    youBadge: 'TÚ'
   },
 
   fr: {
@@ -528,8 +573,8 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
     normal: 'Normal',
     wide: 'Large',
 
-    hourlyPoolTitle: 'Pool de Règlement Horaire',
-    hourlyPoolDesc: 'Chaque heure, 10% du PnL est reversé dans ce pool pour distribution.',
+    hourlyPoolTitle: 'Cagnotte Horaire du Shérif',
+    hourlyPoolDesc: 'Loterie Horaire du Shérif: 10%–20% du PnL des positions gagnantes clôturées finance 1 ticket (1 portefeuille = 1 ticket par paire, temps de recharge de 24h). Le gagnant remporte le titre de Shérif et 0,01% du volume de la paire, tandis que les tickets restants offrent 50% de remboursement soft-loss, 25% à la Trésorerie et 25% au SuperJackpot mensuel.',
     nextSettlementIn: 'Prochain Règlement Dans',
     tradeToParticipate: 'Trader pour Participer',
     totalPrizePot: 'Cagnotte Horaire Totale',
@@ -544,7 +589,16 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
     pnlContribution: 'Contribution PnL',
     estPayout: 'Paiement Estimé',
     status: 'Statut',
-    active: 'Actif'
+    active: 'Actif',
+    sheriffWinnerPayout: 'Paiement du Shérif (1 Gagnant)',
+    none: 'Aucun',
+    epochText: 'Époque',
+    realTimeSync: 'Synchronisation en temps réel',
+    walletsAndDistributions: 'Portefeuilles participants et distribution',
+    activeEntries: 'entrées actives',
+    contributingListDesc: 'Liste des portefeuilles contribuant au PnL pour',
+    noActiveParticipants: 'Aucun participant actif enregistré dans la base de données pour cette époque.',
+    youBadge: 'VOUS'
   },
 
   de: {
@@ -618,8 +672,8 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
     normal: 'Normal',
     wide: 'Breit',
 
-    hourlyPoolTitle: 'Stündlicher Abrechnungspool',
-    hourlyPoolDesc: 'Jede Stunde werden 10% des Abrechnungs-PnLs in diesen Pool geleitet.',
+    hourlyPoolTitle: 'Stündlicher Sheriff-Lotteriepool',
+    hourlyPoolDesc: 'Stündliche Sheriff-Lotterie: 10%–20% des PnL aus geschlossenen Gewinntrades kaufen 1 Sheriff-Ticket (1 Wallet = 1 Ticket pro Paar, 24h Abklingzeit). Der Gewinner erhält den Sheriff-Titel und 0,01% des Handelsvolumens, während nicht zugewiesene Tickets 50% Soft-Loss-Rückvergütung, 25% an die Treasury und 25% an den monatlichen SuperJackpot abgeben.',
     nextSettlementIn: 'Nächste Abrechnung In',
     tradeToParticipate: 'Handeln zum Teilnehmen',
     totalPrizePot: 'Gesamter Stunden-Preispool',
@@ -634,7 +688,16 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
     pnlContribution: 'PnL-Beitrag',
     estPayout: 'Geschätzte Auszahlung',
     status: 'Status',
-    active: 'Aktiv'
+    active: 'Aktiv',
+    sheriffWinnerPayout: 'Sheriff-Auszahlung (1 Gewinner)',
+    none: 'Keine',
+    epochText: 'Epoche',
+    realTimeSync: 'Echtzeit-Epochensynchronisierung',
+    walletsAndDistributions: 'Teilnehmende Wallets & Verteilung',
+    activeEntries: 'aktive Einträge',
+    contributingListDesc: 'Liste der Trader-Wallets, die Abrechnungs-PnL beitragen für',
+    noActiveParticipants: 'Für diese Epoche sind keine aktiven Teilnehmer in der Datenbank registriert.',
+    youBadge: 'DU'
   },
 
   ja: {
@@ -708,8 +771,8 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
     normal: '標準',
     wide: 'ワイド',
 
-    hourlyPoolTitle: '毎時決済プール',
-    hourlyPoolDesc: '毎時間、全ペアの決済PnLの10%がこのプールにルーティングされます。',
+    hourlyPoolTitle: '時間制シェリフ宝くじプール',
+    hourlyPoolDesc: '時間制シェリフ宝くじ：決済された利益取引の10%〜20%がシェリフチケットを購入（ルール：1ウォレットにつきペアあたり1チケット、当選クールダウン24時間）。時間勝者はシェリフの称号とペア取引高の0.01%を獲得し、未配分のチケットはトレーダーへの50%ソフトロス還元、25%をトレジャリー、25%を月間スーパージャックポットへ蓄積します。',
     nextSettlementIn: '次回決済まで',
     tradeToParticipate: '取引して参加する',
     totalPrizePot: '賞金総額',
@@ -724,6 +787,15 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
     pnlContribution: '貢献PnL',
     estPayout: '推定配当',
     status: '状態',
-    active: 'アクティブ'
+    active: 'アクティブ',
+    sheriffWinnerPayout: 'シェリフ賞金 (勝者1名)',
+    none: 'なし',
+    epochText: 'エポック',
+    realTimeSync: 'リアルタイム同期中',
+    walletsAndDistributions: '参加ウォレットと配分状況',
+    activeEntries: '件のアクティブエントリー',
+    contributingListDesc: '決済PnLを拠出しているトレーダーウォレット一覧：',
+    noActiveParticipants: 'このエポックのデータベースにはアクティブな参加者が記録されていません。',
+    youBadge: 'あなた'
   }
 };

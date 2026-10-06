@@ -12,11 +12,11 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack }) => {
     <div className="flex-1 p-6 md:p-8 bg-bg overflow-y-auto">
       <div className="max-w-4xl mx-auto space-y-8">
         {/* Navigation & Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#382b20] pb-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-panel pb-5">
           <div className="flex items-center gap-3">
             <button
               onClick={onBack}
-              className="px-3.5 py-1.5 bg-[#201811] hover:bg-[#2b1f16] border border-[#3b2d22] rounded-xl text-xs text-primary flex items-center gap-2 transition group shadow-sm font-sans"
+              className="px-3.5 py-1.5 bg-subpanel hover:bg-panel border border-panel rounded-xl text-xs text-primary flex items-center gap-2 transition group shadow-sm font-sans"
             >
               <span className="text-amber-500 group-hover:-translate-x-0.5 transition-transform">←</span>
               <span>Back to Trading</span>
@@ -27,8 +27,8 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack }) => {
           </div>
 
           {type === 'privacy' && (
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-400 text-[11px] font-mono self-start sm:self-auto">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-500 text-[11px] font-mono self-start sm:self-auto">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
               <span>Last Updated: October 2, 2026</span>
             </div>
           )}
@@ -37,7 +37,7 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack }) => {
         {/* PRIVACY POLICY PAGE */}
         {type === 'privacy' && (
           <div className="space-y-6 text-xs font-sans text-muted leading-relaxed">
-            <div className="p-4 rounded-2xl bg-[#1b140f] border border-[#382b20] space-y-2">
+            <div className="p-4 rounded-2xl bg-subpanel border border-panel space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-[10px] uppercase font-bold text-amber-500 tracking-wider">Protocol Legal Statement</span>
                 <span className="text-[10px] font-mono text-muted">Version 2.4.0 (Production Release)</span>
@@ -48,7 +48,7 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack }) => {
             </div>
 
             <div className="grid gap-4">
-              <div className="p-5 rounded-2xl bg-[#16100c] border border-[#302319] space-y-2.5">
+              <div className="p-5 rounded-2xl bg-panel border border-panel space-y-2.5">
                 <div className="flex items-center gap-2 text-primary font-bold text-sm">
                   <span className="w-6 h-6 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center text-xs">1</span>
                   <span>Non-Custodial Architecture & Self-Sovereignty</span>
@@ -58,7 +58,7 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack }) => {
                 </p>
               </div>
 
-              <div className="p-5 rounded-2xl bg-[#16100c] border border-[#302319] space-y-2.5">
+              <div className="p-5 rounded-2xl bg-panel border border-panel space-y-2.5">
                 <div className="flex items-center gap-2 text-primary font-bold text-sm">
                   <span className="w-6 h-6 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center text-xs">2</span>
                   <span>Zero Identity Verification (No KYC) & Pseudonymous Trading</span>
@@ -68,7 +68,7 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack }) => {
                 </p>
               </div>
 
-              <div className="p-5 rounded-2xl bg-[#16100c] border border-[#302319] space-y-2.5">
+              <div className="p-5 rounded-2xl bg-panel border border-panel space-y-2.5">
                 <div className="flex items-center gap-2 text-primary font-bold text-sm">
                   <span className="w-6 h-6 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center text-xs">3</span>
                   <span>Public Ledger Immutability & On-Chain Transparency</span>
@@ -78,7 +78,7 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack }) => {
                 </p>
               </div>
 
-              <div className="p-5 rounded-2xl bg-[#16100c] border border-[#302319] space-y-2.5">
+              <div className="p-5 rounded-2xl bg-panel border border-panel space-y-2.5">
                 <div className="flex items-center gap-2 text-primary font-bold text-sm">
                   <span className="w-6 h-6 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center text-xs">4</span>
                   <span>Local Client Storage & Cookies</span>
@@ -88,7 +88,7 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack }) => {
                 </p>
               </div>
 
-              <div className="p-5 rounded-2xl bg-[#16100c] border border-[#302319] space-y-2.5">
+              <div className="p-5 rounded-2xl bg-panel border border-panel space-y-2.5">
                 <div className="flex items-center gap-2 text-primary font-bold text-sm">
                   <span className="w-6 h-6 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center text-xs">5</span>
                   <span>Market Data Transmission & Oracle Feeds</span>
@@ -98,7 +98,7 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack }) => {
                 </p>
               </div>
 
-              <div className="p-5 rounded-2xl bg-[#16100c] border border-[#302319] space-y-2.5">
+              <div className="p-5 rounded-2xl bg-panel border border-panel space-y-2.5">
                 <div className="flex items-center gap-2 text-primary font-bold text-sm">
                   <span className="w-6 h-6 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center text-xs">6</span>
                   <span>Risk Disclosures & Regulatory Exclusions</span>
@@ -115,7 +115,7 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack }) => {
         {type === 'help' && (
           <div className="space-y-6 text-xs font-sans text-muted leading-relaxed">
             {/* Category Filter Pills */}
-            <div className="flex flex-wrap gap-1.5 p-1.5 bg-[#17110c] border border-[#33251a] rounded-2xl">
+            <div className="flex flex-wrap gap-1.5 p-1.5 bg-subpanel border border-panel rounded-2xl">
               {[
                 { id: 'all', label: 'All Topics' },
                 { id: 'wallets', label: '1. Wallet & Deposits' },
@@ -130,8 +130,8 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack }) => {
                   onClick={() => setHelpCategory(cat.id as any)}
                   className={`px-3 py-1.5 rounded-xl font-semibold transition ${
                     helpCategory === cat.id
-                      ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30 shadow-sm'
-                      : 'text-muted hover:text-primary hover:bg-[#201811]'
+                      ? 'bg-amber-500/20 text-amber-500 border border-amber-500/30 shadow-sm'
+                      : 'text-muted hover:text-primary hover:bg-panel'
                   }`}
                 >
                   {cat.label}
@@ -142,7 +142,7 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack }) => {
             {/* Help Content Cards */}
             <div className="grid gap-4">
               {(helpCategory === 'all' || helpCategory === 'wallets') && (
-                <div className="p-5 rounded-2xl bg-[#16100c] border border-[#302319] space-y-3">
+                <div className="p-5 rounded-2xl bg-panel border border-panel space-y-3">
                   <div className="flex items-center gap-2 text-primary font-bold text-sm">
                     <span className="w-7 h-7 rounded-lg bg-amber-500/15 text-amber-400 border border-amber-500/25 flex items-center justify-center text-xs font-mono">01</span>
                     <span>Non-Custodial Wallet Connection & Collateral Funding</span>
@@ -162,7 +162,7 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack }) => {
               )}
 
               {(helpCategory === 'all' || helpCategory === 'perps') && (
-                <div className="p-5 rounded-2xl bg-[#16100c] border border-[#302319] space-y-3">
+                <div className="p-5 rounded-2xl bg-panel border border-panel space-y-3">
                   <div className="flex items-center gap-2 text-primary font-bold text-sm">
                     <span className="w-7 h-7 rounded-lg bg-amber-500/15 text-amber-400 border border-amber-500/25 flex items-center justify-center text-xs font-mono">02</span>
                     <span>Perpetual Contracts & Leverage Mechanics</span>
@@ -185,7 +185,7 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack }) => {
               )}
 
               {(helpCategory === 'all' || helpCategory === 'options') && (
-                <div className="p-5 rounded-2xl bg-[#16100c] border border-[#302319] space-y-3">
+                <div className="p-5 rounded-2xl bg-panel border border-panel space-y-3">
                   <div className="flex items-center gap-2 text-primary font-bold text-sm">
                     <span className="w-7 h-7 rounded-lg bg-amber-500/15 text-amber-400 border border-amber-500/25 flex items-center justify-center text-xs font-mono">03</span>
                     <span>US 0DTE (Same-Day Expiration) Options Trading</span>
@@ -200,9 +200,9 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack }) => {
                     <p>
                       <strong>Transparent Breakeven:</strong> Every strike card displays your exact breakeven spot price at expiry:
                       <br />
-                      <span className="font-mono text-amber-400 text-[11px] bg-[#120d09] px-2 py-0.5 rounded border border-[#2d2219]">Call Breakeven = Strike Price + Premium Paid</span>
+                      <span className="font-mono text-amber-500 text-[11px] bg-subpanel px-2 py-0.5 rounded border border-panel">Call Breakeven = Strike Price + Premium Paid</span>
                       <br />
-                      <span className="font-mono text-amber-400 text-[11px] bg-[#120d09] px-2 py-0.5 rounded border border-[#2d2219] mt-1 inline-block">Put Breakeven = Strike Price - Premium Paid</span>
+                      <span className="font-mono text-amber-500 text-[11px] bg-subpanel px-2 py-0.5 rounded border border-panel mt-1 inline-block">Put Breakeven = Strike Price - Premium Paid</span>
                     </p>
                     <p>
                       <strong>Automatic Cash Settlement:</strong> Contracts expire daily at 08:00 UTC. In-the-money (ITM) options settle automatically into your USDC balance without requiring manual exercise or underlying token delivery.
@@ -212,7 +212,7 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack }) => {
               )}
 
               {(helpCategory === 'all' || helpCategory === 'pools') && (
-                <div className="p-5 rounded-2xl bg-[#16100c] border border-[#302319] space-y-3">
+                <div className="p-5 rounded-2xl bg-panel border border-panel space-y-3">
                   <div className="flex items-center gap-2 text-primary font-bold text-sm">
                     <span className="w-7 h-7 rounded-lg bg-amber-500/15 text-amber-400 border border-amber-500/25 flex items-center justify-center text-xs font-mono">04</span>
                     <span>Liquidity Pools & Yield Vaults</span>
@@ -232,7 +232,7 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack }) => {
               )}
 
               {(helpCategory === 'all' || helpCategory === 'orders') && (
-                <div className="p-5 rounded-2xl bg-[#16100c] border border-[#302319] space-y-3">
+                <div className="p-5 rounded-2xl bg-panel border border-panel space-y-3">
                   <div className="flex items-center gap-2 text-primary font-bold text-sm">
                     <span className="w-7 h-7 rounded-lg bg-amber-500/15 text-amber-400 border border-amber-500/25 flex items-center justify-center text-xs font-mono">05</span>
                     <span>Order Types & Central Limit Order Book (CLOB)</span>
@@ -252,7 +252,7 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack }) => {
               )}
 
               {(helpCategory === 'all' || helpCategory === 'security') && (
-                <div className="p-5 rounded-2xl bg-[#16100c] border border-[#302319] space-y-3">
+                <div className="p-5 rounded-2xl bg-panel border border-panel space-y-3">
                   <div className="flex items-center gap-2 text-primary font-bold text-sm">
                     <span className="w-7 h-7 rounded-lg bg-amber-500/15 text-amber-400 border border-amber-500/25 flex items-center justify-center text-xs font-mono">06</span>
                     <span>Audits, Multi-Sig Governance & Risk Parameters</span>
