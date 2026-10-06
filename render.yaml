@@ -27,4 +27,5 @@ databases:
   - name: tradingpnl-db
     plan: free
     databaseName: tradingpnl
-    user: postgres
+    user: tradingpnl_user
+
