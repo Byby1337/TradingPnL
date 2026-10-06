@@ -14,7 +14,6 @@ import {
   AlertTriangle,
   CheckCircle2,
   RefreshCw,
-  Sliders,
   Lock
 } from 'lucide-react';
 
@@ -29,7 +28,7 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
   onConnectWallet,
   onRefreshBalance
 }) => {
-  const [activeTab, setActiveTab] = useState<'deposit' | 'withdraw' | 'config'>('deposit');
+  const [activeTab, setActiveTab] = useState<'deposit' | 'withdraw'>('deposit');
   // Fixed immutable verified contract address (M-R3 security fix)
   const poolAddress = CONTRACT_ADDRESSES.LP_POOL;
 
@@ -455,7 +454,7 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
                   ? 'bg-[#10b981]/10 text-[#10b981] border-[#10b981]/30'
                   : 'bg-[#ef4444]/10 text-[#ef4444] border-[#ef4444]/30'
               }`}>
-                <span className={`w-2 h-2 rounded-full ${isArbitrum ? 'bg-[#10b981] animate-pulse' : 'bg-[#ef4444]'}`} />
+                <span className={`w-2 h-2 rounded-full ${isArbitrum ? 'bg-[#10b981]' : 'bg-[#ef4444]'}`} />
                 {isArbitrum ? 'Arbitrum Sepolia' : `Wrong Network (Chain ${chainId})`}
               </div>
             )}
@@ -486,21 +485,11 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
             <div className="flex items-start gap-3">
               <AlertTriangle className="w-5 h-5 text-[#f59e0b] shrink-0 mt-0.5" />
               <div className="flex-1 text-xs space-y-1">
-                <div className="font-bold text-[#f59e0b] text-sm">Pool Contract Not Detected on Current Network</div>
+                <div className="font-bold text-[#f59e0b] text-sm">Pool Not Detected on Current Network</div>
                 <div className="text-[#d5cfc7] leading-relaxed">
-                  The verified pool contract (<span className="font-mono text-[#f59e0b]">{poolAddress.slice(0, 10)}...</span>)
-                  is not responding on the connected provider. Please ensure your wallet is connected to Arbitrum Sepolia (Chain ID: 421614).
+                  The liquidity pool is not responding on the connected provider. Please ensure your wallet is connected to Arbitrum Sepolia (Chain ID: 421614).
                 </div>
                 <div className="pt-2 flex flex-wrap gap-2 items-center">
-                  <a
-                    href={`https://sepolia.arbiscan.io/address/${poolAddress}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="px-3 py-1.5 bg-[#181614] hover:bg-[#262320] text-[#d5cfc7] font-semibold text-xs rounded border border-[#38332e] inline-flex items-center gap-1.5"
-                  >
-                    <ExternalLink className="w-3.5 h-3.5" />
-                    View on Arbiscan
-                  </a>
                   <button
                     onClick={loadPoolData}
                     className="px-3 py-1.5 bg-[#181614] hover:bg-[#262320] text-[#d5cfc7] font-semibold text-xs rounded border border-[#38332e] inline-flex items-center gap-1.5"
@@ -630,18 +619,6 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
               >
                 <ArrowUpCircle className="w-3.5 h-3.5" />
                 Withdraw USDC
-              </button>
-
-              <button
-                onClick={() => setActiveTab('config')}
-                className={`flex items-center gap-1.5 px-4 py-2 text-xs font-bold border-b-2 transition-all ${
-                  activeTab === 'config'
-                    ? 'border-[#3b82f6] text-[#3b82f6] bg-[#3b82f6]/5'
-                    : 'border-transparent text-[#9c958c] hover:text-white'
-                }`}
-              >
-                <Sliders className="w-3.5 h-3.5" />
-                Contract Inspector
               </button>
             </div>
 
@@ -835,64 +812,6 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
                 </button>
               </div>
             )}
-
-            {/* Tab 3: Contract Config View (Read-Only Verified Contracts) */}
-            {activeTab === 'config' && (
-              <div className="space-y-4 pt-1 text-xs">
-                <div className="space-y-3 bg-[#181614] p-4 rounded-lg border border-[#262320]">
-                  <div className="flex items-center justify-between pb-2 border-b border-[#262320]">
-                    <span className="text-white font-bold text-xs flex items-center gap-1.5">
-                      <ShieldCheck className="w-4 h-4 text-[#10b981]" />
-                      Verified Core Contracts
-                    </span>
-                    <span className="text-[10px] text-[#10b981] font-mono">Arbitrum Sepolia</span>
-                  </div>
-
-                  <div className="space-y-2 font-mono text-[11px] text-[#9c958c]">
-                    <div className="flex justify-between border-b border-[#262320] pb-1.5">
-                      <span>OptionLiquidityPool:</span>
-                      <a
-                        href={`https://sepolia.arbiscan.io/address/${poolAddress}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-[#d97706] hover:underline"
-                      >
-                        {poolAddress.slice(0, 10)}...{poolAddress.slice(-6)} ↗
-                      </a>
-                    </div>
-
-                    <div className="flex justify-between border-b border-[#262320] pb-1.5">
-                      <span>Circle USDC (Native):</span>
-                      <a
-                        href={`https://sepolia.arbiscan.io/token/${usdcAddress}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-[#10b981] hover:underline"
-                      >
-                        {usdcAddress.slice(0, 10)}...{usdcAddress.slice(-6)} ↗
-                      </a>
-                    </div>
-
-                    <div className="flex justify-between border-b border-[#262320] pb-1.5">
-                      <span>Option Vault Address:</span>
-                      <a
-                        href={`https://sepolia.arbiscan.io/address/${CONTRACT_ADDRESSES.OPTION_VAULT}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-[#3b82f6] hover:underline"
-                      >
-                        {CONTRACT_ADDRESSES.OPTION_VAULT.slice(0, 10)}... ↗
-                      </a>
-                    </div>
-
-                    <div className="flex justify-between">
-                      <span>Network Chain ID:</span>
-                      <span className="text-white">421614 (Arbitrum Sepolia)</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
 
           {/* Right Column: Other Protocol Vaults */}
@@ -909,17 +828,6 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
               </div>
 
               <div className="space-y-2 text-[#9c958c]">
-                <div className="flex justify-between">
-                  <span>Contract:</span>
-                  <a
-                    href={`https://sepolia.arbiscan.io/address/${CONTRACT_ADDRESSES.LOTTERY_CORE}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-[#d97706] hover:underline"
-                  >
-                    {CONTRACT_ADDRESSES.LOTTERY_CORE.slice(0, 8)}... ↗
-                  </a>
-                </div>
                 <div className="flex justify-between">
                   <span>Revenue Stream:</span>
                   <span className="text-white font-bold">20% PnL Turnover</span>
@@ -950,17 +858,6 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
               </div>
 
               <div className="space-y-2 text-[#9c958c]">
-                <div className="flex justify-between">
-                  <span>Contract:</span>
-                  <a
-                    href={`https://sepolia.arbiscan.io/address/${CONTRACT_ADDRESSES.SUPER_JACKPOT}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-[#3b82f6] hover:underline"
-                  >
-                    {CONTRACT_ADDRESSES.SUPER_JACKPOT.slice(0, 8)}... ↗
-                  </a>
-                </div>
                 <div className="flex justify-between">
                   <span>1st Place:</span>
                   <span className="text-white font-bold">35% of Accumulated Pot</span>

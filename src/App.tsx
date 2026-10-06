@@ -834,6 +834,7 @@ export const App: React.FC = () => {
           positions={positions}
           onNavigateToTrade={() => setCurrentSection('perpetual')}
           labels={t}
+          currentLang={currentLang}
         />
       )}
 

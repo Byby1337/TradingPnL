@@ -28,7 +28,7 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack }) => {
 
           {type === 'privacy' && (
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-400 text-[11px] font-mono self-start sm:self-auto">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
               <span>Last Updated: October 2, 2026</span>
             </div>
           )}

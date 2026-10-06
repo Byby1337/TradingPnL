@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CONTRACT_ADDRESSES } from '../constants/contracts';
-import { X, ArrowDownCircle, ArrowUpCircle, CheckCircle2, AlertCircle, Loader2, ExternalLink } from 'lucide-react';
+import { X, ArrowDownCircle, ArrowUpCircle, CheckCircle2, AlertCircle, Loader2, ExternalLink, Shield } from 'lucide-react';
 
 interface TradingVaultModalProps {
   isOpen: boolean;
@@ -71,7 +71,7 @@ export const TradingVaultModal: React.FC<TradingVaultModalProps> = ({
         });
         if (receipt && receipt.blockNumber) {
           if (receipt.status === '0x0' || receipt.status === 0) {
-            throw new Error(isRu ? 'Транзакция отклонена смарт-контрактом (revert)' : 'Transaction reverted on-chain');
+            throw new Error(isRu ? 'Транзакция отклонена (revert)' : 'Transaction reverted on-chain');
           }
           return receipt;
         }
@@ -204,8 +204,8 @@ export const TradingVaultModal: React.FC<TradingVaultModalProps> = ({
       setStatus('error');
       setStatusText(
         isRu
-          ? `В смарт-контракте TradingVault сейчас доступно $${vaultLiquidity.toFixed(2)} USDC. Вы можете вывести до $${vaultLiquidity.toFixed(2)} USDC сейчас.`
-          : `Only $${vaultLiquidity.toFixed(2)} USDC liquidity is available in the contract now. You can withdraw up to $${vaultLiquidity.toFixed(2)} USDC.`
+          ? `Сейчас доступно $${vaultLiquidity.toFixed(2)} USDC. Вы можете вывести до $${vaultLiquidity.toFixed(2)} USDC сейчас.`
+          : `Only $${vaultLiquidity.toFixed(2)} USDC liquidity is available now. You can withdraw up to $${vaultLiquidity.toFixed(2)} USDC.`
       );
       return;
     }
@@ -287,15 +287,12 @@ export const TradingVaultModal: React.FC<TradingVaultModalProps> = ({
         <div className="flex items-center justify-between pb-3 border-b border-[#251e18]">
           <div className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500 font-bold text-xs">
-              ⚡
+              <Shield className="w-3.5 h-3.5 text-amber-400" />
             </div>
             <div>
               <h3 className="text-base font-semibold text-[#f5efe8]">
-                {isRu ? 'Торговый депозит (Trading Vault)' : 'Trading Vault Account'}
+                {isRu ? 'Торговый депозит' : 'Trading Vault Account'}
               </h3>
-              <p className="text-[10px] text-muted font-mono">
-                Contract: {vaultAddress.slice(0, 6)}...{vaultAddress.slice(-4)}
-              </p>
             </div>
           </div>
           <button
@@ -346,7 +343,7 @@ export const TradingVaultModal: React.FC<TradingVaultModalProps> = ({
           </div>
           {tab === 'withdraw' && vaultLiquidity !== null && (
             <div className="flex justify-between text-muted border-t border-[#251e18] pt-1.5">
-              <span>{isRu ? 'Ликвидность смарт-контракта:' : 'Contract Liquidity:'}</span>
+              <span>{isRu ? 'Доступная ликвидность:' : 'Available Liquidity:'}</span>
               <span className={`font-semibold ${vaultLiquidity < userBalance ? 'text-amber-400' : 'text-primary'}`}>
                 ${vaultLiquidity.toFixed(2)} USDC
               </span>
@@ -392,12 +389,12 @@ export const TradingVaultModal: React.FC<TradingVaultModalProps> = ({
           ))}
         </div>
 
-        {/* Contract Liquidity Notice */}
+        {/* Liquidity Notice */}
         {tab === 'withdraw' && vaultLiquidity !== null && numAmount > vaultLiquidity && (
           <div className="mt-2.5 p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-300 text-[11px] font-mono leading-relaxed">
             {isRu
-              ? `⚠️ В смарт-контракте сейчас $${vaultLiquidity.toFixed(2)} USDC ликвидности. Вы можете вывести до $${vaultLiquidity.toFixed(2)} USDC прямо сейчас.`
-              : `⚠️ Contract currently holds $${vaultLiquidity.toFixed(2)} USDC. You can withdraw up to $${vaultLiquidity.toFixed(2)} USDC right now.`}
+              ? `Сейчас доступно $${vaultLiquidity.toFixed(2)} USDC ликвидности для вывода. Вы можете вывести до $${vaultLiquidity.toFixed(2)} USDC прямо сейчас.`
+              : `Currently $${vaultLiquidity.toFixed(2)} USDC available for withdrawal. You can withdraw up to $${vaultLiquidity.toFixed(2)} USDC right now.`}
           </div>
         )}
 

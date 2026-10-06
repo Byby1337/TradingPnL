@@ -227,7 +227,6 @@ export const Navbar: React.FC<NavbarProps> = ({
           className="flex items-center gap-1.5 px-2.5 py-1 bg-[#16120e] hover:bg-[#221b14] text-[#38bdf8] hover:text-[#7dd3fc] border border-[#38bdf8]/30 hover:border-[#38bdf8]/50 rounded-lg text-xs font-semibold transition shadow-sm group"
           title="Get Arbitrum Sepolia USDC from Circle Official Faucet"
         >
-          <span className="text-[12px]">💧</span>
           <span>Faucet USDC</span>
           <svg className="w-3 h-3 opacity-60 group-hover:opacity-100 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -327,7 +326,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={onConnectWallet}
               className="px-3.5 py-1.5 bg-[#10b981] hover:bg-[#059669] text-white font-sans text-xs font-semibold rounded-lg transition flex items-center gap-1.5 shadow-sm active:scale-95"
             >
-              <span className="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+              <span className="w-2 h-2 rounded-full bg-white"></span>
               <span>{t.connectWallet}</span>
             </button>
           ) : (
@@ -336,7 +335,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onClick={() => setShowWalletMenu(!showWalletMenu)}
                 className="flex items-center gap-2 px-3 py-1.5 bg-subpanel border border-panel rounded-lg cursor-pointer hover:border-[#10b981] transition shadow-sm group"
               >
-                <span className="w-2 h-2 rounded-full bg-[#10b981] animate-pulse"></span>
+                <span className="w-2 h-2 rounded-full bg-[#10b981]"></span>
                 <span className="text-primary font-mono font-semibold text-xs group-hover:text-[#10b981] transition-colors">
                   {userAddress.slice(0, 6)}...{userAddress.slice(-4)}
                 </span>

@@ -9,7 +9,6 @@ import {
   Percent,
   CheckCircle2,
   Copy,
-  ExternalLink,
   ShieldCheck,
   Zap,
   ArrowRight
@@ -28,6 +27,7 @@ interface HourlyPoolViewProps {
     symbol?: string;
     positions?: string;
   };
+  currentLang?: string;
 }
 
 interface Participant {
@@ -44,14 +44,13 @@ interface Participant {
   isUser?: boolean;
 }
 
-
-
 export const HourlyPoolView: React.FC<HourlyPoolViewProps> = ({
   userAddress,
   userBalance,
   positions,
   onNavigateToTrade,
-  labels
+  labels,
+  currentLang = 'en'
 }) => {
   const [selectedPair, setSelectedPair] = useState<string>('all');
   const [copiedAddress, setCopiedAddress] = useState<string | null>(null);
@@ -175,7 +174,7 @@ export const HourlyPoolView: React.FC<HourlyPoolViewProps> = ({
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <span className="px-2.5 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-400 text-[11px] font-bold flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+                  <span className="w-2 h-2 rounded-full bg-amber-400" />
                   Epoch #{Math.floor(Date.now() / 3600000)} Live
                 </span>
                 <span className="text-muted text-xs font-mono">Arbitrum Sepolia</span>
@@ -185,7 +184,9 @@ export const HourlyPoolView: React.FC<HourlyPoolViewProps> = ({
                 <Trophy className="w-6 h-6 text-amber-400" />
               </h1>
               <p className="text-muted text-xs max-w-2xl leading-relaxed">
-                Часовая лотерея «Шериф часа»: 10%–20% PnL с закрытых прибыльных сделок покупают 1 билет Шерифа (правило: 1 кошелёк = 1 билет на пару, кулдаун победы 24ч). Победитель часа получает статус Шерифа и 0.01% с торгового оборота пары, а со сгоревших билетов: 50% возвращается трейдерам (Soft Loss), 25% уходит в Treasury и 25% аккумулируется в месячный SuperJackpot.
+                {currentLang === 'ru'
+                  ? 'Часовая лотерея «Шериф часа»: 10%–20% PnL с закрытых прибыльных сделок покупают 1 билет Шерифа (правило: 1 кошелёк = 1 билет на пару, кулдаун победы 24ч). Победитель часа получает статус Шерифа и 0.01% с торгового оборота пары, а со сгоревших билетов: 50% возвращается трейдерам (Soft Loss), 25% уходит в Treasury и 25% аккумулируется в месячный SuperJackpot.'
+                  : 'Hourly Sheriff Lottery: 10%–20% PnL from closed winning trades enters a Sheriff ticket (1 wallet = 1 ticket per pair, 24h win cooldown). The hourly winner earns the Sheriff title and 0.01% of the pair\'s trading volume, while unallocated tickets provide 50% soft-loss rebates to traders, 25% to Treasury, and 25% to the monthly SuperJackpot.'}
               </p>
             </div>
 
@@ -311,7 +312,7 @@ export const HourlyPoolView: React.FC<HourlyPoolViewProps> = ({
             </div>
 
             <div className="flex items-center gap-2 text-xs font-mono text-muted">
-              <span className="w-2 h-2 rounded-full bg-[#0ecb81] animate-ping" />
+              <span className="w-2 h-2 rounded-full bg-[#0ecb81]" />
               <span>Real-Time Epoch Sync</span>
             </div>
           </div>
@@ -393,15 +394,6 @@ export const HourlyPoolView: React.FC<HourlyPoolViewProps> = ({
                                 <Copy className="w-3.5 h-3.5" />
                               )}
                             </button>
-                            <a
-                              href={`https://sepolia.arbiscan.io/address/${p.address}`}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="p-1 hover:text-amber-400 text-muted transition"
-                              title="View on Arbiscan"
-                            >
-                              <ExternalLink className="w-3.5 h-3.5" />
-                            </a>
                           </div>
                         </td>
 

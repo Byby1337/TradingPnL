@@ -74,10 +74,10 @@ export function parseWeb3Error(err: any, lang: LanguageCode = 'ru'): Web3ParsedE
   // 4. Contract revert
   if (lower.includes('execution reverted') || lower.includes('revert')) {
     return {
-      title: isRu ? 'Смарт-контракт отклонил транзакцию' : 'Execution Reverted',
+      title: isRu ? 'Транзакция отклонена' : 'Execution Reverted',
       userMessage: isRu
-        ? 'Смарт-контракт вернул ошибку выполнения условия. Проверьте параметры сделки или повторите попытку.'
-        : 'Smart contract reverted execution condition. Please check parameters or retry.',
+        ? 'Ошибка выполнения операции. Проверьте параметры сделки или повторите попытку.'
+        : 'Transaction reverted. Please check parameters or retry.',
       rawDetails: rawStr,
       isModalRecommended: true
     };
@@ -331,7 +331,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
                       onClick={() => handleCopy(modalItem.rawError!, modalItem.id, true)}
                       className="text-[11px] font-mono text-amber-400 hover:text-amber-300 transition"
                     >
-                      {modalCopied ? (isRu ? '✓ Скопировано' : '✓ Copied') : (isRu ? 'Копировать трейс' : 'Copy trace')}
+                      {modalCopied ? (isRu ? 'Скопировано' : 'Copied') : (isRu ? 'Копировать трейс' : 'Copy trace')}
                     </button>
                   </div>
                   {showModalRaw && (
