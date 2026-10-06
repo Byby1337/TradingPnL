@@ -219,6 +219,21 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Right Controls */}
       <div className="flex items-center gap-2.5 font-mono text-[11px]">
+        {/* Circle USDC Faucet Link */}
+        <a
+          href="https://faucet.circle.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-1.5 px-2.5 py-1 bg-[#16120e] hover:bg-[#221b14] text-[#38bdf8] hover:text-[#7dd3fc] border border-[#38bdf8]/30 hover:border-[#38bdf8]/50 rounded-lg text-xs font-semibold transition shadow-sm group"
+          title="Get Arbitrum Sepolia USDC from Circle Official Faucet"
+        >
+          <span className="text-[12px]">💧</span>
+          <span>Faucet USDC</span>
+          <svg className="w-3 h-3 opacity-60 group-hover:opacity-100 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+          </svg>
+        </a>
+
         {/* Trading Collateral Indicator */}
         {userAddress && (
           <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-subpanel border border-panel rounded-lg font-mono">
