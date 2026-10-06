@@ -511,7 +511,11 @@ async function handleRequest(req, res) {
       if (typeof body.positionId !== 'string' || !/^pos-[a-f0-9-]{20,80}$/.test(body.positionId)) {
         throw new HttpError(400, 'Invalid positionId');
       }
-      const state = await db.closePosition({ address, positionId: body.positionId });
+      const rawPct = body.percent !== undefined ? Number(body.percent) : 100;
+      if (!Number.isFinite(rawPct) || rawPct <= 0 || rawPct > 100) {
+        throw new HttpError(400, 'Invalid percent');
+      }
+      const state = await db.closePosition({ address, positionId: body.positionId, percent: rawPct });
       sendJson(res, state, 200, req);
     } catch (err) {
       console.error('[API /api/orders/close error]:', err?.code || err?.message || err);
