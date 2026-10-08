@@ -123,13 +123,17 @@ export const PositionsTable: React.FC<PositionsTableProps> = ({
                   const pnl = diff * pos.sizeCoins;
                   const roe = (diff / pos.entry) * pos.leverage * 100;
                   const isProf = pnl >= 0;
-                  const posDecimals = pos.symbol === 'DOGE-PERP' || pos.base === 'DOGE' ? 4 : 2;
+                  const posDecimals = MARKETS[pos.symbol]?.decimals ?? (pos.symbol === 'DOGE-PERP' || pos.base === 'DOGE' ? 4 : 2);
 
                   return (
                     <tr key={pos.id} className="hover:bg-subpanel">
                       <td className="py-2 text-primary font-semibold flex items-center gap-1.5">
-                        {MARKETS[pos.symbol]?.icon && (
+                        {MARKETS[pos.symbol]?.icon ? (
                           <img src={MARKETS[pos.symbol]?.icon} alt="" className="w-4 h-4 rounded-full object-contain" />
+                        ) : (
+                          <span className="w-4 h-4 rounded-full bg-amber-500/20 text-amber-500 text-[10px] font-bold flex items-center justify-center">
+                            {pos.base?.[0] || '•'}
+                          </span>
                         )}
                         <span>{pos.symbol}</span>
                       </td>

@@ -38,6 +38,14 @@ const DEFAULT_CHANGES: Record<string, number> = {
   'ETH-PERP': 1.82,
   'SOL-PERP': -0.65,
   'DOGE-PERP': 4.12,
+  'BNB-PERP': 1.15,
+  'ZEC-PERP': -2.10,
+  'LIT-PERP': 3.45,
+  'ARB-PERP': -1.25,
+  'NEAR-PERP': 2.80,
+  'UNI-PERP': 0.95,
+  'GMX-PERP': 1.40,
+  'XRP-PERP': 4.60,
   'NVDA-PERP': 3.20,
   'SPY-PERP': 0.45,
   'TSLA-PERP': -1.35
@@ -48,6 +56,14 @@ const DEFAULT_PRICES: Record<string, number> = {
   'ETH-PERP': 2685.20,
   'SOL-PERP': 122.40,
   'DOGE-PERP': 0.1845,
+  'BNB-PERP': 735.50,
+  'ZEC-PERP': 1180.00,
+  'LIT-PERP': 0.1205,
+  'ARB-PERP': 0.1740,
+  'NEAR-PERP': 4.5200,
+  'UNI-PERP': 7.350,
+  'GMX-PERP': 8.09,
+  'XRP-PERP': 1.3800,
   'NVDA-PERP': 138.25,
   'SPY-PERP': 585.10,
   'TSLA-PERP': 258.40
@@ -58,6 +74,14 @@ const ASSET_META: Record<string, { icon: string; color: string; badgeBg: string 
   'ETH': { icon: 'Ξ', color: '#627eea', badgeBg: 'bg-[#627eea]/15 text-[#627eea] border-[#627eea]/30' },
   'SOL': { icon: '◎', color: '#14f195', badgeBg: 'bg-[#14f195]/15 text-[#14f195] border-[#14f195]/30' },
   'DOGE': { icon: 'Ð', color: '#c2a633', badgeBg: 'bg-[#c2a633]/15 text-[#c2a633] border-[#c2a633]/30' },
+  'BNB': { icon: 'B', color: '#f3ba2f', badgeBg: 'bg-[#f3ba2f]/15 text-[#f3ba2f] border-[#f3ba2f]/30' },
+  'ZEC': { icon: 'Z', color: '#f4b237', badgeBg: 'bg-[#f4b237]/15 text-[#f4b237] border-[#f4b237]/30' },
+  'LIT': { icon: 'L', color: '#27c699', badgeBg: 'bg-[#27c699]/15 text-[#27c699] border-[#27c699]/30' },
+  'ARB': { icon: 'A', color: '#28a0f0', badgeBg: 'bg-[#28a0f0]/15 text-[#28a0f0] border-[#28a0f0]/30' },
+  'NEAR': { icon: 'N', color: '#5f80ea', badgeBg: 'bg-[#5f80ea]/15 text-[#5f80ea] border-[#5f80ea]/30' },
+  'UNI': { icon: 'U', color: '#ff007a', badgeBg: 'bg-[#ff007a]/15 text-[#ff007a] border-[#ff007a]/30' },
+  'GMX': { icon: 'G', color: '#4f56f4', badgeBg: 'bg-[#4f56f4]/15 text-[#4f56f4] border-[#4f56f4]/30' },
+  'XRP': { icon: '✕', color: '#23292f', badgeBg: 'bg-[#3b82f6]/15 text-[#3b82f6] border-[#3b82f6]/30' },
   'NVDA': { icon: 'N', color: '#76b900', badgeBg: 'bg-[#76b900]/15 text-[#76b900] border-[#76b900]/30' },
   'SPY': { icon: 'S', color: '#3b82f6', badgeBg: 'bg-[#3b82f6]/15 text-[#3b82f6] border-[#3b82f6]/30' },
   'TSLA': { icon: 'T', color: '#e82127', badgeBg: 'bg-[#e82127]/15 text-[#e82127] border-[#e82127]/30' }
@@ -178,14 +202,14 @@ export const MarketRibbon: React.FC<MarketRibbonProps> = ({
           </button>
 
           {showPairMenu && (
-            <div className="absolute left-0 top-10 w-96 bg-[#17110c]/95 backdrop-blur-xl border border-[#3b2d22] shadow-[0_20px_50px_rgba(0,0,0,0.7)] rounded-2xl p-2.5 z-50 font-sans animate-in fade-in zoom-in-95 duration-150">
+            <div className="absolute left-0 top-10 w-96 bg-panel/95 backdrop-blur-xl border border-panel shadow-2xl rounded-2xl p-2.5 z-50 font-sans animate-in fade-in zoom-in-95 duration-150">
               {/* Category Filter Tabs */}
-              <div className="flex items-center gap-1 p-1 bg-[#120d09] rounded-xl mb-2 border border-[#2d2219]">
+              <div className="flex items-center gap-1 p-1 bg-subpanel rounded-xl mb-2 border border-panel">
                 <button
                   onClick={() => setMarketFilter('all')}
                   className={`flex-1 py-1 text-[11px] rounded-lg font-semibold transition ${
                     marketFilter === 'all'
-                      ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30 shadow-sm'
+                      ? 'bg-amber-500/20 text-amber-500 border border-amber-500/30 shadow-sm'
                       : 'text-muted hover:text-primary'
                   }`}
                 >
@@ -195,7 +219,7 @@ export const MarketRibbon: React.FC<MarketRibbonProps> = ({
                   onClick={() => setMarketFilter('crypto')}
                   className={`flex-1 py-1 text-[11px] rounded-lg font-semibold transition ${
                     marketFilter === 'crypto'
-                      ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30 shadow-sm'
+                      ? 'bg-amber-500/20 text-amber-500 border border-amber-500/30 shadow-sm'
                       : 'text-muted hover:text-primary'
                   }`}
                 >
@@ -205,7 +229,7 @@ export const MarketRibbon: React.FC<MarketRibbonProps> = ({
                   onClick={() => setMarketFilter('stocks')}
                   className={`flex-1 py-1 text-[11px] rounded-lg font-semibold transition ${
                     marketFilter === 'stocks'
-                      ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30 shadow-sm'
+                      ? 'bg-amber-500/20 text-amber-500 border border-amber-500/30 shadow-sm'
                       : 'text-muted hover:text-primary'
                   }`}
                 >
@@ -236,8 +260,8 @@ export const MarketRibbon: React.FC<MarketRibbonProps> = ({
                       }}
                       className={`px-3 py-2 rounded-xl cursor-pointer flex justify-between items-center transition-all group ${
                         isSelected
-                          ? 'bg-[#281d14] border border-amber-500/30 shadow-sm'
-                          : 'hover:bg-[#221912] border border-transparent hover:border-[#382b20]'
+                          ? 'bg-amber-500/10 border border-amber-500/40 shadow-sm'
+                          : 'hover:bg-subpanel border border-transparent hover:border-panel'
                       }`}
                     >
                       <div className="flex items-center gap-2.5">

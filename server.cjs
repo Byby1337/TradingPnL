@@ -100,6 +100,8 @@ process.on('uncaughtException', (err) => {
 const ADDR_REGEX = /^0x[0-9a-fA-F]{40}$/;
 const ALLOWED_PERP_SYMBOLS = new Set([
   'BTC-PERP', 'ETH-PERP', 'SOL-PERP', 'DOGE-PERP',
+  'BNB-PERP', 'ZEC-PERP', 'LIT-PERP', 'ARB-PERP',
+  'NEAR-PERP', 'UNI-PERP', 'GMX-PERP', 'XRP-PERP',
   'NVDA-PERP', 'SPY-PERP', 'TSLA-PERP'
 ]);
 const VALID_TICKERS = new Set(['NVDA', 'SPY', 'TSLA']);
@@ -123,7 +125,15 @@ const CRYPTO_FEEDS = {
   'BTC-PERP': { coinbase: 'BTC-USD', kraken: 'XXBTZUSD' },
   'ETH-PERP': { coinbase: 'ETH-USD', kraken: 'XETHZUSD' },
   'SOL-PERP': { coinbase: 'SOL-USD', kraken: 'SOLUSD' },
-  'DOGE-PERP': { coinbase: 'DOGE-USD', kraken: 'XDGUSD' }
+  'DOGE-PERP': { coinbase: 'DOGE-USD', kraken: 'XDGUSD' },
+  'BNB-PERP': { coinbase: 'BNB-USD', kraken: 'BNBUSD' },
+  'ZEC-PERP': { coinbase: 'ZEC-USD', kraken: 'XZECZUSD' },
+  'LIT-PERP': { coinbase: 'LIT-USD', kraken: 'LITUSD' },
+  'ARB-PERP': { coinbase: 'ARB-USD', kraken: 'ARBUSD' },
+  'NEAR-PERP': { coinbase: 'NEAR-USD', kraken: 'NEARUSD' },
+  'UNI-PERP': { coinbase: 'UNI-USD', kraken: 'UNIUSD' },
+  'GMX-PERP': { coinbase: 'GMX-USD', kraken: 'GMXUSD' },
+  'XRP-PERP': { coinbase: 'XRP-USD', kraken: 'XXRPZUSD' }
 };
 
 async function fetchCryptoPrice(symbol) {
@@ -469,6 +479,20 @@ async function handleRequest(req, res) {
         'SOL': 'SOL-PERP',
         'DOGECOIN': 'DOGE-PERP',
         'DOGE': 'DOGE-PERP',
+        'BNB': 'BNB-PERP',
+        'BINANCE': 'BNB-PERP',
+        'ZEC': 'ZEC-PERP',
+        'ZCASH': 'ZEC-PERP',
+        'LIT': 'LIT-PERP',
+        'LITENTRY': 'LIT-PERP',
+        'ARB': 'ARB-PERP',
+        'ARBITRUM': 'ARB-PERP',
+        'NEAR': 'NEAR-PERP',
+        'UNI': 'UNI-PERP',
+        'UNISWAP': 'UNI-PERP',
+        'GMX': 'GMX-PERP',
+        'XRP': 'XRP-PERP',
+        'RIPPLE': 'XRP-PERP',
         'NVDA': 'NVDA-PERP',
         'SPY': 'SPY-PERP',
         'TSLA': 'TSLA-PERP'
@@ -597,6 +621,18 @@ async function handleRequest(req, res) {
     } catch (err) {
       console.error('[API /api/markets/volume error]:', err?.message);
       sendJson(res, {}, 500, req);
+    }
+    return;
+  }
+
+  // API: Get Live Market Prices for all symbols
+  if (reqPath === '/api/markets/live-prices' && req.method === 'GET') {
+    try {
+      const prices = db.getLiveMarketPrices();
+      sendJson(res, { prices }, 200, req);
+    } catch (err) {
+      console.error('[API /api/markets/live-prices error]:', err?.message);
+      sendJson(res, { prices: {} }, 500, req);
     }
     return;
   }

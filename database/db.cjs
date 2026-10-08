@@ -222,6 +222,14 @@ const MARKET_PRICES = {
   'ETH-PERP': 2700,
   'SOL-PERP': 120,
   'DOGE-PERP': 0.09,
+  'BNB-PERP': 735,
+  'ZEC-PERP': 1180,
+  'LIT-PERP': 0.12,
+  'ARB-PERP': 0.174,
+  'NEAR-PERP': 4.52,
+  'UNI-PERP': 7.35,
+  'GMX-PERP': 8.09,
+  'XRP-PERP': 1.38,
   'NVDA-PERP': 230,
   'SPY-PERP': 760,
   'TSLA-PERP': 354
@@ -232,6 +240,14 @@ const MARKET_RISK_LIMITS = {
   'ETH-PERP': { maxOi: 60_000,  maxSingleNotional: 6_000,  maxLeverage: 100 },
   'SOL-PERP': { maxOi: 30_000,  maxSingleNotional: 3_000,  maxLeverage: 50 },
   'DOGE-PERP': { maxOi: 20_000, maxSingleNotional: 2_000,  maxLeverage: 50 },
+  'BNB-PERP':  { maxOi: 50_000, maxSingleNotional: 5_000,  maxLeverage: 50 },
+  'ZEC-PERP':  { maxOi: 20_000, maxSingleNotional: 2_000,  maxLeverage: 25 },
+  'LIT-PERP':  { maxOi: 15_000, maxSingleNotional: 1_500,  maxLeverage: 20 },
+  'ARB-PERP':  { maxOi: 30_000, maxSingleNotional: 3_000,  maxLeverage: 50 },
+  'NEAR-PERP': { maxOi: 30_000, maxSingleNotional: 3_000,  maxLeverage: 50 },
+  'UNI-PERP':  { maxOi: 30_000, maxSingleNotional: 3_000,  maxLeverage: 50 },
+  'GMX-PERP':  { maxOi: 25_000, maxSingleNotional: 2_500,  maxLeverage: 30 },
+  'XRP-PERP':  { maxOi: 40_000, maxSingleNotional: 4_000,  maxLeverage: 50 },
   'NVDA-PERP': { maxOi: 25_000, maxSingleNotional: 2_500,  maxLeverage: 20 },
   'TSLA-PERP': { maxOi: 25_000, maxSingleNotional: 2_500,  maxLeverage: 20 },
   'SPY-PERP':  { maxOi: 50_000, maxSingleNotional: 5_000,  maxLeverage: 20 }
@@ -360,6 +376,10 @@ function setLiveMarketPrice(symbol, price) {
   }
 }
 
+function getLiveMarketPrices() {
+  return { ...MARKET_PRICES };
+}
+
 function getTrustedMark(symbol) {
   const price = MARKET_PRICES[symbol];
   if (!price || !Number.isFinite(price) || price <= 0) throw new AppError(503, 'Price unavailable');
@@ -459,6 +479,14 @@ async function getPlatformVolumes() {
     'ETH-PERP': 0,
     'SOL-PERP': 0,
     'DOGE-PERP': 0,
+    'BNB-PERP': 0,
+    'ZEC-PERP': 0,
+    'LIT-PERP': 0,
+    'ARB-PERP': 0,
+    'NEAR-PERP': 0,
+    'UNI-PERP': 0,
+    'GMX-PERP': 0,
+    'XRP-PERP': 0,
     'NVDA-PERP': 0,
     'SPY-PERP': 0,
     'TSLA-PERP': 0
@@ -836,6 +864,7 @@ module.exports = {
   recordWithdraw,
   getHourlyPoolParticipants,
   setLiveMarketPrice,
+  getLiveMarketPrices,
   getTrustedMark,
   getPlatformVolumes,
   getMarketFundingData,

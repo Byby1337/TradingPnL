@@ -31,7 +31,7 @@ export const OrderBook: React.FC<OrderBookProps> = ({
   const [activeTab, setActiveTab] = useState<'book' | 'trades'>('book');
   const [depthRows, setDepthRows] = useState<number>(8);
 
-  const spreadUnit = baseAsset === 'DOGE' ? 0.0005 : baseAsset === 'SOL' ? 0.05 : 0.50;
+  const spreadUnit = midPrice < 0.5 ? 0.0002 : midPrice < 2 ? 0.001 : midPrice < 20 ? 0.02 : midPrice < 200 ? 0.05 : 0.50;
 
   const rowIndices = Array.from({ length: depthRows }, (_, i) => i);
   const asks = rowIndices.map((i) => spreadUnit * (depthRows - i));

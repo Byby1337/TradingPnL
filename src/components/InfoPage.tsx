@@ -169,7 +169,7 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack }) => {
                   </div>
                   <div className="space-y-2 text-muted leading-normal">
                     <p>
-                      <strong>Available Markets:</strong> Trade crypto perpetuals (BTC-PERP, ETH-PERP up to 100x; SOL-PERP up to 50x; DOGE-PERP up to 20x) and tokenized equity indexes (NVDA-PERP, SPY-PERP, TSLA-PERP up to 20x).
+                      <strong>Available Markets:</strong> Trade crypto perpetuals (BTC, ETH, SOL, DOGE, BNB, ZEC, LIT, ARB, NEAR, UNI, GMX, XRP up to 100x) and tokenized equity indexes (NVDA, SPY, TSLA up to 20x).
                     </p>
                     <p>
                       <strong>Isolated Margin & Sliders:</strong> Each position is collateralized independently. Use the margin slider (with 25%, 50%, 75%, 100% quick presets) to dial your exact collateral size.

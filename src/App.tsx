@@ -223,15 +223,47 @@ export const App: React.FC = () => {
       'BTC-USD': 'BTC-PERP',
       'ETH-USD': 'ETH-PERP',
       'SOL-USD': 'SOL-PERP',
-      'DOGE-USD': 'DOGE-PERP'
+      'DOGE-USD': 'DOGE-PERP',
+      'BNB-USD': 'BNB-PERP',
+      'ZEC-USD': 'ZEC-PERP',
+      'ARB-USD': 'ARB-PERP',
+      'NEAR-USD': 'NEAR-PERP',
+      'UNI-USD': 'UNI-PERP',
+      'XRP-USD': 'XRP-PERP'
     };
+
+    let krakenWs: WebSocket | null = null;
+    let liveTimer: any = null;
+
+    // Background poll for all server live prices as fallback & sync
+    const fetchLivePrices = async () => {
+      try {
+        const res = await fetch('/api/markets/live-prices');
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.prices) {
+            setMarketPrices((prev) => ({ ...prev, ...data.prices }));
+            const curLive = data.prices[currentMarket.ticker];
+            if (curLive && (!price || price === 0)) {
+              setPrice(curLive);
+            }
+          }
+        }
+      } catch (e) {}
+    };
+    fetchLivePrices();
+    liveTimer = setInterval(fetchLivePrices, 3000);
 
     try {
       ws = new WebSocket('wss://ws-feed.exchange.coinbase.com');
       ws.onopen = () => {
         ws?.send(JSON.stringify({
           type: 'subscribe',
-          product_ids: ['BTC-USD', 'ETH-USD', 'SOL-USD', 'DOGE-USD'],
+          product_ids: [
+            'BTC-USD', 'ETH-USD', 'SOL-USD', 'DOGE-USD',
+            'BNB-USD', 'ZEC-USD', 'ARB-USD', 'NEAR-USD',
+            'UNI-USD', 'XRP-USD'
+          ],
           channels: ['ticker']
         }));
       };
@@ -271,9 +303,55 @@ export const App: React.FC = () => {
       };
     } catch (e) {}
 
+    // Kraken WebSocket for pairs not on Coinbase Exchange orderbook (LIT, GMX)
+    try {
+      krakenWs = new WebSocket('wss://ws.kraken.com');
+      krakenWs.onopen = () => {
+        krakenWs?.send(JSON.stringify({
+          event: 'subscribe',
+          pair: ['LIT/USD', 'GMX/USD'],
+          subscription: { name: 'ticker' }
+        }));
+      };
+      krakenWs.onmessage = (evt) => {
+        try {
+          const data = JSON.parse(evt.data);
+          if (Array.isArray(data) && data[1] && data[3]) {
+            const pair = data[3];
+            const ticker = pair === 'LIT/USD' ? 'LIT-PERP' : pair === 'GMX/USD' ? 'GMX-PERP' : null;
+            if (ticker && data[1].c && data[1].c[0]) {
+              const cur = parseFloat(data[1].c[0]);
+              setMarketPrices((prev) => ({ ...prev, [ticker]: cur }));
+              if (currentMarket.ticker === ticker) {
+                const op = parseFloat(data[1].o?.[0] || cur);
+                setPrice(cur);
+                setChg24h(((cur - op) / op) * 100);
+                if (data[1].h?.[0]) setHigh24h(parseFloat(data[1].h[0]));
+                if (data[1].l?.[0]) setLow24h(parseFloat(data[1].l[0]));
+
+                const now = new Date();
+                const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+                setTrades((prev) => [
+                  {
+                    price: cur.toFixed(currentMarket.decimals),
+                    size: parseFloat(data[1].v?.[0] || '1').toFixed(3),
+                    time: timeStr,
+                    side: data[1].a ? 'buy' : 'sell'
+                  },
+                  ...prev.slice(0, 24)
+                ]);
+              }
+            }
+          }
+        } catch (e) {}
+      };
+    } catch (e) {}
+
     return () => {
       if (ws) ws.close();
+      if (krakenWs) krakenWs.close();
       if (timer) clearInterval(timer);
+      if (liveTimer) clearInterval(liveTimer);
     };
   }, [currentMarket]);
 
