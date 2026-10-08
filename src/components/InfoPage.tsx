@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
+import { TRANSLATIONS, LanguageCode, Translations } from '../i18n/translations';
 
 interface InfoPageProps {
   type: 'privacy' | 'help';
   onBack: () => void;
+  currentLang?: string;
 }
 
-export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack }) => {
+export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack, currentLang = 'en' }) => {
   const [helpCategory, setHelpCategory] = useState<'all' | 'wallets' | 'perps' | 'options' | 'pools' | 'orders' | 'security'>('all');
+  const t: Translations = TRANSLATIONS[(currentLang as LanguageCode) || 'en'] || TRANSLATIONS.en;
+  const isRu = currentLang === 'ru';
 
   return (
     <div className="flex-1 p-6 md:p-8 bg-bg overflow-y-auto">
@@ -19,17 +23,19 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack }) => {
               className="px-3.5 py-1.5 bg-subpanel hover:bg-panel border border-panel rounded-xl text-xs text-primary flex items-center gap-2 transition group shadow-sm font-sans"
             >
               <span className="text-amber-500 group-hover:-translate-x-0.5 transition-transform">←</span>
-              <span>Back to Trading</span>
+              <span>{t.backToTrading}</span>
             </button>
             <h1 className="text-xl md:text-2xl font-black text-primary font-sans tracking-tight">
-              {type === 'privacy' ? 'Privacy Policy & Terms' : 'Help Center & Documentation'}
+              {type === 'privacy'
+                ? (isRu ? 'Политика конфиденциальности и условия' : 'Privacy Policy & Terms')
+                : (isRu ? 'Справочный центр и документация' : 'Help Center & Documentation')}
             </h1>
           </div>
 
           {type === 'privacy' && (
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-500 text-[11px] font-mono self-start sm:self-auto">
               <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-              <span>Last Updated: October 2, 2026</span>
+              <span>{isRu ? 'Последнее обновление: 2 октября 2026 г.' : 'Last Updated: October 2, 2026'}</span>
             </div>
           )}
         </div>
@@ -39,11 +45,17 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack }) => {
           <div className="space-y-6 text-xs font-sans text-muted leading-relaxed">
             <div className="p-4 rounded-2xl bg-subpanel border border-panel space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-[10px] uppercase font-bold text-amber-500 tracking-wider">Protocol Legal Statement</span>
-                <span className="text-[10px] font-mono text-muted">Version 2.4.0 (Production Release)</span>
+                <span className="text-[10px] uppercase font-bold text-amber-500 tracking-wider">
+                  {isRu ? 'Юридическое заявление протокола' : 'Protocol Legal Statement'}
+                </span>
+                <span className="text-[10px] font-mono text-muted">
+                  {isRu ? 'Версия 2.4.0 (Продакшн-релиз)' : 'Version 2.4.0 (Production Release)'}
+                </span>
               </div>
               <p className="text-primary text-[13px] font-medium leading-normal">
-                23Trade operates as an institutional non-custodial decentralized exchange. We respect user privacy by design, enforcing mathematical pseudonymity with zero personal data collection.
+                {isRu
+                  ? '23Trade функционирует как институциональная некастодиальная децентрализованная биржа. Мы гарантируем полную конфиденциальность пользователей на уровне архитектуры: математическая псевдонимность и нулевой сбор персональных данных.'
+                  : '23Trade operates as an institutional non-custodial decentralized exchange. We respect user privacy by design, enforcing mathematical pseudonymity with zero personal data collection.'}
               </p>
             </div>
 
@@ -51,60 +63,96 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack }) => {
               <div className="p-5 rounded-2xl bg-panel border border-panel space-y-2.5">
                 <div className="flex items-center gap-2 text-primary font-bold text-sm">
                   <span className="w-6 h-6 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center text-xs">1</span>
-                  <span>Non-Custodial Architecture & Self-Sovereignty</span>
+                  <span>
+                    {isRu
+                      ? 'Некастодиальная архитектура и суверенность средств'
+                      : 'Non-Custodial Architecture & Self-Sovereignty'}
+                  </span>
                 </div>
                 <p>
-                  23Trade is fully non-custodial. Users maintain exclusive control over their cryptographic private keys and assets at all times. When you connect via Web3 (MetaMask, Rabby, Coinbase Wallet, WalletConnect), smart contracts only receive isolated execution authorizations. We never hold, escrow, custody, or possess access to user seed phrases or wallet credentials.
+                  {isRu
+                    ? '23Trade полностью некастодиален. Пользователи сохраняют исключительный контроль над своими криптографическими приватными ключами и активами в любое время. При подключении через Web3 (MetaMask, Rabby, Coinbase Wallet, WalletConnect) смарт-контракты получают исключительно изолированные разрешения на исполнение. Мы никогда не храним, не депонируем и не имеем доступа к секретным фразам или учетным данным кошельков пользователей.'
+                    : '23Trade is fully non-custodial. Users maintain exclusive control over their cryptographic private keys and assets at all times. When you connect via Web3 (MetaMask, Rabby, Coinbase Wallet, WalletConnect), smart contracts only receive isolated execution authorizations. We never hold, escrow, custody, or possess access to user seed phrases or wallet credentials.'}
                 </p>
               </div>
 
               <div className="p-5 rounded-2xl bg-panel border border-panel space-y-2.5">
                 <div className="flex items-center gap-2 text-primary font-bold text-sm">
                   <span className="w-6 h-6 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center text-xs">2</span>
-                  <span>Zero Identity Verification (No KYC) & Pseudonymous Trading</span>
+                  <span>
+                    {isRu
+                      ? 'Нулевая верификация личности (Без KYC) и псевдонимная торговля'
+                      : 'Zero Identity Verification (No KYC) & Pseudonymous Trading'}
+                  </span>
                 </div>
                 <p>
-                  We do not collect names, residential addresses, government identification numbers, telephone contacts, or email addresses. All interactions are pseudonymous, verified exclusively through cryptographic signatures compliant with EIP-712 and EIP-1193 protocols. No centralized user profiling or behavioral tracking databases exist on our infrastructure.
+                  {isRu
+                    ? 'Мы не собираем имена, физические адреса, государственные идентификационные номера, контакты или адреса электронной почты. Все взаимодействия псевдонимны и верифицируются исключительно криптографическими подписями по стандартам EIP-712 и EIP-1193. В нашей инфраструктуре отсутствуют базы данных профилирования пользователей или слежения.'
+                    : 'We do not collect names, residential addresses, government identification numbers, telephone contacts, or email addresses. All interactions are pseudonymous, verified exclusively through cryptographic signatures compliant with EIP-712 and EIP-1193 protocols. No centralized user profiling or behavioral tracking databases exist on our infrastructure.'}
                 </p>
               </div>
 
               <div className="p-5 rounded-2xl bg-panel border border-panel space-y-2.5">
                 <div className="flex items-center gap-2 text-primary font-bold text-sm">
                   <span className="w-6 h-6 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center text-xs">3</span>
-                  <span>Public Ledger Immutability & On-Chain Transparency</span>
+                  <span>
+                    {isRu
+                      ? 'Неизменяемость реестра и прозрачность блокчейна'
+                      : 'Public Ledger Immutability & On-Chain Transparency'}
+                  </span>
                 </div>
                 <p>
-                  All executed perpetual fills, options settlements, margin allocations, and pool distributions are cryptographically committed to public blockchain networks (Arbitrum, Base, Ethereum). Public wallet addresses and transaction hashes recorded on-chain are inherently transparent and verifiable through public block explorers.
+                  {isRu
+                    ? 'Все исполненные сделки по бессрочным фьючерсам, расчеты опционов, распределение маржи и выплаты пулов фиксируются в публичных сетях блокчейна (Arbitrum, Base, Ethereum). Публичные адреса кошельков и хэши транзакций, записанные ончейн, полностью прозрачны и проверяемы через публичные блокчейн-эксплореры.'
+                    : 'All executed perpetual fills, options settlements, margin allocations, and pool distributions are cryptographically committed to public blockchain networks (Arbitrum, Base, Ethereum). Public wallet addresses and transaction hashes recorded on-chain are inherently transparent and verifiable through public block explorers.'}
                 </p>
               </div>
 
               <div className="p-5 rounded-2xl bg-panel border border-panel space-y-2.5">
                 <div className="flex items-center gap-2 text-primary font-bold text-sm">
                   <span className="w-6 h-6 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center text-xs">4</span>
-                  <span>Local Client Storage & Cookies</span>
+                  <span>
+                    {isRu
+                      ? 'Локальное хранилище клиента и файлы Cookies'
+                      : 'Local Client Storage & Cookies'}
+                  </span>
                 </div>
                 <p>
-                  The interface only utilizes client-side browser storage (<code className="text-amber-400 font-mono">localStorage</code>) to preserve non-identifiable user preferences, specifically: selected display theme (dark/light), active chart timeframe, language preference, and recent interface volume toggles. We do not use third-party analytics pixels, behavioral tracking beacons, or invasive marketing cookies.
+                  {isRu
+                    ? <>Интерфейс использует только локальное хранилище браузера (<code className="text-amber-400 font-mono">localStorage</code>) для сохранения неидентифицируемых настроек: выбранной темы (светлая/темная), таймфрейма графика, языка интерфейса и звуковых эффектов. Мы не используем сторонние аналитические пиксели или инвазивные маркетинговые cookies.</>
+                    : <>The interface only utilizes client-side browser storage (<code className="text-amber-400 font-mono">localStorage</code>) to preserve non-identifiable user preferences, specifically: selected display theme (dark/light), active chart timeframe, language preference, and recent interface volume toggles. We do not use third-party analytics pixels, behavioral tracking beacons, or invasive marketing cookies.</>}
                 </p>
               </div>
 
               <div className="p-5 rounded-2xl bg-panel border border-panel space-y-2.5">
                 <div className="flex items-center gap-2 text-primary font-bold text-sm">
                   <span className="w-6 h-6 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center text-xs">5</span>
-                  <span>Market Data Transmission & Oracle Feeds</span>
+                  <span>
+                    {isRu
+                      ? 'Передача рыночных данных и потоки оракулов'
+                      : 'Market Data Transmission & Oracle Feeds'}
+                  </span>
                 </div>
                 <p>
-                  Price quotes, order book depth, and option Greeks are streamed directly via secure TLS WebSockets from institutional liquidity endpoints (Coinbase Institutional, Deribit, Pyth Network). Client requests do not pass through intermediary harvesting proxies.
+                  {isRu
+                    ? 'Котировки цен, глубина книги ордеров и греки опционов передаются в реальном времени напрямую через защищенные TLS WebSockets от институциональных поставщиков ликвидности (Coinbase Institutional, Deribit, Pyth Network). Запросы клиента не проходят через промежуточные прокси-серверы.'
+                    : 'Price quotes, order book depth, and option Greeks are streamed directly via secure TLS WebSockets from institutional liquidity endpoints (Coinbase Institutional, Deribit, Pyth Network). Client requests do not pass through intermediary harvesting proxies.'}
                 </p>
               </div>
 
               <div className="p-5 rounded-2xl bg-panel border border-panel space-y-2.5">
                 <div className="flex items-center gap-2 text-primary font-bold text-sm">
                   <span className="w-6 h-6 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center text-xs">6</span>
-                  <span>Risk Disclosures & Regulatory Exclusions</span>
+                  <span>
+                    {isRu
+                      ? 'Раскрытие рисков и юрисдикционные исключения'
+                      : 'Risk Disclosures & Regulatory Exclusions'}
+                  </span>
                 </div>
                 <p>
-                  Cryptocurrency perpetuals and zero-day options involve substantial risk of capital loss due to leverage. Users are solely responsible for ensuring compliance with applicable laws, tax regulations, and sanctions restrictions within their respective jurisdictions before deploying capital.
+                  {isRu
+                    ? 'Торговля криптовалютными бессрочными контрактами и опционами с нулевым сроком экспирации сопряжена с существенным риском потери капитала из-за кредитного плеча. Пользователи несут личную ответственность за соблюдение применимых законов, налоговых требований и санкционных ограничений в своих юрисдикциях.'
+                    : 'Cryptocurrency perpetuals and zero-day options involve substantial risk of capital loss due to leverage. Users are solely responsible for ensuring compliance with applicable laws, tax regulations, and sanctions restrictions within their respective jurisdictions before deploying capital.'}
                 </p>
               </div>
             </div>
@@ -117,13 +165,13 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack }) => {
             {/* Category Filter Pills */}
             <div className="flex flex-wrap gap-1.5 p-1.5 bg-subpanel border border-panel rounded-2xl">
               {[
-                { id: 'all', label: 'All Topics' },
-                { id: 'wallets', label: '1. Wallet & Deposits' },
-                { id: 'perps', label: '2. Perpetual Futures' },
-                { id: 'options', label: '3. 0DTE Options' },
-                { id: 'pools', label: '4. Liquidity & Vaults' },
-                { id: 'orders', label: '5. Order Execution' },
-                { id: 'security', label: '6. Risk & Security' }
+                { id: 'all', label: isRu ? 'Все темы' : 'All Topics' },
+                { id: 'wallets', label: isRu ? '1. Кошелек и депозиты' : '1. Wallet & Deposits' },
+                { id: 'perps', label: isRu ? '2. Бессрочные фьючерсы' : '2. Perpetual Futures' },
+                { id: 'options', label: isRu ? '3. 0DTE Опционы' : '3. 0DTE Options' },
+                { id: 'pools', label: isRu ? '4. Ликвидность и хранилища' : '4. Liquidity & Vaults' },
+                { id: 'orders', label: isRu ? '5. Исполнение ордеров' : '5. Order Execution' },
+                { id: 'security', label: isRu ? '6. Риски и безопасность' : '6. Risk & Security' }
               ].map((cat) => (
                 <button
                   key={cat.id}
@@ -145,17 +193,30 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack }) => {
                 <div className="p-5 rounded-2xl bg-panel border border-panel space-y-3">
                   <div className="flex items-center gap-2 text-primary font-bold text-sm">
                     <span className="w-7 h-7 rounded-lg bg-amber-500/15 text-amber-400 border border-amber-500/25 flex items-center justify-center text-xs font-mono">01</span>
-                    <span>Non-Custodial Wallet Connection & Collateral Funding</span>
+                    <span>
+                      {isRu
+                        ? 'Подключение некастодиального кошелька и пополнение залога'
+                        : 'Non-Custodial Wallet Connection & Collateral Funding'}
+                    </span>
                   </div>
                   <div className="space-y-2 text-muted leading-normal">
                     <p>
-                      <strong>Supported Wallets:</strong> Connect seamlessly using MetaMask, Rabby, Coinbase Wallet, OKX Wallet, or any WalletConnect v2 provider.
+                      <strong>{isRu ? 'Поддерживаемые кошельки:' : 'Supported Wallets:'}</strong>{' '}
+                      {isRu
+                        ? 'Подключайтесь через MetaMask, Rabby, Coinbase Wallet, OKX Wallet или любой провайдер WalletConnect v2.'
+                        : 'Connect seamlessly using MetaMask, Rabby, Coinbase Wallet, OKX Wallet, or any WalletConnect v2 provider.'}
                     </p>
                     <p>
-                      <strong>Base Collateral:</strong> All perpetual contracts and option premiums are denominated and settled in <strong>USDC</strong>. To begin trading, ensure your connected wallet holds USDC and native gas tokens (e.g. ETH on Arbitrum or Base) for the initial smart contract approval.
+                      <strong>{isRu ? 'Базовый залог:' : 'Base Collateral:'}</strong>{' '}
+                      {isRu
+                        ? 'Все бессрочные контракты и премии по опционам номинированы и рассчитываются в USDC. Для торговли убедитесь, что в кошельке есть USDC и нативные токены сети (например, ETH на Arbitrum или Base) для одобрения смарт-контракта.'
+                        : 'All perpetual contracts and option premiums are denominated and settled in USDC. To begin trading, ensure your connected wallet holds USDC and native gas tokens (e.g. ETH on Arbitrum or Base) for the initial smart contract approval.'}
                     </p>
                     <p>
-                      <strong>Gasless Order Signing:</strong> Once your one-time USDC margin approval is granted, trade orders and cancellations are authenticated off-chain via standard <strong>EIP-712 cryptographic signatures</strong>, eliminating per-trade blockchain gas fees.
+                      <strong>{isRu ? 'Торговля без газа (Gasless Signing):' : 'Gasless Order Signing:'}</strong>{' '}
+                      {isRu
+                        ? 'После однократного одобрения маржи USDC торговые ордера и отмены подписываются вне сети с помощью стандартных криптографических подписей EIP-712, что исключает комиссии за газ при каждой сделке.'
+                        : 'Once your one-time USDC margin approval is granted, trade orders and cancellations are authenticated off-chain via standard EIP-712 cryptographic signatures, eliminating per-trade blockchain gas fees.'}
                     </p>
                   </div>
                 </div>
@@ -165,20 +226,36 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack }) => {
                 <div className="p-5 rounded-2xl bg-panel border border-panel space-y-3">
                   <div className="flex items-center gap-2 text-primary font-bold text-sm">
                     <span className="w-7 h-7 rounded-lg bg-amber-500/15 text-amber-400 border border-amber-500/25 flex items-center justify-center text-xs font-mono">02</span>
-                    <span>Perpetual Contracts & Leverage Mechanics</span>
+                    <span>
+                      {isRu
+                        ? 'Бессрочные фьючерсы и механика кредитного плеча'
+                        : 'Perpetual Contracts & Leverage Mechanics'}
+                    </span>
                   </div>
                   <div className="space-y-2 text-muted leading-normal">
                     <p>
-                      <strong>Available Markets:</strong> Trade crypto perpetuals (BTC, ETH, SOL, DOGE, BNB, ZEC, LIT, ARB, NEAR, UNI, GMX, XRP up to 100x) and tokenized equity indexes (NVDA, SPY, TSLA up to 20x).
+                      <strong>{isRu ? 'Доступные рынки:' : 'Available Markets:'}</strong>{' '}
+                      {isRu
+                        ? 'Торгуйте криптовалютными бессрочными контрактами (BTC, ETH, SOL, DOGE, BNB, ZEC, LIT, ARB, NEAR, UNI, GMX, XRP с плечом до 100x) и токенизированными фондовыми индексами (NVDA, SPY, TSLA с плечом до 20x).'
+                        : 'Trade crypto perpetuals (BTC, ETH, SOL, DOGE, BNB, ZEC, LIT, ARB, NEAR, UNI, GMX, XRP up to 100x) and tokenized equity indexes (NVDA, SPY, TSLA up to 20x).'}
                     </p>
                     <p>
-                      <strong>Isolated Margin & Sliders:</strong> Each position is collateralized independently. Use the margin slider (with 25%, 50%, 75%, 100% quick presets) to dial your exact collateral size.
+                      <strong>{isRu ? 'Изолированная маржа и ползунки:' : 'Isolated Margin & Sliders:'}</strong>{' '}
+                      {isRu
+                        ? 'Каждая позиция обеспечивается независимо. Используйте ползунок маржи (с кнопками 25%, 50%, 75%, 100%) для точной установки размера залога.'
+                        : 'Each position is collateralized independently. Use the margin slider (with 25%, 50%, 75%, 100% quick presets) to dial your exact collateral size.'}
                     </p>
                     <p>
-                      <strong>Index vs. Mark Price:</strong> To protect traders against malicious exchange wick liquidations, liquidation checks reference the median <em>Mark Price</em> calculated from multi-exchange index oracles (Coinbase, Binance, Pyth).
+                      <strong>{isRu ? 'Цена индекса против цены маркировки:' : 'Index vs. Mark Price:'}</strong>{' '}
+                      {isRu
+                        ? 'Для защиты трейдеров от ликвидаций резкими тенями на отдельных биржах ликвидация отслеживается по медианной цене маркировки (Mark Price) от мульти-биржевых оракулов (Coinbase, Binance, Pyth).'
+                        : 'To protect traders against malicious exchange wick liquidations, liquidation checks reference the median Mark Price calculated from multi-exchange index oracles (Coinbase, Binance, Pyth).'}
                     </p>
                     <p>
-                      <strong>Dynamic Funding Rate:</strong> Funding payments occur every 8 hours between Longs and Shorts to tether perpetual contract prices to underlying spot indexes.
+                      <strong>{isRu ? 'Динамическая ставка финансирования:' : 'Dynamic Funding Rate:'}</strong>{' '}
+                      {isRu
+                        ? 'Выплаты финансирования происходят каждые 8 часов между лонгами и шортами для привязки цены контрактов к спотовым индексам.'
+                        : 'Funding payments occur every 8 hours between Longs and Shorts to tether perpetual contract prices to underlying spot indexes.'}
                     </p>
                   </div>
                 </div>
@@ -188,24 +265,44 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack }) => {
                 <div className="p-5 rounded-2xl bg-panel border border-panel space-y-3">
                   <div className="flex items-center gap-2 text-primary font-bold text-sm">
                     <span className="w-7 h-7 rounded-lg bg-amber-500/15 text-amber-400 border border-amber-500/25 flex items-center justify-center text-xs font-mono">03</span>
-                    <span>US 0DTE (Same-Day Expiration) Options Trading</span>
+                    <span>
+                      {isRu
+                        ? 'Торговля опционами 0DTE (Экспирация в тот же день)'
+                        : 'US 0DTE (Same-Day Expiration) Options Trading'}
+                    </span>
                   </div>
                   <div className="space-y-2 text-muted leading-normal">
                     <p>
-                      <strong>Directional View:</strong> Switch between <strong>Calls (Bullish ↗)</strong> and <strong>Puts (Bearish ↘)</strong> on the options trading board.
+                      <strong>{isRu ? 'Направление рынка:' : 'Directional View:'}</strong>{' '}
+                      {isRu
+                        ? 'Переключайтесь между Коллами (Бычий ↗) и Путами (Медвежий ↘) на панели опционов.'
+                        : 'Switch between Calls (Bullish ↗) and Puts (Bearish ↘) on the options trading board.'}
                     </p>
                     <p>
-                      <strong>Live Pricing & Deribit Feeds:</strong> Option cards fetch real-time bid, ask, and mark premiums directly from Deribit institutional order flow.
+                      <strong>{isRu ? 'Котировки Deribit в реальном времени:' : 'Live Pricing & Deribit Feeds:'}</strong>{' '}
+                      {isRu
+                        ? 'Карточки опционов получают реальные котировки Bid, Ask и Mark премий напрямую из институционального потока Deribit.'
+                        : 'Option cards fetch real-time bid, ask, and mark premiums directly from Deribit institutional order flow.'}
                     </p>
                     <p>
-                      <strong>Transparent Breakeven:</strong> Every strike card displays your exact breakeven spot price at expiry:
+                      <strong>{isRu ? 'Прозрачный безубыток:' : 'Transparent Breakeven:'}</strong>{' '}
+                      {isRu
+                        ? 'Каждая карточка страйка отображает точный расчет точки безубытка:'
+                        : 'Every strike card displays your exact breakeven spot price at expiry:'}
                       <br />
-                      <span className="font-mono text-amber-500 text-[11px] bg-subpanel px-2 py-0.5 rounded border border-panel">Call Breakeven = Strike Price + Premium Paid</span>
+                      <span className="font-mono text-amber-500 text-[11px] bg-subpanel px-2 py-0.5 rounded border border-panel">
+                        {isRu ? 'Безубыток Колла = Страйк + Уплаченная премия' : 'Call Breakeven = Strike Price + Premium Paid'}
+                      </span>
                       <br />
-                      <span className="font-mono text-amber-500 text-[11px] bg-subpanel px-2 py-0.5 rounded border border-panel mt-1 inline-block">Put Breakeven = Strike Price - Premium Paid</span>
+                      <span className="font-mono text-amber-500 text-[11px] bg-subpanel px-2 py-0.5 rounded border border-panel mt-1 inline-block">
+                        {isRu ? 'Безубыток Пута = Страйк - Уплаченная премия' : 'Put Breakeven = Strike Price - Premium Paid'}
+                      </span>
                     </p>
                     <p>
-                      <strong>Automatic Cash Settlement:</strong> Contracts expire daily at 08:00 UTC. In-the-money (ITM) options settle automatically into your USDC balance without requiring manual exercise or underlying token delivery.
+                      <strong>{isRu ? 'Автоматический расчет:' : 'Automatic Cash Settlement:'}</strong>{' '}
+                      {isRu
+                        ? 'Контракты экспирируются ежедневно в 08:00 UTC. Опционы «в деньгах» (ITM) автоматически рассчитываются и начисляются на баланс USDC без необходимости ручных действий.'
+                        : 'Contracts expire daily at 08:00 UTC. In-the-money (ITM) options settle automatically into your USDC balance without requiring manual exercise or underlying token delivery.'}
                     </p>
                   </div>
                 </div>
@@ -215,17 +312,30 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack }) => {
                 <div className="p-5 rounded-2xl bg-panel border border-panel space-y-3">
                   <div className="flex items-center gap-2 text-primary font-bold text-sm">
                     <span className="w-7 h-7 rounded-lg bg-amber-500/15 text-amber-400 border border-amber-500/25 flex items-center justify-center text-xs font-mono">04</span>
-                    <span>Liquidity Pools & Yield Vaults</span>
+                    <span>
+                      {isRu
+                        ? 'Пулы ликвидности и доходные хранилища'
+                        : 'Liquidity Pools & Yield Vaults'}
+                    </span>
                   </div>
                   <div className="space-y-2 text-muted leading-normal">
                     <p>
-                      <strong>USDC Option LP Pool:</strong> Provides counterparty liquidity for options writers and traders. LPs earn trading fee cuts, bid-ask spreads, and option decay premiums.
+                      <strong>{isRu ? 'Пул ликвидности опционов USDC:' : 'USDC Option LP Pool:'}</strong>{' '}
+                      {isRu
+                        ? 'Обеспечивает контрагентную ликвидность для торговли опционами. Поставщики LP зарабатывают на торговых комиссиях, спредах и распаде временной стоимости опционов.'
+                        : 'Provides counterparty liquidity for options writers and traders. LPs earn trading fee cuts, bid-ask spreads, and option decay premiums.'}
                     </p>
                     <p>
-                      <strong>30-Day Reserve Vault:</strong> Senior protocol backstop pool. Capital deposited into the Reserve Vault receives institutional yield shares distributed from platform liquidations and perpetual borrow interest.
+                      <strong>{isRu ? '30-дневное резервное хранилище:' : '30-Day Reserve Vault:'}</strong>{' '}
+                      {isRu
+                        ? 'Главный страховой фонд протокола. Депозиты в Резервном хранилище получают институциональную доходность от ликвидаций и ставок заимствования.'
+                        : 'Senior protocol backstop pool. Capital deposited into the Reserve Vault receives institutional yield shares distributed from platform liquidations and perpetual borrow interest.'}
                     </p>
                     <p>
-                      <strong>Real-Time Yield:</strong> APRs reflect actual fee generation from settled protocol volume with 0 artificial inflationary mints.
+                      <strong>{isRu ? 'Реальная доходность:' : 'Real-Time Yield:'}</strong>{' '}
+                      {isRu
+                        ? 'Показатели APR отражают реальные доходы от объема торговли протокола без искусственной инфляционной эмиссии.'
+                        : 'APRs reflect actual fee generation from settled protocol volume with 0 artificial inflationary mints.'}
                     </p>
                   </div>
                 </div>
@@ -235,17 +345,30 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack }) => {
                 <div className="p-5 rounded-2xl bg-panel border border-panel space-y-3">
                   <div className="flex items-center gap-2 text-primary font-bold text-sm">
                     <span className="w-7 h-7 rounded-lg bg-amber-500/15 text-amber-400 border border-amber-500/25 flex items-center justify-center text-xs font-mono">05</span>
-                    <span>Order Types & Central Limit Order Book (CLOB)</span>
+                    <span>
+                      {isRu
+                        ? 'Типы ордеров и центральная книга ордеров (CLOB)'
+                        : 'Order Types & Central Limit Order Book (CLOB)'}
+                    </span>
                   </div>
                   <div className="space-y-2 text-muted leading-normal">
                     <p>
-                      <strong>Market Orders:</strong> Fill immediately at the optimal available price on the order book. Taker fee: 0.05%.
+                      <strong>{isRu ? 'Рыночные ордера:' : 'Market Orders:'}</strong>{' '}
+                      {isRu
+                        ? 'Исполняются мгновенно по лучшей доступной цене в стакане. Комиссия тейкера: 0.05%.'
+                        : 'Fill immediately at the optimal available price on the order book. Taker fee: 0.05%.'}
                     </p>
                     <p>
-                      <strong>Limit Orders:</strong> Enter passive orders at specified prices to capture maker fee discounts (Maker fee: 0.02%).
+                      <strong>{isRu ? 'Лимитные ордера:' : 'Limit Orders:'}</strong>{' '}
+                      {isRu
+                        ? 'Пассивные ордера по указанной цене для получения скидок мейкера (Комиссия мейкера: 0.02%).'
+                        : 'Enter passive orders at specified prices to capture maker fee discounts (Maker fee: 0.02%).'}
                     </p>
                     <p>
-                      <strong>Order Book & Depth:</strong> The central book provides sub-second depth visualization. Inspect recent executions in the <strong>Trades</strong> tab directly beside the order ticket.
+                      <strong>{isRu ? 'Стакан ордеров и глубина:' : 'Order Book & Depth:'}</strong>{' '}
+                      {isRu
+                        ? 'Центральный стакан обеспечивает отображение глубины рынка с субсекундной задержкой. Недавние исполнения доступны во вкладке «Сделки».'
+                        : 'The central book provides sub-second depth visualization. Inspect recent executions in the Trades tab directly beside the order ticket.'}
                     </p>
                   </div>
                 </div>
@@ -255,14 +378,24 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack }) => {
                 <div className="p-5 rounded-2xl bg-panel border border-panel space-y-3">
                   <div className="flex items-center gap-2 text-primary font-bold text-sm">
                     <span className="w-7 h-7 rounded-lg bg-amber-500/15 text-amber-400 border border-amber-500/25 flex items-center justify-center text-xs font-mono">06</span>
-                    <span>Audits, Multi-Sig Governance & Risk Parameters</span>
+                    <span>
+                      {isRu
+                        ? 'Аудиты, управление с мультиподписью и параметры риска'
+                        : 'Audits, Multi-Sig Governance & Risk Parameters'}
+                    </span>
                   </div>
                   <div className="space-y-2 text-muted leading-normal">
                     <p>
-                      <strong>Smart Contract Security:</strong> Protocol contracts are immutable and audited by top tier security researchers. Emergency parameter adjustments require multi-signature approvals with a 48-hour timelock delay.
+                      <strong>{isRu ? 'Безопасность смарт-контрактов:' : 'Smart Contract Security:'}</strong>{' '}
+                      {isRu
+                        ? 'Контракты неизменяемы и проверены ведущими аудиторами. Экстренное изменение параметров требует согласования нескольких подписей и 48-часовой задержки таймлока.'
+                        : 'Protocol contracts are immutable and audited by top tier security researchers. Emergency parameter adjustments require multi-signature approvals with a 48-hour timelock delay.'}
                     </p>
                     <p>
-                      <strong>Liquidation Buffer:</strong> Automatic de-risking engines trigger before margin depletion, preventing protocol bad debt and ensuring solvent trader settlements under all market volatility conditions.
+                      <strong>{isRu ? 'Буфер ликвидации:' : 'Liquidation Buffer:'}</strong>{' '}
+                      {isRu
+                        ? 'Автоматические механизмы дерискинга срабатывают до полного исчерпания маржи, защищая протокол от безнадежных долгов и обеспечивая своевременные выплаты трейдерам.'
+                        : 'Automatic de-risking engines trigger before margin depletion, preventing protocol bad debt and ensuring solvent trader settlements under all market volatility conditions.'}
                     </p>
                   </div>
                 </div>

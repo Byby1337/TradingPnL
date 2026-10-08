@@ -16,18 +16,22 @@ import {
   RefreshCw,
   Lock
 } from 'lucide-react';
+import { TRANSLATIONS, LanguageCode, Translations } from '../i18n/translations';
 
 interface PoolsViewProps {
   userAddress?: string;
   onConnectWallet?: () => void;
   onRefreshBalance?: () => void;
+  currentLang?: string;
 }
 
 export const PoolsView: React.FC<PoolsViewProps> = ({
   userAddress,
   onConnectWallet,
-  onRefreshBalance
+  onRefreshBalance,
+  currentLang = 'en'
 }) => {
+  const t: Translations = TRANSLATIONS[(currentLang as LanguageCode) || 'en'] || TRANSLATIONS.en;
   const [activeTab, setActiveTab] = useState<'deposit' | 'withdraw'>('deposit');
   // Fixed immutable verified contract address (M-R3 security fix)
   const poolAddress = CONTRACT_ADDRESSES.LP_POOL;
@@ -437,13 +441,13 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
         <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b border-panel gap-3">
           <div>
             <div className="flex items-center gap-2.5">
-              <h1 className="text-xl font-bold text-primary tracking-wide">Liquidity Pools & Protocol Vaults</h1>
+              <h1 className="text-xl font-bold text-primary tracking-wide">{t.liquidityPoolsTitle}</h1>
               <span className="px-2 py-0.5 text-[10px] uppercase font-mono font-bold bg-[#10b981]/15 text-[#10b981] border border-[#10b981]/30 rounded">
-                Live On-Chain
+                {t.liveOnChain}
               </span>
             </div>
             <p className="text-xs text-muted mt-1">
-              Single-asset USDC underwriting pool for US 0DTE options and pair-isolated hourly lottery streams.
+              {t.poolsSubtitle}
             </p>
           </div>
 
@@ -464,14 +468,14 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
                 onClick={handleSwitchNetwork}
                 className="px-3 py-1 bg-[#d97706] hover:bg-[#b45309] text-white text-xs font-semibold rounded transition-colors"
               >
-                Switch Network
+                {t.switchNetwork}
               </button>
             )}
 
             <button
               onClick={loadPoolData}
               disabled={isLoadingStats}
-              title="Refresh on-chain data"
+              title={t.refreshData}
               className="p-1.5 bg-subpanel hover:bg-panel text-muted hover:text-primary rounded border border-panel transition-colors"
             >
               <RefreshCw className={`w-4 h-4 ${isLoadingStats ? 'animate-spin' : ''}`} />
@@ -485,9 +489,9 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
             <div className="flex items-start gap-3">
               <AlertTriangle className="w-5 h-5 text-[#f59e0b] shrink-0 mt-0.5" />
               <div className="flex-1 text-xs space-y-1">
-                <div className="font-bold text-[#f59e0b] text-sm">Pool Not Detected on Current Network</div>
+                <div className="font-bold text-[#f59e0b] text-sm">{t.poolMisconfiguredTitle}</div>
                 <div className="text-muted leading-relaxed">
-                  The liquidity pool is not responding on the connected provider. Please ensure your wallet is connected to Arbitrum Sepolia (Chain ID: 421614).
+                  {t.poolMisconfiguredDesc}
                 </div>
                 <div className="pt-2 flex flex-wrap gap-2 items-center">
                   <button
@@ -495,7 +499,7 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
                     className="px-3 py-1.5 bg-subpanel hover:bg-panel text-primary font-semibold text-xs rounded border border-panel inline-flex items-center gap-1.5"
                   >
                     <RefreshCw className="w-3.5 h-3.5" />
-                    Retry Connection
+                    {t.retryConnection}
                   </button>
                 </div>
               </div>
@@ -546,12 +550,12 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
                   <Coins className="w-5 h-5" />
                 </div>
                 <div>
-                  <h2 className="font-bold text-primary text-sm">USDC Option Liquidity Pool</h2>
-                  <p className="text-[11px] text-muted">Automated 0DTE & 1-Hour Cash-Settled Underwriting</p>
+                  <h2 className="font-bold text-primary text-sm">{t.usdcOptionPoolTitle}</h2>
+                  <p className="text-[11px] text-muted">{t.usdcOptionPoolDesc}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-[11px] text-muted">Protocol APR:</span>
+                <span className="text-[11px] text-muted">{t.protocolApr}</span>
                 <span className="px-2 py-0.5 text-xs font-mono font-bold bg-[#10b981]/20 text-[#10b981] border border-[#10b981]/40 rounded">
                   34.2% APR
                 </span>
@@ -561,33 +565,33 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
             {/* Quick Metrics Bar */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <div className="bg-panel p-3 rounded-lg border border-panel">
-                <div className="text-[10px] text-muted uppercase tracking-wider">Total TVL</div>
+                <div className="text-[10px] text-muted uppercase tracking-wider">{t.totalTvl}</div>
                 <div className="text-base font-bold font-mono text-primary mt-0.5">
                   ${totalAssets.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </div>
-                <div className="text-[10px] text-[#10b981] font-mono mt-0.5">USDC On-Chain</div>
+                <div className="text-[10px] text-[#10b981] font-mono mt-0.5">{t.usdcOnChain}</div>
               </div>
 
               <div className="bg-panel p-3 rounded-lg border border-panel">
-                <div className="text-[10px] text-muted uppercase tracking-wider">Available Liq.</div>
+                <div className="text-[10px] text-muted uppercase tracking-wider">{t.availableLiq}</div>
                 <div className="text-base font-bold font-mono text-primary mt-0.5">
                   ${availableLiquidity.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </div>
-                <div className="text-[10px] text-muted font-mono mt-0.5">Uncommitted</div>
+                <div className="text-[10px] text-muted font-mono mt-0.5">{t.uncommitted}</div>
               </div>
 
               <div className="bg-panel p-3 rounded-lg border border-panel">
-                <div className="text-[10px] text-muted uppercase tracking-wider">My Deposited</div>
+                <div className="text-[10px] text-muted uppercase tracking-wider">{t.myDeposited}</div>
                 <div className="text-base font-bold font-mono text-[#f59e0b] mt-0.5">
                   ${userUsdcDeposited.toFixed(2)}
                 </div>
                 <div className="text-[10px] text-muted font-mono mt-0.5">
-                  {userLpShares > 0 ? `${userLpShares.toFixed(2)} LP Shares` : '0 Shares'}
+                  {userLpShares > 0 ? `${userLpShares.toFixed(2)} ${t.lpShares}` : `0 ${t.lpShares}`}
                 </div>
               </div>
 
               <div className="bg-panel p-3 rounded-lg border border-panel">
-                <div className="text-[10px] text-muted uppercase tracking-wider">Wallet Balance</div>
+                <div className="text-[10px] text-muted uppercase tracking-wider">{t.walletBalance}</div>
                 <div className="text-base font-bold font-mono text-primary mt-0.5">
                   ${userUsdcBalance.toFixed(2)}
                 </div>
@@ -606,7 +610,7 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
                 }`}
               >
                 <ArrowDownCircle className="w-3.5 h-3.5" />
-                Deposit USDC
+                {t.depositUsdc}
               </button>
 
               <button
@@ -618,7 +622,7 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
                 }`}
               >
                 <ArrowUpCircle className="w-3.5 h-3.5" />
-                Withdraw USDC
+                {t.withdrawUsdc}
               </button>
             </div>
 
@@ -627,9 +631,9 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
               <div className="space-y-4 pt-1">
                 <div className="space-y-2">
                   <div className="flex justify-between items-center text-xs">
-                    <span className="text-muted">Amount to Deposit (USDC):</span>
+                    <span className="text-muted">{t.amountToDeposit}</span>
                     <span className="font-mono text-muted">
-                      Wallet: <span className="text-primary font-bold">{userUsdcBalance.toFixed(2)} USDC</span>
+                      {t.walletBalance}: <span className="text-primary font-bold">{userUsdcBalance.toFixed(2)} USDC</span>
                     </span>
                   </div>
 
@@ -672,22 +676,22 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
                 {/* Deposit Details Breakdown */}
                 <div className="bg-panel p-3 rounded-lg border border-panel space-y-1.5 text-[11px] font-mono">
                   <div className="flex justify-between text-muted">
-                    <span>Expected LP Shares:</span>
+                    <span>{t.expectedLpShares}</span>
                     <span className="text-primary font-semibold">
                       ~{parsedDeposit > 0 ? parsedDeposit.toFixed(2) : '0.00'} LP
                     </span>
                   </div>
                   <div className="flex justify-between text-muted">
-                    <span>Yield Source:</span>
-                    <span className="text-[#10b981]">0DTE Option Premiums + 15% Edge Retention</span>
+                    <span>{t.yieldSource}</span>
+                    <span className="text-[#10b981]">{t.yieldSourceVal}</span>
                   </div>
                   <div className="flex justify-between text-muted">
-                    <span>Lockup Period:</span>
-                    <span className="text-primary">None (Continuous Settlement)</span>
+                    <span>{t.lockupPeriod}</span>
+                    <span className="text-primary">{t.noLockup}</span>
                   </div>
                   <div className="flex justify-between text-muted">
-                    <span>Risk Protection:</span>
-                    <span className="text-[#f59e0b]">15% Max Open Interest Cap Enforced</span>
+                    <span>{t.riskProtection}</span>
+                    <span className="text-[#f59e0b]">{t.riskProtectionVal}</span>
                   </div>
                 </div>
 
@@ -697,14 +701,14 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
                     onClick={onConnectWallet}
                     className="w-full py-3 bg-[#f59e0b] hover:bg-[#d97706] text-black font-bold text-xs rounded-lg transition-colors flex items-center justify-center gap-2"
                   >
-                    Connect Web3 Wallet to Deposit
+                    {t.connectToDeposit}
                   </button>
                 ) : !isArbitrum ? (
                   <button
                     onClick={handleSwitchNetwork}
                     className="w-full py-3 bg-[#d97706] hover:bg-[#b45309] text-white font-bold text-xs rounded-lg transition-colors"
                   >
-                    Switch Wallet Network to Arbitrum Sepolia
+                    {t.switchToArbitrum}
                   </button>
                 ) : isPoolMisconfigured ? (
                   <button
@@ -712,7 +716,7 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
                     className="w-full py-3 bg-[#181614] border border-[#d97706]/40 hover:bg-[#262320] text-[#f59e0b] font-bold text-xs rounded-lg transition-colors flex items-center justify-center gap-2"
                   >
                     <RefreshCw className="w-4 h-4" />
-                    Pool Offline on Network — Click to Re-check
+                    {t.poolOffline}
                   </button>
                 ) : needsApproval ? (
                   <button
@@ -721,7 +725,7 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
                     className="w-full py-3 bg-[#3b82f6] hover:bg-[#2563eb] disabled:bg-[#1f2937] disabled:text-[#6b7280] text-white font-bold text-xs rounded-lg transition-colors flex items-center justify-center gap-2"
                   >
                     <Lock className="w-4 h-4" />
-                    {txState === 'approving' ? 'Approving USDC in MetaMask...' : `Step 1: Approve USDC for Pool`}
+                    {txState === 'approving' ? t.approvingUsdc : t.approveUsdc}
                   </button>
                 ) : (
                   <button
@@ -731,8 +735,8 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
                   >
                     <ArrowDownCircle className="w-4 h-4" />
                     {txState === 'depositing'
-                      ? 'Confirming Deposit in MetaMask...'
-                      : `Step 2: Deposit ${parsedDeposit.toFixed(2)} USDC into Pool`}
+                      ? t.depositingUsdc
+                      : t.depositAction.replace('{amount}', parsedDeposit.toFixed(2))}
                   </button>
                 )}
               </div>
@@ -743,9 +747,9 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
               <div className="space-y-4 pt-1">
                 <div className="space-y-2">
                   <div className="flex justify-between items-center text-xs">
-                    <span className="text-muted">Amount to Withdraw (USDC):</span>
+                    <span className="text-muted">{t.amountToWithdraw}</span>
                     <span className="font-mono text-muted">
-                      Deposited: <span className="text-[#f59e0b] font-bold">{userUsdcDeposited.toFixed(2)} USDC</span>
+                      {t.myDeposited}: <span className="text-[#f59e0b] font-bold">{userUsdcDeposited.toFixed(2)} USDC</span>
                     </span>
                   </div>
 
@@ -785,16 +789,16 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
 
                 <div className="bg-panel p-3 rounded-lg border border-panel space-y-1.5 text-[11px] font-mono">
                   <div className="flex justify-between text-muted">
-                    <span>Available Liquidity:</span>
+                    <span>{t.availableLiq}:</span>
                     <span className="text-primary font-semibold">${availableLiquidity.toFixed(2)} USDC</span>
                   </div>
                   <div className="flex justify-between text-muted">
-                    <span>Exit Fee:</span>
-                    <span className="text-[#10b981]">0.0% (Zero Protocol Tax)</span>
+                    <span>{t.exitFee}</span>
+                    <span className="text-[#10b981]">{t.zeroFee}</span>
                   </div>
                   <div className="flex justify-between text-muted">
                     <span>Settlement:</span>
-                    <span className="text-primary">Instant On-Chain Transfer</span>
+                    <span className="text-primary">{t.instantTransfer}</span>
                   </div>
                 </div>
 
@@ -808,7 +812,7 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
                   className="w-full py-3 bg-[#d97706] hover:bg-[#b45309] disabled:bg-subpanel disabled:text-muted text-white font-bold text-xs rounded-lg transition-colors flex items-center justify-center gap-2"
                 >
                   <ArrowUpCircle className="w-4 h-4" />
-                  {txState === 'withdrawing' ? 'Processing Withdrawal...' : 'Withdraw USDC to Wallet'}
+                  {txState === 'withdrawing' ? t.processingWithdraw : t.withdrawAction}
                 </button>
               </div>
             )}
@@ -822,26 +826,26 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
               <div className="flex justify-between items-center font-sans border-b border-panel pb-2">
                 <div className="flex items-center gap-2">
                   <ShieldCheck className="w-4 h-4 text-[#d97706]" />
-                  <span className="font-bold text-primary text-xs">Hourly Protocol Pool</span>
+                  <span className="font-bold text-primary text-xs">{t.hourlyProtocolPool}</span>
                 </div>
-                <span className="text-[10px] text-[#10b981] font-mono font-semibold">Active Epoch</span>
+                <span className="text-[10px] text-[#10b981] font-mono font-semibold">{t.activeEpoch}</span>
               </div>
 
               <div className="space-y-2 text-muted">
                 <div className="flex justify-between">
-                  <span>Revenue Stream:</span>
+                  <span>{t.revenueStream}</span>
                   <span className="text-primary font-bold">20% PnL Turnover</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Epoch Duration:</span>
+                  <span>{t.epochDuration}</span>
                   <span className="text-primary">60 Minutes</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Distribution Split:</span>
+                  <span>{t.distributionSplit}</span>
                   <span className="text-primary">50% / 25% / 25%</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Quorum Barrier:</span>
+                  <span>{t.quorumBarrier}</span>
                   <span className="text-[#f59e0b]">50+ Active Entrants</span>
                 </div>
               </div>
@@ -852,27 +856,27 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
               <div className="flex justify-between items-center font-sans border-b border-panel pb-2">
                 <div className="flex items-center gap-2">
                   <Coins className="w-4 h-4 text-[#3b82f6]" />
-                  <span className="font-bold text-primary text-xs">30-Day Reserve Vault</span>
+                  <span className="font-bold text-primary text-xs">{t.reserveVault}</span>
                 </div>
-                <span className="text-[10px] text-muted font-mono">Monthly Jackpot</span>
+                <span className="text-[10px] text-muted font-mono">{t.monthlyJackpot}</span>
               </div>
 
               <div className="space-y-2 text-muted">
                 <div className="flex justify-between">
-                  <span>1st Place:</span>
-                  <span className="text-primary font-bold">35% of Accumulated Pot</span>
+                  <span>{t.firstPlace}</span>
+                  <span className="text-primary font-bold">35% {t.accumulatedPot}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>2nd Place:</span>
-                  <span className="text-primary">20% of Accumulated Pot</span>
+                  <span>{t.secondPlace}</span>
+                  <span className="text-primary">20% {t.accumulatedPot}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>3rd Place:</span>
-                  <span className="text-primary">15% of Accumulated Pot</span>
+                  <span>{t.thirdPlace}</span>
+                  <span className="text-primary">15% {t.accumulatedPot}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>4th - 10th Place:</span>
-                  <span className="text-primary">30% Shared Pro-Rata</span>
+                  <span>{t.otherPlaces}</span>
+                  <span className="text-primary">{t.sharedProRata}</span>
                 </div>
               </div>
             </div>
@@ -881,10 +885,10 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
             <div className="bg-panel border border-panel rounded-xl p-3.5 space-y-1.5 text-xs">
               <div className="flex items-center gap-1.5 text-[#10b981] font-bold text-[11px]">
                 <ShieldCheck className="w-3.5 h-3.5" />
-                Aegis Sentinel Protocol Security
+                {t.securityTitle}
               </div>
               <p className="text-[10px] text-muted leading-relaxed">
-                Liquidity pool collateral is protected by on-chain circuit breakers, reentrancy guards, and max 15% open interest limits against adverse volatility spikes.
+                {t.securityDesc}
               </p>
             </div>
 

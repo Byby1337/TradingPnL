@@ -6,7 +6,7 @@ interface DecreasePositionModalProps {
   isOpen: boolean;
   position: Position | null;
   currentMarkPrice: number;
-  currentLang: 'en' | 'ru';
+  currentLang: string;
   onClose: () => void;
   onConfirmDecrease: (positionId: string, percent: number, closeAmountUsd: number) => Promise<void>;
 }

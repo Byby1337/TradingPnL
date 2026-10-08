@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Market, DeribitOptionData, ActiveOption } from '../types';
+import { TRANSLATIONS, LanguageCode, Translations } from '../i18n/translations';
 
 interface OptionsBoardProps {
   currentMarket: Market;
@@ -9,6 +10,7 @@ interface OptionsBoardProps {
   onBuyOption: (instrument: string, strike: number, type: 'CALL' | 'PUT', contracts: number, cost: number) => void;
   onCloseOption: (id: string) => void;
   onNotify?: (type: 'warning' | 'error' | 'info' | 'success', title: string, message: string) => void;
+  currentLang?: string;
 }
 
 export const OptionsBoard: React.FC<OptionsBoardProps> = ({
@@ -18,8 +20,10 @@ export const OptionsBoard: React.FC<OptionsBoardProps> = ({
   activeOptions,
   onBuyOption,
   onCloseOption,
-  onNotify
+  onNotify,
+  currentLang = 'en'
 }) => {
+  const t: Translations = TRANSLATIONS[(currentLang as LanguageCode) || 'en'] || TRANSLATIONS.en;
   const [boardSide, setBoardSide] = useState<'CALL' | 'PUT'>('CALL');
   const [selectedStrike, setSelectedStrike] = useState<number>(84600);
   const [contracts, setContracts] = useState<number>(0.5);
@@ -82,7 +86,7 @@ export const OptionsBoard: React.FC<OptionsBoardProps> = ({
       <section className="col-span-12 lg:col-span-8 xl:col-span-9 flex flex-col gap-[1px] bg-panel overflow-hidden border-r border-panel">
         <div className="h-11 border-b border-panel bg-panel px-4 flex items-center justify-between text-xs flex-shrink-0 z-10">
           <div className="flex items-center gap-2">
-            <span className="text-muted text-[11px] font-sans">Market Direction:</span>
+            <span className="text-muted text-[11px] font-sans">{t.marketDirection}</span>
             <div className="flex bg-subpanel p-0.5 rounded border border-panel text-xs font-semibold">
               <button
                 onClick={() => setBoardSide('CALL')}
@@ -92,7 +96,7 @@ export const OptionsBoard: React.FC<OptionsBoardProps> = ({
                     : 'text-muted hover:text-primary'
                 }`}
               >
-                Calls (Price Goes UP ↗)
+                {t.callsLabel}
               </button>
               <button
                 onClick={() => setBoardSide('PUT')}
@@ -102,18 +106,18 @@ export const OptionsBoard: React.FC<OptionsBoardProps> = ({
                     : 'text-muted hover:text-primary'
                 }`}
               >
-                Puts (Price Goes DOWN ↘)
+                {t.putsLabel}
               </button>
             </div>
           </div>
 
           <div className="hidden xl:flex items-center gap-4 font-mono text-[11px] numeric">
             <div>
-              <span className="text-muted">Spot Price:</span>{' '}
+              <span className="text-muted">{t.spotPriceLabel}</span>{' '}
               <span className="text-primary font-bold">${spotPrice.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
             </div>
             <div>
-              <span className="text-muted">Deribit IV:</span>{' '}
+              <span className="text-muted">{t.deribitIv}</span>{' '}
               <span className="text-[#10b981] font-semibold">{selectedCard ? selectedCard.markIv : '34.5'}%</span>
             </div>
           </div>
@@ -125,7 +129,7 @@ export const OptionsBoard: React.FC<OptionsBoardProps> = ({
             {strikeCards.slice(0, 9).map((card) => {
               const isSelected = selectedStrike === card.strike;
               const distPct = (((card.strike - spotPrice) / spotPrice) * 100).toFixed(1);
-              const distStr = card.strike === Math.round(spotPrice) ? 'ATM (At The Money)' : `${distPct}%`;
+              const distStr = card.strike === Math.round(spotPrice) ? t.atmLabel : `${distPct}%`;
               const be = boardSide === 'CALL' ? card.strike + card.mark : card.strike - card.mark;
 
               return (
@@ -155,11 +159,11 @@ export const OptionsBoard: React.FC<OptionsBoardProps> = ({
 
                   <div className="py-2.5 space-y-1 font-mono text-[11px] numeric">
                     <div className="flex justify-between text-muted text-[10px]">
-                      <span>Deribit Premium:</span>
+                      <span>{t.deribitPremium}</span>
                       <span className="text-primary font-bold">${card.mark.toFixed(2)} USDC</span>
                     </div>
                     <div className="flex justify-between text-muted text-[10px]">
-                      <span>Breakeven:</span>
+                      <span>{t.breakeven}</span>
                       <span className="text-[#f59e0b]">${be.toFixed(0)}</span>
                     </div>
                   </div>
@@ -171,7 +175,7 @@ export const OptionsBoard: React.FC<OptionsBoardProps> = ({
                         : 'bg-panel hover:bg-subpanel border border-panel text-primary'
                     }`}
                   >
-                    {isSelected ? 'Selected' : 'Select Strike'}
+                    {isSelected ? t.selected : t.selectStrike}
                   </button>
                 </div>
               );
@@ -182,27 +186,27 @@ export const OptionsBoard: React.FC<OptionsBoardProps> = ({
         {/* Active Options Table */}
         <div className="h-44 border-t border-panel bg-panel flex flex-col overflow-hidden">
           <div className="h-7 border-b border-panel px-3 flex items-center justify-between text-[11px]">
-            <span className="font-semibold text-primary">Open Option Contracts ({activeOptions.length})</span>
-            <span className="font-mono text-[10px] text-muted">Settlement: Spot Index Mark</span>
+            <span className="font-semibold text-primary">{t.openContracts} ({activeOptions.length})</span>
+            <span className="font-mono text-[10px] text-muted">{t.settlementIndex}</span>
           </div>
           <div className="flex-1 overflow-auto p-2">
             <table className="w-full text-left font-mono text-[11px] numeric">
               <thead>
                 <tr className="text-muted border-b border-panel text-[10px] pb-1 font-sans">
-                  <th className="pb-1 font-normal">Instrument</th>
+                  <th className="pb-1 font-normal">{t.instrument}</th>
                   <th className="pb-1 font-normal">Strike</th>
                   <th className="pb-1 font-normal">Spot</th>
-                  <th className="pb-1 font-normal">Contracts</th>
-                  <th className="pb-1 font-normal">Entry Premium</th>
-                  <th className="pb-1 font-normal">Current Value</th>
-                  <th className="pb-1 font-normal text-right">Action</th>
+                  <th className="pb-1 font-normal">{t.contracts}</th>
+                  <th className="pb-1 font-normal">{t.entryPremium}</th>
+                  <th className="pb-1 font-normal">{t.currentValue}</th>
+                  <th className="pb-1 font-normal text-right">{t.action}</th>
                 </tr>
               </thead>
               <tbody className="divide-y border-panel">
                 {activeOptions.length === 0 ? (
                   <tr>
                     <td colSpan={7} className="py-8 text-center text-muted font-sans text-xs">
-                      No active options contracts. Select a strike card to open a position.
+                      {t.noActiveOptions}
                     </td>
                   </tr>
                 ) : (
@@ -219,7 +223,7 @@ export const OptionsBoard: React.FC<OptionsBoardProps> = ({
                           onClick={() => onCloseOption(opt.id)}
                           className="px-2 py-0.5 bg-[#0ecb81] hover:opacity-90 text-[#080b11] font-bold text-[10px] rounded transition"
                         >
-                          Close
+                          {t.close}
                         </button>
                       </td>
                     </tr>
@@ -234,7 +238,7 @@ export const OptionsBoard: React.FC<OptionsBoardProps> = ({
       {/* Options Ticket */}
       <aside className="col-span-12 lg:col-span-4 xl:col-span-3 flex flex-col gap-3 bg-panel p-3 font-sans overflow-y-auto">
         <div className="flex justify-between items-center pb-2 border-b border-panel">
-          <span className="font-bold text-primary text-xs">Option Order Ticket</span>
+          <span className="font-bold text-primary text-xs">{t.optionTicket}</span>
           <span className="text-[10px] font-mono text-[#d97706] font-semibold">
             {currentMarket.base} ${selectedStrike.toLocaleString()} {boardSide}
           </span>
@@ -242,9 +246,9 @@ export const OptionsBoard: React.FC<OptionsBoardProps> = ({
 
         <div className="space-y-1">
           <div className="flex justify-between text-[11px] text-muted">
-            <span>Contracts ({currentMarket.base})</span>
+            <span>{t.contracts} ({currentMarket.base})</span>
             <span>
-              Available: <strong className="text-primary font-mono">{userBalance.toFixed(2)} USDC</strong>
+              {t.available}: <strong className="text-primary font-mono">{userBalance.toFixed(2)} USDC</strong>
             </span>
           </div>
           <div className="relative">
@@ -262,20 +266,20 @@ export const OptionsBoard: React.FC<OptionsBoardProps> = ({
         {/* Pricing Summary */}
         <div className="bg-subpanel p-2.5 rounded border border-panel space-y-2 text-[11px] font-mono numeric">
           <div className="text-[10px] font-sans font-bold text-muted uppercase tracking-wider pb-1 border-b border-panel">
-            Pricing & Risk
+            {t.pricingRisk}
           </div>
           <div className="pt-1 space-y-1">
             <div className="flex justify-between text-muted">
-              <span>Premium Cost:</span>
+              <span>{t.premiumCost}</span>
               <span className="text-primary font-bold text-xs">${totalCost.toFixed(2)} USDC</span>
             </div>
             <div className="flex justify-between text-muted text-[10px]">
-              <span>Breakeven:</span>
+              <span>{t.breakeven}</span>
               <span className="text-[#f59e0b] font-semibold">${breakeven.toFixed(2)}</span>
             </div>
             <div className="flex justify-between text-muted text-[10px]">
-              <span>Max Risk:</span>
-              <span className="text-muted">Premium Paid (100% Capped)</span>
+              <span>{t.maxRisk}</span>
+              <span className="text-muted">{t.maxRiskCapped}</span>
             </div>
           </div>
         </div>
@@ -284,7 +288,7 @@ export const OptionsBoard: React.FC<OptionsBoardProps> = ({
           onClick={() => {
             if (totalCost > userBalance) {
               if (onNotify) {
-                onNotify('warning', 'Недостаточно средств', 'Недостаточно USDC баланса для покупки опциона. Пополните баланс.');
+                onNotify('warning', t.insufficientFundsOptionsTitle, t.insufficientFundsOptionsMsg);
               }
               return;
             }
@@ -298,7 +302,7 @@ export const OptionsBoard: React.FC<OptionsBoardProps> = ({
           }}
           className="w-full py-2.5 bg-[#0ecb81] hover:opacity-90 text-[#080b11] font-bold text-xs rounded transition active:scale-98 shadow-sm"
         >
-          Buy {boardSide} Option (${totalCost.toFixed(2)} USDC)
+          {t.buyOptionAction.replace('{type}', boardSide)} (${totalCost.toFixed(2)} USDC)
         </button>
       </aside>
     </div>

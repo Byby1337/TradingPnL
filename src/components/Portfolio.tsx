@@ -1,19 +1,23 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { TradeHistoryItem } from '../types';
+import { TRANSLATIONS, LanguageCode, Translations } from '../i18n/translations';
 
 interface PortfolioProps {
   userAddress: string | null;
   userBalance: number;
   tradeHistory: TradeHistoryItem[];
   theme: string;
+  currentLang?: string;
 }
 
 export const Portfolio: React.FC<PortfolioProps> = ({
   userAddress,
   userBalance,
   tradeHistory,
-  theme
+  theme,
+  currentLang = 'en'
 }) => {
+  const t: Translations = TRANSLATIONS[(currentLang as LanguageCode) || 'en'] || TRANSLATIONS.en;
   const [filter, setFilter] = useState<'all' | 'perps' | 'options'>('all');
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -120,13 +124,13 @@ export const Portfolio: React.FC<PortfolioProps> = ({
       <div className="max-w-5xl mx-auto space-y-6">
         <div className="border-b border-panel pb-3 font-sans flex justify-between items-end">
           <div>
-            <h1 className="text-lg font-bold text-primary">Portfolio & Performance Analytics</h1>
-            <p className="text-xs text-muted">Real-time balance tracking, flat equity curve, and verified trade settlements.</p>
+            <h1 className="text-lg font-bold text-primary">{t.portfolioTitle}</h1>
+            <p className="text-xs text-muted">{t.portfolioDesc}</p>
           </div>
           <div className="flex gap-2 text-xs font-mono">
-            <span className="text-muted">Account:</span>
+            <span className="text-muted">{t.account}:</span>
             <span className="text-primary font-semibold">
-              {userAddress ? `${userAddress.slice(0, 6)}...${userAddress.slice(-4)}` : 'Not Connected'}
+              {userAddress ? `${userAddress.slice(0, 6)}...${userAddress.slice(-4)}` : t.notConnected}
             </span>
           </div>
         </div>
@@ -134,21 +138,21 @@ export const Portfolio: React.FC<PortfolioProps> = ({
         {/* KPI Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-3 numeric">
           <div className="bg-subpanel border border-panel rounded p-3">
-            <div className="text-muted text-[10px]">Net Equity</div>
+            <div className="text-muted text-[10px]">{t.netEquity}</div>
             <div className="text-base font-bold text-primary">${userBalance.toFixed(2)} USDC</div>
           </div>
           <div className="bg-subpanel border border-panel rounded p-3">
-            <div className="text-muted text-[10px]">Realized PnL</div>
+            <div className="text-muted text-[10px]">{t.realizedPnl}</div>
             <div className={`text-base font-bold ${totalRealized >= 0 ? 'text-[#0ecb81]' : 'text-[#ef4444]'}`}>
               {totalRealized >= 0 ? '+' : ''}${totalRealized.toFixed(2)}
             </div>
           </div>
           <div className="bg-subpanel border border-panel rounded p-3">
-            <div className="text-muted text-[10px]">Win Rate</div>
+            <div className="text-muted text-[10px]">{t.winRate}</div>
             <div className="text-base font-bold text-[#0ecb81]">{winRate}%</div>
           </div>
           <div className="bg-subpanel border border-panel rounded p-3">
-            <div className="text-muted text-[10px]">Total Closed Trades</div>
+            <div className="text-muted text-[10px]">{t.totalClosedTrades}</div>
             <div className="text-base font-bold text-primary">{tradeHistory.length}</div>
           </div>
         </div>
@@ -156,8 +160,8 @@ export const Portfolio: React.FC<PortfolioProps> = ({
         {/* Chart */}
         <div className="bg-subpanel border border-panel rounded p-4 flex flex-col gap-3">
           <div className="flex justify-between items-center font-sans">
-            <span className="font-bold text-primary text-xs">Portfolio Equity Curve</span>
-            <span className="text-muted text-[10px] font-mono">Real Cumulative Settlements</span>
+            <span className="font-bold text-primary text-xs">{t.portfolioEquityCurve}</span>
+            <span className="text-muted text-[10px] font-mono">{t.realSettlements}</span>
           </div>
           <div className="w-full h-44 relative bg-panel rounded border border-panel overflow-hidden">
             <canvas ref={canvasRef} className="w-full h-full block" />
@@ -172,19 +176,19 @@ export const Portfolio: React.FC<PortfolioProps> = ({
                 onClick={() => setFilter('all')}
                 className={`pb-1 ${filter === 'all' ? 'font-bold text-primary border-b-2 border-primary' : 'text-muted hover:text-primary'}`}
               >
-                All Activity
+                {t.allActivity}
               </button>
               <button
                 onClick={() => setFilter('perps')}
                 className={`pb-1 ${filter === 'perps' ? 'font-bold text-primary border-b-2 border-primary' : 'text-muted hover:text-primary'}`}
               >
-                Perpetual Futures
+                {t.perpetualFutures}
               </button>
               <button
                 onClick={() => setFilter('options')}
                 className={`pb-1 ${filter === 'options' ? 'font-bold text-primary border-b-2 border-primary' : 'text-muted hover:text-primary'}`}
               >
-                US 0DTE Options
+                {t.options}
               </button>
             </div>
           </div>
@@ -192,35 +196,35 @@ export const Portfolio: React.FC<PortfolioProps> = ({
           <table className="w-full text-left font-mono text-[11px] numeric">
             <thead>
               <tr className="text-muted border-b border-panel text-[10px] pb-1 font-sans">
-                <th className="pb-1.5 font-normal">Timestamp</th>
-                <th className="pb-1.5 font-normal">Type</th>
-                <th className="pb-1.5 font-normal">Instrument</th>
-                <th className="pb-1.5 font-normal">Side</th>
-                <th className="pb-1.5 font-normal">Size</th>
-                <th className="pb-1.5 font-normal">Entry</th>
-                <th className="pb-1.5 font-normal">Exit</th>
-                <th className="pb-1.5 font-normal text-right">Realized PnL</th>
+                <th className="pb-1.5 font-normal">{t.timestamp}</th>
+                <th className="pb-1.5 font-normal">{t.type}</th>
+                <th className="pb-1.5 font-normal">{t.instrument}</th>
+                <th className="pb-1.5 font-normal">{t.side}</th>
+                <th className="pb-1.5 font-normal">{t.size}</th>
+                <th className="pb-1.5 font-normal">{t.entry}</th>
+                <th className="pb-1.5 font-normal">{t.exit}</th>
+                <th className="pb-1.5 font-normal text-right">{t.realizedPnl}</th>
               </tr>
             </thead>
             <tbody className="divide-y border-panel">
               {filteredTrades.length === 0 ? (
                 <tr>
                   <td colSpan={8} className="py-8 text-center text-muted font-sans text-xs">
-                    No executed trades recorded yet. Open and close positions to see performance analytics.
+                    {t.noExecutedTrades}
                   </td>
                 </tr>
               ) : (
-                filteredTrades.map((t, idx) => (
+                filteredTrades.map((tItem, idx) => (
                   <tr key={idx} className="hover:bg-subpanel">
-                    <td className="py-2 text-muted">{t.timestamp}</td>
-                    <td className="py-2 text-primary font-sans">{t.type}</td>
-                    <td className="py-2 text-primary">{t.instrument}</td>
-                    <td className="py-2 text-muted">{t.side}</td>
-                    <td className="py-2 text-muted">{t.size}</td>
-                    <td className="py-2 text-muted">{t.entry}</td>
-                    <td className="py-2 text-primary">{t.exit}</td>
-                    <td className={`py-2 text-right font-semibold ${t.pnl >= 0 ? 'text-[#0ecb81]' : 'text-[#ef4444]'}`}>
-                      {t.pnl >= 0 ? '+' : ''}${t.pnl.toFixed(2)}
+                    <td className="py-2 text-muted">{tItem.timestamp}</td>
+                    <td className="py-2 text-primary font-sans">{tItem.type}</td>
+                    <td className="py-2 text-primary">{tItem.instrument}</td>
+                    <td className="py-2 text-muted">{tItem.side}</td>
+                    <td className="py-2 text-muted">{tItem.size}</td>
+                    <td className="py-2 text-muted">{tItem.entry}</td>
+                    <td className="py-2 text-primary">{tItem.exit}</td>
+                    <td className={`py-2 text-right font-semibold ${tItem.pnl >= 0 ? 'text-[#0ecb81]' : 'text-[#ef4444]'}`}>
+                      {tItem.pnl >= 0 ? '+' : ''}${tItem.pnl.toFixed(2)}
                     </td>
                   </tr>
                 ))

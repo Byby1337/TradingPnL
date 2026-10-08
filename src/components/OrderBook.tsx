@@ -174,7 +174,7 @@ export const OrderBook: React.FC<OrderBookProps> = ({
                   ${t.price}
                 </span>
                 <span className="text-right text-primary">
-                  {typeof t.size === 'number' ? t.size.toFixed(6) : t.size}
+                  {t.size}
                 </span>
                 <span className="text-right text-muted">{t.time}</span>
               </div>

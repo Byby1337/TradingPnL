@@ -892,6 +892,7 @@ export const App: React.FC = () => {
           onBuyOption={handleBuyOption}
           onCloseOption={handleCloseOption}
           onNotify={(type, title, msg) => showNotification(type, title, msg)}
+          currentLang={currentLang}
         />
       )}
 
@@ -902,6 +903,7 @@ export const App: React.FC = () => {
           onRefreshBalance={() => {
             if (userAddress) fetchUsdcBalance(userAddress);
           }}
+          currentLang={currentLang}
         />
       )}
 
@@ -922,6 +924,7 @@ export const App: React.FC = () => {
           userBalance={userBalance}
           tradeHistory={tradeHistory}
           theme={currentTheme}
+          currentLang={currentLang}
         />
       )}
 
@@ -929,6 +932,7 @@ export const App: React.FC = () => {
         <InfoPage
           type={currentSection}
           onBack={() => setCurrentSection('perpetual')}
+          currentLang={currentLang}
         />
       )}
 

@@ -103,6 +103,113 @@ export interface Translations {
   contributingListDesc: string;
   noActiveParticipants: string;
   youBadge: string;
+
+  // Portfolio
+  portfolioTitle: string;
+  portfolioDesc: string;
+  account: string;
+  notConnected: string;
+  netEquity: string;
+  realizedPnl: string;
+  winRate: string;
+  totalClosedTrades: string;
+  portfolioEquityCurve: string;
+  realSettlements: string;
+  allActivity: string;
+  perpetualFutures: string;
+  timestamp: string;
+  type: string;
+  instrument: string;
+  entry: string;
+  exit: string;
+  noExecutedTrades: string;
+
+  // Options Board
+  marketDirection: string;
+  callsLabel: string;
+  putsLabel: string;
+  spotPriceLabel: string;
+  deribitIv: string;
+  atmLabel: string;
+  deribitPremium: string;
+  breakeven: string;
+  selectStrike: string;
+  selected: string;
+  openContracts: string;
+  settlementIndex: string;
+  contracts: string;
+  entryPremium: string;
+  currentValue: string;
+  noActiveOptions: string;
+  optionTicket: string;
+  pricingRisk: string;
+  premiumCost: string;
+  maxRisk: string;
+  maxRiskCapped: string;
+  buyOptionAction: string;
+  insufficientFundsOptionsTitle: string;
+  insufficientFundsOptionsMsg: string;
+
+  // Liquidity Pools & Vaults
+  liquidityPoolsTitle: string;
+  liveOnChain: string;
+  poolsSubtitle: string;
+  switchNetwork: string;
+  refreshData: string;
+  poolMisconfiguredTitle: string;
+  poolMisconfiguredDesc: string;
+  retryConnection: string;
+  usdcOptionPoolTitle: string;
+  usdcOptionPoolDesc: string;
+  protocolApr: string;
+  totalTvl: string;
+  usdcOnChain: string;
+  availableLiq: string;
+  uncommitted: string;
+  myDeposited: string;
+  lpShares: string;
+  depositUsdc: string;
+  withdrawUsdc: string;
+  amountToDeposit: string;
+  amountToWithdraw: string;
+  expectedLpShares: string;
+  yieldSource: string;
+  yieldSourceVal: string;
+  lockupPeriod: string;
+  noLockup: string;
+  riskProtection: string;
+  riskProtectionVal: string;
+  connectToDeposit: string;
+  switchToArbitrum: string;
+  poolOffline: string;
+  approveUsdc: string;
+  approvingUsdc: string;
+  depositAction: string;
+  depositingUsdc: string;
+  exitFee: string;
+  zeroFee: string;
+  instantTransfer: string;
+  withdrawAction: string;
+  processingWithdraw: string;
+  hourlyProtocolPool: string;
+  activeEpoch: string;
+  revenueStream: string;
+  epochDuration: string;
+  distributionSplit: string;
+  quorumBarrier: string;
+  reserveVault: string;
+  monthlyJackpot: string;
+  firstPlace: string;
+  secondPlace: string;
+  thirdPlace: string;
+  otherPlaces: string;
+  accumulatedPot: string;
+  sharedProRata: string;
+  securityTitle: string;
+  securityDesc: string;
+
+  // Info Common
+  backToTrading: string;
 }
 
 export const TRANSLATIONS: Record<LanguageCode, Translations> = {
@@ -202,7 +309,114 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
     activeEntries: 'active entries',
     contributingListDesc: 'List of trader wallets currently contributing settlement PnL for',
     noActiveParticipants: 'No active participants recorded in the database for this epoch.',
-    youBadge: 'YOU'
+    youBadge: 'YOU',
+
+    // Portfolio
+    portfolioTitle: 'Portfolio & Performance Analytics',
+    portfolioDesc: 'Real-time balance tracking, flat equity curve, and verified trade settlements.',
+    account: 'Account',
+    notConnected: 'Not Connected',
+    netEquity: 'Net Equity',
+    realizedPnl: 'Realized PnL',
+    winRate: 'Win Rate',
+    totalClosedTrades: 'Total Closed Trades',
+    portfolioEquityCurve: 'Portfolio Equity Curve',
+    realSettlements: 'Real Cumulative Settlements',
+    allActivity: 'All Activity',
+    perpetualFutures: 'Perpetual Futures',
+    timestamp: 'Timestamp',
+    type: 'Type',
+    instrument: 'Instrument',
+    entry: 'Entry',
+    exit: 'Exit',
+    noExecutedTrades: 'No executed trades recorded yet. Open and close positions to see performance analytics.',
+
+    // Options Board
+    marketDirection: 'Market Direction:',
+    callsLabel: 'Calls (Price Goes UP ↗)',
+    putsLabel: 'Puts (Price Goes DOWN ↘)',
+    spotPriceLabel: 'Spot Price:',
+    deribitIv: 'Deribit IV:',
+    atmLabel: 'ATM (At The Money)',
+    deribitPremium: 'Deribit Premium:',
+    breakeven: 'Breakeven:',
+    selectStrike: 'Select Strike',
+    selected: 'Selected',
+    openContracts: 'Open Option Contracts',
+    settlementIndex: 'Settlement: Spot Index Mark',
+    contracts: 'Contracts',
+    entryPremium: 'Entry Premium',
+    currentValue: 'Current Value',
+    noActiveOptions: 'No active options contracts. Select a strike card to open a position.',
+    optionTicket: 'Option Order Ticket',
+    pricingRisk: 'Pricing & Risk',
+    premiumCost: 'Premium Cost:',
+    maxRisk: 'Max Risk:',
+    maxRiskCapped: 'Premium Paid (100% Capped)',
+    buyOptionAction: 'Buy {type} Option',
+    insufficientFundsOptionsTitle: 'Insufficient Funds',
+    insufficientFundsOptionsMsg: 'Insufficient USDC balance to purchase option. Please deposit funds.',
+
+    // Liquidity Pools & Vaults
+    liquidityPoolsTitle: 'Liquidity Pools & Protocol Vaults',
+    liveOnChain: 'Live On-Chain',
+    poolsSubtitle: 'Single-asset USDC underwriting pool for US 0DTE options and pair-isolated hourly lottery streams.',
+    switchNetwork: 'Switch Network',
+    refreshData: 'Refresh on-chain data',
+    poolMisconfiguredTitle: 'Pool Not Detected on Current Network',
+    poolMisconfiguredDesc: 'The liquidity pool is not responding on the connected provider. Please ensure your wallet is connected to Arbitrum Sepolia (Chain ID: 421614).',
+    retryConnection: 'Retry Connection',
+    usdcOptionPoolTitle: 'USDC Option Liquidity Pool',
+    usdcOptionPoolDesc: 'Automated 0DTE & 1-Hour Cash-Settled Underwriting',
+    protocolApr: 'Protocol APR:',
+    totalTvl: 'Total TVL',
+    usdcOnChain: 'USDC On-Chain',
+    availableLiq: 'Available Liq.',
+    uncommitted: 'Uncommitted',
+    myDeposited: 'My Deposited',
+    lpShares: 'LP Shares',
+    depositUsdc: 'Deposit USDC',
+    withdrawUsdc: 'Withdraw USDC',
+    amountToDeposit: 'Amount to Deposit (USDC):',
+    amountToWithdraw: 'Amount to Withdraw (USDC):',
+    expectedLpShares: 'Expected LP Shares:',
+    yieldSource: 'Yield Source:',
+    yieldSourceVal: '0DTE Option Premiums + 15% Edge Retention',
+    lockupPeriod: 'Lockup Period:',
+    noLockup: 'None (Continuous Settlement)',
+    riskProtection: 'Risk Protection:',
+    riskProtectionVal: '15% Max Open Interest Cap Enforced',
+    connectToDeposit: 'Connect Web3 Wallet to Deposit',
+    switchToArbitrum: 'Switch Wallet Network to Arbitrum Sepolia',
+    poolOffline: 'Pool Offline on Network — Click to Re-check',
+    approveUsdc: 'Step 1: Approve USDC for Pool',
+    approvingUsdc: 'Approving USDC in MetaMask...',
+    depositAction: 'Step 2: Deposit {amount} USDC into Pool',
+    depositingUsdc: 'Confirming Deposit in MetaMask...',
+    exitFee: 'Exit Fee:',
+    zeroFee: '0.0% (Zero Protocol Tax)',
+    instantTransfer: 'Instant On-Chain Transfer',
+    withdrawAction: 'Withdraw USDC to Wallet',
+    processingWithdraw: 'Processing Withdrawal...',
+    hourlyProtocolPool: 'Hourly Protocol Pool',
+    activeEpoch: 'Active Epoch',
+    revenueStream: 'Revenue Stream:',
+    epochDuration: 'Epoch Duration:',
+    distributionSplit: 'Distribution Split:',
+    quorumBarrier: 'Quorum Barrier:',
+    reserveVault: '30-Day Reserve Vault',
+    monthlyJackpot: 'Monthly Jackpot',
+    firstPlace: '1st Place:',
+    secondPlace: '2nd Place:',
+    thirdPlace: '3rd Place:',
+    otherPlaces: '4th - 10th Place:',
+    accumulatedPot: 'of Accumulated Pot',
+    sharedProRata: '30% Shared Pro-Rata',
+    securityTitle: 'Aegis Sentinel Protocol Security',
+    securityDesc: 'Liquidity pool collateral is protected by on-chain circuit breakers, reentrancy guards, and max 15% open interest limits against adverse volatility spikes.',
+
+    // Info Common
+    backToTrading: 'Back to Trading'
   },
 
   ru: {
@@ -301,7 +515,114 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
     activeEntries: 'активных записей',
     contributingListDesc: 'Список кошельков трейдеров, формирующих расчетный PnL для',
     noActiveParticipants: 'В этой эпохе пока нет активных участников в базе данных.',
-    youBadge: 'ВЫ'
+    youBadge: 'ВЫ',
+
+    // Portfolio
+    portfolioTitle: 'Портфель и аналитика эффективности',
+    portfolioDesc: 'Отслеживание баланса в реальном времени, кривая капитала и верифицированные расчеты сделок.',
+    account: 'Аккаунт',
+    notConnected: 'Не подключен',
+    netEquity: 'Чистый капитал',
+    realizedPnl: 'Реализованный PnL',
+    winRate: 'Винрейт',
+    totalClosedTrades: 'Всего закрытых сделок',
+    portfolioEquityCurve: 'Кривая капитала портфеля',
+    realSettlements: 'Реальные кумулятивные расчеты',
+    allActivity: 'Вся активность',
+    perpetualFutures: 'Бессрочные фьючерсы',
+    timestamp: 'Время',
+    type: 'Тип',
+    instrument: 'Инструмент',
+    entry: 'Вход',
+    exit: 'Выход',
+    noExecutedTrades: 'Исполненных сделок пока нет. Открывайте и закрывайте позиции для просмотра аналитики.',
+
+    // Options Board
+    marketDirection: 'Направление рынка:',
+    callsLabel: 'Коллы (Цена РАСТЕТ ↗)',
+    putsLabel: 'Путы (Цена ПАДАЕТ ↘)',
+    spotPriceLabel: 'Спот-цена:',
+    deribitIv: 'Deribit IV:',
+    atmLabel: 'ATM (На деньгах)',
+    deribitPremium: 'Премия Deribit:',
+    breakeven: 'Безубыток:',
+    selectStrike: 'Выбрать страйк',
+    selected: 'Выбран',
+    openContracts: 'Открытые опционные контракты',
+    settlementIndex: 'Расчет: Маркировка спот-индекса',
+    contracts: 'Контракты',
+    entryPremium: 'Премия входа',
+    currentValue: 'Текущая стоимость',
+    noActiveOptions: 'Нет активных опционных контрактов. Выберите карточку страйка для открытия позиции.',
+    optionTicket: 'Тикет опционного ордера',
+    pricingRisk: 'Ценообразование и риск',
+    premiumCost: 'Стоимость премии:',
+    maxRisk: 'Макс. риск:',
+    maxRiskCapped: 'Уплаченная премия (100% ограничено)',
+    buyOptionAction: 'Купить опцион {type}',
+    insufficientFundsOptionsTitle: 'Недостаточно средств',
+    insufficientFundsOptionsMsg: 'Недостаточно USDC баланса для покупки опциона. Пополните баланс.',
+
+    // Liquidity Pools & Vaults
+    liquidityPoolsTitle: 'Пулы ликвидности и хранилища протокола',
+    liveOnChain: 'В сети ончейн',
+    poolsSubtitle: 'Пул андеррайтинга USDC с одним активом для опционов 0DTE и изолированных почасовых потоков.',
+    switchNetwork: 'Сменить сеть',
+    refreshData: 'Обновить ончейн данные',
+    poolMisconfiguredTitle: 'Пул не обнаружен в текущей сети',
+    poolMisconfiguredDesc: 'Пул ликвидности не отвечает на подключенном провайдере. Убедитесь, что ваш кошелек подключен к Arbitrum Sepolia (Chain ID: 421614).',
+    retryConnection: 'Повторить подключение',
+    usdcOptionPoolTitle: 'Пул ликвидности опционов USDC',
+    usdcOptionPoolDesc: 'Автоматизированный расчет опционов 0DTE и 1-часовых контрактов',
+    protocolApr: 'APR протокола:',
+    totalTvl: 'Общий TVL',
+    usdcOnChain: 'USDC в сети',
+    availableLiq: 'Доступная ликвидность',
+    uncommitted: 'Свободно',
+    myDeposited: 'Мой депозит',
+    lpShares: 'Доли LP',
+    depositUsdc: 'Депозит USDC',
+    withdrawUsdc: 'Вывод USDC',
+    amountToDeposit: 'Сумма депозита (USDC):',
+    amountToWithdraw: 'Сумма вывода (USDC):',
+    expectedLpShares: 'Ожидаемые LP доли:',
+    yieldSource: 'Источник доходности:',
+    yieldSourceVal: 'Премии опционов 0DTE + удержание маржи 15%',
+    lockupPeriod: 'Период блокировки:',
+    noLockup: 'Отсутствует (непрерывный расчет)',
+    riskProtection: 'Защита от риска:',
+    riskProtectionVal: 'Лимит открытого интереса 15%',
+    connectToDeposit: 'Подключите Web3 кошелек для депозита',
+    switchToArbitrum: 'Переключите сеть кошелька на Arbitrum Sepolia',
+    poolOffline: 'Пул не в сети — Нажмите для повторной проверки',
+    approveUsdc: 'Шаг 1: Одобрить USDC для пула',
+    approvingUsdc: 'Одобрение USDC в MetaMask...',
+    depositAction: 'Шаг 2: Внести {amount} USDC в пул',
+    depositingUsdc: 'Подтверждение депозита в MetaMask...',
+    exitFee: 'Комиссия за выход:',
+    zeroFee: '0.0% (Без комиссии протокола)',
+    instantTransfer: 'Мгновенный ончейн перевод',
+    withdrawAction: 'Вывести USDC на кошелек',
+    processingWithdraw: 'Обработка вывода...',
+    hourlyProtocolPool: 'Почасовой протокольный пул',
+    activeEpoch: 'Активная эпоха',
+    revenueStream: 'Поток выручки:',
+    epochDuration: 'Длительность эпохи:',
+    distributionSplit: 'Распределение выплат:',
+    quorumBarrier: 'Барьер кворума:',
+    reserveVault: '30-дневное резервное хранилище',
+    monthlyJackpot: 'Ежемесячный джекпот',
+    firstPlace: '1-е место:',
+    secondPlace: '2-е место:',
+    thirdPlace: '3-е место:',
+    otherPlaces: '4-е - 10-е место:',
+    accumulatedPot: 'от накопленного пула',
+    sharedProRata: '30% пропорционально',
+    securityTitle: 'Безопасность протокола Aegis Sentinel',
+    securityDesc: 'Залог пула ликвидности защищен автоматическими предохранителями, защитой от повторного входа и лимитом открытого интереса 15%.',
+
+    // Info Common
+    backToTrading: 'Назад к торговле'
   },
 
   zh: {
@@ -400,7 +721,114 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
     activeEntries: '个活跃条目',
     contributingListDesc: '当前为以下标的贡献结算PnL的交易者钱包列表：',
     noActiveParticipants: '当前轮次数据库中暂无活跃参与者记录。',
-    youBadge: '您'
+    youBadge: '您',
+
+    // Portfolio
+    portfolioTitle: '投资组合与绩效分析',
+    portfolioDesc: '实时余额追踪、平稳资金曲线与链上结算记录。',
+    account: '账户',
+    notConnected: '未连接',
+    netEquity: '净资产',
+    realizedPnl: '已实现盈亏',
+    winRate: '胜率',
+    totalClosedTrades: '已平仓交易总数',
+    portfolioEquityCurve: '资金权益曲线',
+    realSettlements: '真实累积结算',
+    allActivity: '全部活动',
+    perpetualFutures: '永续合约',
+    timestamp: '时间',
+    type: '类型',
+    instrument: '标的',
+    entry: '开仓价',
+    exit: '平仓价',
+    noExecutedTrades: '暂无已执行交易。开仓与平仓后即可查看绩效分析。',
+
+    // Options Board
+    marketDirection: '市场方向:',
+    callsLabel: '看涨期权 (看涨 ↗)',
+    putsLabel: '看跌期权 (看跌 ↘)',
+    spotPriceLabel: '现货价格:',
+    deribitIv: 'Deribit 隐含波动率:',
+    atmLabel: '平值 (ATM)',
+    deribitPremium: 'Deribit 权利金:',
+    breakeven: '损益平衡点:',
+    selectStrike: '选择行权价',
+    selected: '已选择',
+    openContracts: '持仓期权合约',
+    settlementIndex: '结算依据: 现货指数标记',
+    contracts: '合约张数',
+    entryPremium: '开仓权利金',
+    currentValue: '当前价值',
+    noActiveOptions: '暂无持仓期权。选择上方行权价卡片即可开仓。',
+    optionTicket: '期权下单面板',
+    pricingRisk: '定价与风险',
+    premiumCost: '权利金成本:',
+    maxRisk: '最大风险:',
+    maxRiskCapped: '已付权利金 (100% 封顶)',
+    buyOptionAction: '买入 {type} 期权',
+    insufficientFundsOptionsTitle: '余额不足',
+    insufficientFundsOptionsMsg: 'USDC 余额不足以购买期权，请先充值。',
+
+    // Liquidity Pools & Vaults
+    liquidityPoolsTitle: '流动性池与协议金库',
+    liveOnChain: '链上实时运行',
+    poolsSubtitle: 'USDC 单币期权承兑池及每小时隔离抽奖流。',
+    switchNetwork: '切换网络',
+    refreshData: '刷新链上数据',
+    poolMisconfiguredTitle: '当前网络未检测到流动性池',
+    poolMisconfiguredDesc: '连接的节点未响应流动性池合约，请确保钱包连接至 Arbitrum Sepolia (Chain ID: 421614)。',
+    retryConnection: '重试连接',
+    usdcOptionPoolTitle: 'USDC 期权流动性池',
+    usdcOptionPoolDesc: '0DTE 与 1 小时现金结算自动化承兑',
+    protocolApr: '协议 APR:',
+    totalTvl: '总锁仓量 (TVL)',
+    usdcOnChain: '链上 USDC',
+    availableLiq: '可用流动性',
+    uncommitted: '未占用',
+    myDeposited: '我的存入',
+    lpShares: 'LP 份额',
+    depositUsdc: '存入 USDC',
+    withdrawUsdc: '提取 USDC',
+    amountToDeposit: '存入金额 (USDC):',
+    amountToWithdraw: '提取金额 (USDC):',
+    expectedLpShares: '预计获得 LP 份额:',
+    yieldSource: '收益来源:',
+    yieldSourceVal: '0DTE 期权权利金 + 15% 边际留存',
+    lockupPeriod: '锁定期:',
+    noLockup: '无锁定期 (连续结算)',
+    riskProtection: '风险保护:',
+    riskProtectionVal: '强制执行 15% 最大持仓量上限',
+    connectToDeposit: '连接 Web3 钱包以存入',
+    switchToArbitrum: '将钱包网络切换至 Arbitrum Sepolia',
+    poolOffline: '池离线 — 点击重试',
+    approveUsdc: '第 1 步: 授权 USDC 给池',
+    approvingUsdc: '正在 MetaMask 中授权 USDC...',
+    depositAction: '第 2 步: 存入 {amount} USDC 到池',
+    depositingUsdc: '正在 MetaMask 中确认存入...',
+    exitFee: '退出手续费:',
+    zeroFee: '0.0% (零协议税)',
+    instantTransfer: '即时链上转账',
+    withdrawAction: '提取 USDC 到钱包',
+    processingWithdraw: '正在处理提取...',
+    hourlyProtocolPool: '每小时协议池',
+    activeEpoch: '进行中纪元',
+    revenueStream: '收益流:',
+    epochDuration: '纪元周期:',
+    distributionSplit: '分配比例:',
+    quorumBarrier: '人数门槛:',
+    reserveVault: '30 天储备金库',
+    monthlyJackpot: '每月大奖',
+    firstPlace: '第 1 名:',
+    secondPlace: '第 2 名:',
+    thirdPlace: '第 3 名:',
+    otherPlaces: '第 4 - 10 名:',
+    accumulatedPot: '占累积奖池',
+    sharedProRata: '30% 按比例均分',
+    securityTitle: 'Aegis 哨兵协议安全系统',
+    securityDesc: '流动性池质押资产受链上熔断机制、防重入保护及 15% 未平仓量上限保护。',
+
+    // Info Common
+    backToTrading: '返回交易'
   },
 
   es: {
@@ -499,7 +927,114 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
     activeEntries: 'entradas activas',
     contributingListDesc: 'Lista de billeteras que contribuyen PnL para',
     noActiveParticipants: 'No hay participantes activos registrados en la base de datos para esta época.',
-    youBadge: 'TÚ'
+    youBadge: 'TÚ',
+
+    // Portfolio
+    portfolioTitle: 'Portafolio y Análisis de Rendimiento',
+    portfolioDesc: 'Seguimiento de saldo en tiempo real, curva de capital y liquidaciones verificadas.',
+    account: 'Cuenta',
+    notConnected: 'No Conectado',
+    netEquity: 'Patrimonio Neto',
+    realizedPnl: 'PnL Realizado',
+    winRate: 'Tasa de Acierto',
+    totalClosedTrades: 'Operaciones Cerradas',
+    portfolioEquityCurve: 'Curva de Capital del Portafolio',
+    realSettlements: 'Liquidaciones Reales Acumuladas',
+    allActivity: 'Toda la Actividad',
+    perpetualFutures: 'Futuros Perpetuos',
+    timestamp: 'Fecha/Hora',
+    type: 'Tipo',
+    instrument: 'Instrumento',
+    entry: 'Entrada',
+    exit: 'Salida',
+    noExecutedTrades: 'Aún no hay operaciones registradas. Abra y cierre posiciones para ver las estadísticas.',
+
+    // Options Board
+    marketDirection: 'Dirección del Mercado:',
+    callsLabel: 'Calls (El precio SUBE ↗)',
+    putsLabel: 'Puts (El precio BAJA ↘)',
+    spotPriceLabel: 'Precio Spot:',
+    deribitIv: 'Deribit IV:',
+    atmLabel: 'ATM (En el Dinero)',
+    deribitPremium: 'Prima Deribit:',
+    breakeven: 'Punto de Equilibrio:',
+    selectStrike: 'Seleccionar Strike',
+    selected: 'Seleccionado',
+    openContracts: 'Contratos de Opciones Abiertos',
+    settlementIndex: 'Liquidación: Marca del Índice Spot',
+    contracts: 'Contratos',
+    entryPremium: 'Prima de Entrada',
+    currentValue: 'Valor Actual',
+    noActiveOptions: 'No hay contratos de opciones activos. Seleccione un strike para abrir posición.',
+    optionTicket: 'Ticket de Orden de Opción',
+    pricingRisk: 'Precios y Riesgo',
+    premiumCost: 'Costo de la Prima:',
+    maxRisk: 'Riesgo Máximo:',
+    maxRiskCapped: 'Prima Pagada (100% Limitado)',
+    buyOptionAction: 'Comprar Opción {type}',
+    insufficientFundsOptionsTitle: 'Fondos Insuficientes',
+    insufficientFundsOptionsMsg: 'Saldo USDC insuficiente para comprar la opción. Por favor deposite fondos.',
+
+    // Liquidity Pools & Vaults
+    liquidityPoolsTitle: 'Pools de Liquidez y Bóvedas del Protocolo',
+    liveOnChain: 'En Cadena Activo',
+    poolsSubtitle: 'Pool de suscripción USDC de activo único para opciones 0DTE y lotería por hora.',
+    switchNetwork: 'Cambiar Red',
+    refreshData: 'Actualizar datos on-chain',
+    poolMisconfiguredTitle: 'Pool no detectado en la red actual',
+    poolMisconfiguredDesc: 'El pool de liquidez no responde. Asegúrese de que su billetera esté conectada a Arbitrum Sepolia (Chain ID: 421614).',
+    retryConnection: 'Reintentar Conexión',
+    usdcOptionPoolTitle: 'Pool de Liquidez de Opciones USDC',
+    usdcOptionPoolDesc: 'Suscripción automatizada de opciones 0DTE y liquidación de 1 hora en efectivo',
+    protocolApr: 'APR del Protocolo:',
+    totalTvl: 'TVL Total',
+    usdcOnChain: 'USDC en Cadena',
+    availableLiq: 'Liquidez Disponible',
+    uncommitted: 'Sin Comprometer',
+    myDeposited: 'Mi Depósito',
+    lpShares: 'Participaciones LP',
+    depositUsdc: 'Depositar USDC',
+    withdrawUsdc: 'Retirar USDC',
+    amountToDeposit: 'Cantidad a Depositar (USDC):',
+    amountToWithdraw: 'Cantidad a Retirar (USDC):',
+    expectedLpShares: 'Participaciones LP Estimadas:',
+    yieldSource: 'Fuente de Rendimiento:',
+    yieldSourceVal: 'Primas de Opciones 0DTE + 15% Retención de Margen',
+    lockupPeriod: 'Período de Bloqueo:',
+    noLockup: 'Ninguno (Liquidación Continua)',
+    riskProtection: 'Protección de Riesgo:',
+    riskProtectionVal: 'Límite Máximo de Interés Abierto del 15%',
+    connectToDeposit: 'Conectar Billetera Web3 para Depositar',
+    switchToArbitrum: 'Cambiar Red a Arbitrum Sepolia',
+    poolOffline: 'Pool Desconectado — Clic para reintentar',
+    approveUsdc: 'Paso 1: Aprobar USDC para el Pool',
+    approvingUsdc: 'Aprobando USDC en MetaMask...',
+    depositAction: 'Paso 2: Depositar {amount} USDC en el Pool',
+    depositingUsdc: 'Confirmando Depósito en MetaMask...',
+    exitFee: 'Comisión de Salida:',
+    zeroFee: '0.0% (Cero Impuesto del Protocolo)',
+    instantTransfer: 'Transferencia Inmediata en Cadena',
+    withdrawAction: 'Retirar USDC a la Billetera',
+    processingWithdraw: 'Procesando Retiro...',
+    hourlyProtocolPool: 'Pool del Protocolo por Hora',
+    activeEpoch: 'Época Activa',
+    revenueStream: 'Flujo de Ingresos:',
+    epochDuration: 'Duración de Época:',
+    distributionSplit: 'División de Distribución:',
+    quorumBarrier: 'Barrera de Quórum:',
+    reserveVault: 'Bóveda de Reserva de 30 Días',
+    monthlyJackpot: 'Bote Mensual',
+    firstPlace: '1er Lugar:',
+    secondPlace: '2do Lugar:',
+    thirdPlace: '3er Lugar:',
+    otherPlaces: '4to - 10mo Lugar:',
+    accumulatedPot: 'del Bote Acumulado',
+    sharedProRata: '30% Compartido Pro-Rata',
+    securityTitle: 'Seguridad del Protocolo Aegis Sentinel',
+    securityDesc: 'El colateral del pool está protegido por cortafuegos on-chain, defensas contra reentrancia y límite del 15% de interés abierto.',
+
+    // Info Common
+    backToTrading: 'Volver a Operar'
   },
 
   fr: {
@@ -598,7 +1133,114 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
     activeEntries: 'entrées actives',
     contributingListDesc: 'Liste des portefeuilles contribuant au PnL pour',
     noActiveParticipants: 'Aucun participant actif enregistré dans la base de données pour cette époque.',
-    youBadge: 'VOUS'
+    youBadge: 'VOUS',
+
+    // Portfolio
+    portfolioTitle: 'Portefeuille et Analyses de Performance',
+    portfolioDesc: 'Suivi du solde en temps réel, courbe de capital et règlements de transactions vérifiés.',
+    account: 'Compte',
+    notConnected: 'Non Connecté',
+    netEquity: 'Capitaux Propres',
+    realizedPnl: 'PnL Réalisé',
+    winRate: 'Taux de Réussite',
+    totalClosedTrades: 'Total Transactions Clôturées',
+    portfolioEquityCurve: 'Courbe de Capital du Portefeuille',
+    realSettlements: 'Règlements Cumulés Réels',
+    allActivity: 'Toute l\'Activité',
+    perpetualFutures: 'Contrats Perpétuels',
+    timestamp: 'Horodatage',
+    type: 'Type',
+    instrument: 'Instrument',
+    entry: 'Entrée',
+    exit: 'Sortie',
+    noExecutedTrades: 'Aucune transaction enregistrée. Ouvrez et fermez des positions pour afficher vos statistiques.',
+
+    // Options Board
+    marketDirection: 'Direction du Marché :',
+    callsLabel: 'Calls (Le Prix MONTE ↗)',
+    putsLabel: 'Puts (Le Prix BAISSE ↘)',
+    spotPriceLabel: 'Prix Spot :',
+    deribitIv: 'Deribit IV :',
+    atmLabel: 'ATM (À la monnaie)',
+    deribitPremium: 'Prime Deribit :',
+    breakeven: 'Seuil de Rentabilité :',
+    selectStrike: 'Choisir le Strike',
+    selected: 'Sélectionné',
+    openContracts: 'Contrats d\'Options Ouverts',
+    settlementIndex: 'Règlement : Marque de l\'Indice Spot',
+    contracts: 'Contrats',
+    entryPremium: 'Prime d\'Entrée',
+    currentValue: 'Valeur Actuelle',
+    noActiveOptions: 'Aucun contrat d\'option actif. Sélectionnez une carte de strike pour ouvrir une position.',
+    optionTicket: 'Ticket d\'Ordre d\'Option',
+    pricingRisk: 'Tarification et Risque',
+    premiumCost: 'Coût de la Prime :',
+    maxRisk: 'Risque Maximal :',
+    maxRiskCapped: 'Prime Payée (Plafonné à 100%)',
+    buyOptionAction: 'Acheter Option {type}',
+    insufficientFundsOptionsTitle: 'Fonds Insuffisants',
+    insufficientFundsOptionsMsg: 'Solde USDC insuffisant pour acheter l\'option. Veuillez déposer des fonds.',
+
+    // Liquidity Pools & Vaults
+    liquidityPoolsTitle: 'Pools de Liquidité et Coffres du Protocole',
+    liveOnChain: 'En Ligne On-Chain',
+    poolsSubtitle: 'Pool de souscription USDC mono-actif pour options 0DTE et tirages horaires isolés.',
+    switchNetwork: 'Changer de Réseau',
+    refreshData: 'Actualiser les données on-chain',
+    poolMisconfiguredTitle: 'Pool non détecté sur le réseau actuel',
+    poolMisconfiguredDesc: 'Le pool de liquidité ne répond pas. Vérifiez que votre portefeuille est connecté à Arbitrum Sepolia (Chain ID: 421614).',
+    retryConnection: 'Réessayer la Connexion',
+    usdcOptionPoolTitle: 'Pool de Liquidité d\'Options USDC',
+    usdcOptionPoolDesc: 'Souscription automatisée d\'options 0DTE et règlement en espèces sous 1 heure',
+    protocolApr: 'APR du Protocole :',
+    totalTvl: 'TVL Total',
+    usdcOnChain: 'USDC On-Chain',
+    availableLiq: 'Liquidité Disponible',
+    uncommitted: 'Non Engagé',
+    myDeposited: 'Mon Dépôt',
+    lpShares: 'Parts LP',
+    depositUsdc: 'Déposer USDC',
+    withdrawUsdc: 'Retirer USDC',
+    amountToDeposit: 'Montant à Déposer (USDC) :',
+    amountToWithdraw: 'Montant à Retirer (USDC) :',
+    expectedLpShares: 'Parts LP Estimées :',
+    yieldSource: 'Source de Rendement :',
+    yieldSourceVal: 'Primes d\'Options 0DTE + Rétention de Marge de 15%',
+    lockupPeriod: 'Période de Blocage :',
+    noLockup: 'Aucune (Règlement Continu)',
+    riskProtection: 'Protection contre le Risque :',
+    riskProtectionVal: 'Plafond d\'Intérêt Ouvert Max de 15% Appliqué',
+    connectToDeposit: 'Connecter Portefeuille Web3 pour Déposer',
+    switchToArbitrum: 'Basculer le Réseau sur Arbitrum Sepolia',
+    poolOffline: 'Pool Hors Ligne — Cliquer pour revérifier',
+    approveUsdc: 'Étape 1 : Approuver USDC pour le Pool',
+    approvingUsdc: 'Approbation USDC dans MetaMask...',
+    depositAction: 'Étape 2 : Déposer {amount} USDC dans le Pool',
+    depositingUsdc: 'Confirmation du Dépôt dans MetaMask...',
+    exitFee: 'Frais de Sortie :',
+    zeroFee: '0.0% (Zéro Taxe Protocole)',
+    instantTransfer: 'Transfert On-Chain Instantané',
+    withdrawAction: 'Retirer USDC vers le Portefeuille',
+    processingWithdraw: 'Traitement du Retrait...',
+    hourlyProtocolPool: 'Pool Horaire du Protocole',
+    activeEpoch: 'Époque Active',
+    revenueStream: 'Flux de Revenus :',
+    epochDuration: 'Durée de l\'Époque :',
+    distributionSplit: 'Répartition des Gains :',
+    quorumBarrier: 'Quorum Minimum :',
+    reserveVault: 'Coffre de Réserve 30 Jours',
+    monthlyJackpot: 'Jackpot Mensuel',
+    firstPlace: '1ère Place :',
+    secondPlace: '2ème Place :',
+    thirdPlace: '3ème Place :',
+    otherPlaces: '4ème - 10ème Place :',
+    accumulatedPot: 'du Jackpot Accumulé',
+    sharedProRata: '30% Partagé au Pro-Rata',
+    securityTitle: 'Sécurité du Protocole Aegis Sentinel',
+    securityDesc: 'Le collatéral est protégé par des disjoncteurs on-chain, des gardes anti-réentrance et une limite d\'intérêt ouvert de 15%.',
+
+    // Info Common
+    backToTrading: 'Retour au Trading'
   },
 
   de: {
@@ -697,7 +1339,114 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
     activeEntries: 'aktive Einträge',
     contributingListDesc: 'Liste der Trader-Wallets, die Abrechnungs-PnL beitragen für',
     noActiveParticipants: 'Für diese Epoche sind keine aktiven Teilnehmer in der Datenbank registriert.',
-    youBadge: 'DU'
+    youBadge: 'DU',
+
+    // Portfolio
+    portfolioTitle: 'Portfolio & Performance-Analyse',
+    portfolioDesc: 'Echtzeit-Guthabenüberwachung, flache Eigenkapitalkurve und verifizierte Abrechnungen.',
+    account: 'Konto',
+    notConnected: 'Nicht Verbunden',
+    netEquity: 'Netto-Eigenkapital',
+    realizedPnl: 'Realisierter PnL',
+    winRate: 'Gewinnrate',
+    totalClosedTrades: 'Geschlossene Trades Gesamt',
+    portfolioEquityCurve: 'Portfolio-Eigenkapitalkurve',
+    realSettlements: 'Echte Kumulative Abrechnungen',
+    allActivity: 'Alle Aktivitäten',
+    perpetualFutures: 'Perpetual Futures',
+    timestamp: 'Zeitstempel',
+    type: 'Typ',
+    instrument: 'Instrument',
+    entry: 'Einstieg',
+    exit: 'Ausstieg',
+    noExecutedTrades: 'Bisher keine ausgeführten Trades. Öffnen und schließen Sie Positionen für Analysen.',
+
+    // Options Board
+    marketDirection: 'Marktrichtung:',
+    callsLabel: 'Calls (Kurs STEIGT ↗)',
+    putsLabel: 'Puts (Kurs FÄLLT ↘)',
+    spotPriceLabel: 'Spot-Preis:',
+    deribitIv: 'Deribit IV:',
+    atmLabel: 'ATM (Am Geld)',
+    deribitPremium: 'Deribit-Prämie:',
+    breakeven: 'Breakeven:',
+    selectStrike: 'Strike Wählen',
+    selected: 'Ausgewählt',
+    openContracts: 'Offene Optionskontrakte',
+    settlementIndex: 'Abrechnung: Spot-Index Markierung',
+    contracts: 'Kontrakte',
+    entryPremium: 'Einstiegsprämie',
+    currentValue: 'Aktueller Wert',
+    noActiveOptions: 'Keine aktiven Optionskontrakte. Wählen Sie einen Strike, um eine Position zu eröffnen.',
+    optionTicket: 'Options-Orderticket',
+    pricingRisk: 'Preise & Risiko',
+    premiumCost: 'Prämienkosten:',
+    maxRisk: 'Maximales Risiko:',
+    maxRiskCapped: 'Bezahlte Prämie (100% Gedeckelt)',
+    buyOptionAction: '{type}-Option Kaufen',
+    insufficientFundsOptionsTitle: 'Unzureichendes Guthaben',
+    insufficientFundsOptionsMsg: 'Unzureichendes USDC-Guthaben zum Kauf der Option. Bitte Guthaben einzahlen.',
+
+    // Liquidity Pools & Vaults
+    liquidityPoolsTitle: 'Liquiditätspools & Protokoll-Tresore',
+    liveOnChain: 'Live On-Chain',
+    poolsSubtitle: 'Einzelfonds-USDC-Underwriting-Pool für 0DTE-Optionen und stündliche Lotterieströme.',
+    switchNetwork: 'Netzwerk Wechseln',
+    refreshData: 'On-Chain-Daten aktualisieren',
+    poolMisconfiguredTitle: 'Pool im aktuellen Netzwerk nicht gefunden',
+    poolMisconfiguredDesc: 'Der Liquiditätspool antwortet nicht. Bitte stellen Sie sicher, dass Ihre Wallet mit Arbitrum Sepolia (Chain ID: 421614) verbunden ist.',
+    retryConnection: 'Verbindung Wiederholen',
+    usdcOptionPoolTitle: 'USDC-Options-Liquiditätspool',
+    usdcOptionPoolDesc: 'Automatisiertes 0DTE & 1-Stunden-Cash-Settlement Underwriting',
+    protocolApr: 'Protokoll-APR:',
+    totalTvl: 'Gesamter TVL',
+    usdcOnChain: 'USDC On-Chain',
+    availableLiq: 'Verfügbare Liquidität',
+    uncommitted: 'Nicht Gebunden',
+    myDeposited: 'Meine Einzahlung',
+    lpShares: 'LP-Anteile',
+    depositUsdc: 'USDC Einzahlen',
+    withdrawUsdc: 'USDC Auszahlen',
+    amountToDeposit: 'Einzahlungsbetrag (USDC):',
+    amountToWithdraw: 'Auszahlungsbetrag (USDC):',
+    expectedLpShares: 'Erwartete LP-Anteile:',
+    yieldSource: 'Renditequelle:',
+    yieldSourceVal: '0DTE Optionsprämien + 15% Margeneinbehalt',
+    lockupPeriod: 'Sperrfrist:',
+    noLockup: 'Keine (Kontinuierliche Abrechnung)',
+    riskProtection: 'Risikoschutz:',
+    riskProtectionVal: '15% Max Open-Interest-Limit Durchgesetzt',
+    connectToDeposit: 'Web3-Wallet Verbinden zum Einzahlen',
+    switchToArbitrum: 'Netzwerk zu Arbitrum Sepolia Wechseln',
+    poolOffline: 'Pool Offline — Klicken zum Wiederholen',
+    approveUsdc: 'Schritt 1: USDC für Pool Freigeben',
+    approvingUsdc: 'USDC in MetaMask freigeben...',
+    depositAction: 'Schritt 2: {amount} USDC in Pool Einzahlen',
+    depositingUsdc: 'Einzahlung in MetaMask bestätigen...',
+    exitFee: 'Ausstiegsgebühr:',
+    zeroFee: '0.0% (Keine Protokollgebühr)',
+    instantTransfer: 'Sofortiger On-Chain-Transfer',
+    withdrawAction: 'USDC auf Wallet Auszahlen',
+    processingWithdraw: 'Auszahlung wird verarbeitet...',
+    hourlyProtocolPool: 'Stündlicher Protokoll-Pool',
+    activeEpoch: 'Aktive Epoche',
+    revenueStream: 'Einnahmequelle:',
+    epochDuration: 'Epochendauer:',
+    distributionSplit: 'Ausschüttungsaufteilung:',
+    quorumBarrier: 'Quorum-Schwelle:',
+    reserveVault: '30-Tage Reserve-Tresor',
+    monthlyJackpot: 'Monatlicher Jackpot',
+    firstPlace: '1. Platz:',
+    secondPlace: '2. Platz:',
+    thirdPlace: '3. Platz:',
+    otherPlaces: '4. - 10. Platz:',
+    accumulatedPot: 'des Gesammelten Pots',
+    sharedProRata: '30% Pro-Rata Geteilt',
+    securityTitle: 'Aegis Sentinel Protokollsicherheit',
+    securityDesc: 'Pool-Sicherheiten sind durch On-Chain-Trennschalter, Reentrancy-Schutz und 15% Open-Interest-Limits geschützt.',
+
+    // Info Common
+    backToTrading: 'Zurück zum Handel'
   },
 
   ja: {
@@ -796,6 +1545,113 @@ export const TRANSLATIONS: Record<LanguageCode, Translations> = {
     activeEntries: '件のアクティブエントリー',
     contributingListDesc: '決済PnLを拠出しているトレーダーウォレット一覧：',
     noActiveParticipants: 'このエポックのデータベースにはアクティブな参加者が記録されていません。',
-    youBadge: 'あなた'
+    youBadge: 'あなた',
+
+    // Portfolio
+    portfolioTitle: 'ポートフォリオ＆パフォーマンス分析',
+    portfolioDesc: 'リアルタイム残高追跡、資産曲線、オンチェーン決済済み取引記録。',
+    account: 'アカウント',
+    notConnected: '未接続',
+    netEquity: '純資産',
+    realizedPnl: '確定損益',
+    winRate: '勝率',
+    totalClosedTrades: '決済済み取引数',
+    portfolioEquityCurve: '資産曲線',
+    realSettlements: '累積確定決済',
+    allActivity: '全履歴',
+    perpetualFutures: '無期限先物',
+    timestamp: '日時',
+    type: '種類',
+    instrument: '銘柄',
+    entry: '参入価格',
+    exit: '決済価格',
+    noExecutedTrades: '約定履歴がまだありません。ポジションを開設・決済して分析を確認してください。',
+
+    // Options Board
+    marketDirection: '市場の方向性:',
+    callsLabel: 'コール (上昇予想 ↗)',
+    putsLabel: 'プット (下落予想 ↘)',
+    spotPriceLabel: 'スポット価格:',
+    deribitIv: 'Deribit IV:',
+    atmLabel: 'ATM (アット・ザ・マネー)',
+    deribitPremium: 'Deribit プレミアム:',
+    breakeven: '損益分岐点:',
+    selectStrike: '権利行使価格を選択',
+    selected: '選択中',
+    openContracts: '保有オプション契約',
+    settlementIndex: '決済基準: 現物インデックスマーク',
+    contracts: '契約数',
+    entryPremium: '参入プレミアム',
+    currentValue: '現在価値',
+    noActiveOptions: '保有中のオプション契約はありません。上のカードから行使価格を選んで注文してください。',
+    optionTicket: 'オプション注文パネル',
+    pricingRisk: '価格決定とリスク',
+    premiumCost: 'プレミアム費用:',
+    maxRisk: '最大リスク:',
+    maxRiskCapped: '支払プレミアム (100% 限定)',
+    buyOptionAction: '{type} オプションを購入',
+    insufficientFundsOptionsTitle: '残高不足',
+    insufficientFundsOptionsMsg: 'オプション購入に必要なUSDC残高が不足しています。入金してください。',
+
+    // Liquidity Pools & Vaults
+    liquidityPoolsTitle: '流動性プール＆保管庫',
+    liveOnChain: 'オンチェーン稼働中',
+    poolsSubtitle: '0DTEオプションおよび1時間抽選のための単一USDC引受プール。',
+    switchNetwork: 'ネットワーク切替',
+    refreshData: 'オンチェーンデータを更新',
+    poolMisconfiguredTitle: '接続中ネットワークにプールが見つかりません',
+    poolMisconfiguredDesc: '流動性プールが応答していません。ウォレットがArbitrum Sepolia (Chain ID: 421614) に接続されているか確認してください。',
+    retryConnection: '再接続を試行',
+    usdcOptionPoolTitle: 'USDC オプション流動性プール',
+    usdcOptionPoolDesc: '0DTEおよび1時間決済の自動引受プロトコル',
+    protocolApr: 'プロトコル APR:',
+    totalTvl: '合計 TVL',
+    usdcOnChain: 'オンチェーン USDC',
+    availableLiq: '利用可能な流動性',
+    uncommitted: '未拘束',
+    myDeposited: '預入額',
+    lpShares: 'LP シェア',
+    depositUsdc: 'USDC を預け入れ',
+    withdrawUsdc: 'USDC を引き出し',
+    amountToDeposit: '預入額 (USDC):',
+    amountToWithdraw: '引出額 (USDC):',
+    expectedLpShares: '想定 LP シェア:',
+    yieldSource: '利回りソース:',
+    yieldSourceVal: '0DTE オプションプレミアム + 15% マージン保持',
+    lockupPeriod: 'ロック期間:',
+    noLockup: 'なし (継続決済)',
+    riskProtection: 'リスク保護:',
+    riskProtectionVal: '最大未決済建玉 15% 上限の強制',
+    connectToDeposit: '預け入れのため Web3 ウォレットを接続',
+    switchToArbitrum: 'ネットワークを Arbitrum Sepolia に切り替え',
+    poolOffline: 'プールオフライン — クリックして再試行',
+    approveUsdc: 'ステップ 1: プールへの USDC 承認',
+    approvingUsdc: 'MetaMask で USDC を承認中...',
+    depositAction: 'ステップ 2: {amount} USDC をプールに預け入れ',
+    depositingUsdc: 'MetaMask で預け入れを確認中...',
+    exitFee: '引出手数料:',
+    zeroFee: '0.0% (プロトコル税ゼロ)',
+    instantTransfer: '即時オンチェーン送金',
+    withdrawAction: 'USDC をウォレットに引き出し',
+    processingWithdraw: '引き出し処理中...',
+    hourlyProtocolPool: '毎時プロトコルプール',
+    activeEpoch: 'アクティブエポック',
+    revenueStream: '収益ストリーム:',
+    epochDuration: 'エポック期間:',
+    distributionSplit: '配分比率:',
+    quorumBarrier: '定足数要件:',
+    reserveVault: '30日リザーブ保管庫',
+    monthlyJackpot: '月間ジャックポット',
+    firstPlace: '1位:',
+    secondPlace: '2位:',
+    thirdPlace: '3位:',
+    otherPlaces: '4位 - 10位:',
+    accumulatedPot: '累積ポット比率',
+    sharedProRata: '30% を比例配分',
+    securityTitle: 'Aegis Sentinel プロトコルセキュリティ',
+    securityDesc: '担保資産はオンチェーンサーキットブレーカー、再入防止、15% 建玉制限により保護されています。',
+
+    // Info Common
+    backToTrading: '取引に戻る'
   }
 };
