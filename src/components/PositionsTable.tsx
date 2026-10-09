@@ -87,9 +87,9 @@ export const PositionsTable: React.FC<PositionsTableProps> = ({
       </div>
 
       {/* Tab Panels */}
-      <div className="flex-1 overflow-y-auto px-3 py-1">
+      <div className="flex-1 overflow-auto px-3 py-1">
         {activeTab === 'positions' && (
-          <table className="w-full text-left font-mono text-[11px] numeric">
+          <table className="w-full text-left font-mono text-[11px] numeric min-w-[620px]">
             <thead>
               <tr className="text-muted border-b border-panel text-[10px] pb-1 font-sans">
                 <th className="pb-1.5 font-normal">{labels?.symbol || 'Symbol'}</th>
@@ -177,7 +177,7 @@ export const PositionsTable: React.FC<PositionsTableProps> = ({
         )}
 
         {activeTab === 'history' && (
-          <table className="w-full text-left font-mono text-[11px] numeric">
+          <table className="w-full text-left font-mono text-[11px] numeric min-w-[620px]">
             <thead>
               <tr className="text-muted border-b border-panel text-[10px] pb-1 font-sans">
                 <th className="pb-1.5 font-normal">Time</th>

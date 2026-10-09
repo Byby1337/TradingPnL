@@ -49,30 +49,13 @@ export const HourlyPoolView: React.FC<HourlyPoolViewProps> = ({
   const langKey = (currentLang as LanguageCode) || 'en';
   const t: Translations = TRANSLATIONS[langKey] || TRANSLATIONS.en;
 
-  const [epochNumber, setEpochNumber] = useState<number>(() => {
-    const PLATFORM_GENESIS = new Date('2026-10-02T00:00:00Z').getTime();
-    return Math.max(1, Math.floor((Date.now() - PLATFORM_GENESIS) / 3600000) + 1);
-  });
+  const [epochNumber, setEpochNumber] = useState<number>(0);
   const [selectedPair, setSelectedPair] = useState<string>('all');
   const [copiedAddress, setCopiedAddress] = useState<string | null>(null);
   const [secondsRemaining, setSecondsRemaining] = useState<number>(() => {
     const now = new Date();
     return (59 - now.getMinutes()) * 60 + (60 - now.getSeconds());
   });
-
-  // Epoch countdown timer
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setSecondsRemaining((prev) => {
-        if (prev <= 1) {
-          const now = new Date();
-          return (59 - now.getMinutes()) * 60 + (60 - now.getSeconds());
-        }
-        return prev - 1;
-      });
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
 
   const formatCountdown = (secs: number) => {
     const m = Math.floor(secs / 60);
@@ -164,6 +147,24 @@ export const HourlyPoolView: React.FC<HourlyPoolViewProps> = ({
     };
   });
 
+  const isEpochActive = allParticipants.length > 0;
+  const currentEpoch = isEpochActive ? Math.max(1, epochNumber) : 0;
+
+  // Epoch countdown timer - only active when minimum conditions are met
+  useEffect(() => {
+    if (!isEpochActive) return;
+    const timer = setInterval(() => {
+      setSecondsRemaining((prev) => {
+        if (prev <= 1) {
+          const now = new Date();
+          return (59 - now.getMinutes()) * 60 + (60 - now.getSeconds());
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [isEpochActive]);
+
   const userContribution = filteredParticipants
     .filter((p) => userAddress && p.address.toLowerCase() === userAddress.toLowerCase())
     .reduce((sum, p) => sum + p.poolContributionUsdc, 0);
@@ -180,8 +181,10 @@ export const HourlyPoolView: React.FC<HourlyPoolViewProps> = ({
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <span className="px-2.5 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-500 dark:text-amber-400 text-[11px] font-bold flex items-center gap-1.5 font-mono">
-                  <span className="w-2 h-2 rounded-full bg-amber-500 dark:bg-amber-400" />
-                  {t.epochText} #{epochNumber} Live
+                  <span className={`w-2 h-2 rounded-full ${isEpochActive ? 'bg-[#0ecb81]' : 'bg-amber-500/50'}`} />
+                  {isEpochActive
+                    ? `${t.epochText} #${currentEpoch} Live`
+                    : `${t.epochText} #0 • ${langKey === 'ru' ? 'Ожидание условий запуска' : 'Pending Activation'}`}
                 </span>
                 <span className="text-muted text-xs font-mono">Arbitrum Sepolia</span>
               </div>
@@ -201,10 +204,17 @@ export const HourlyPoolView: React.FC<HourlyPoolViewProps> = ({
                   <Clock className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-[10px] text-muted font-mono uppercase tracking-wider">{t.nextSettlementIn}</div>
-                  <div className="text-2xl font-bold font-mono text-amber-500 dark:text-amber-400 tracking-wider">
-                    {formatCountdown(secondsRemaining)}
+                  <div className="text-[10px] text-muted font-mono uppercase tracking-wider">
+                    {isEpochActive ? t.nextSettlementIn : (langKey === 'ru' ? 'Статус эпохи' : 'Epoch Status')}
                   </div>
+                  <div className="text-2xl font-bold font-mono text-amber-500 dark:text-amber-400 tracking-wider">
+                    {isEpochActive ? formatCountdown(secondsRemaining) : '--:--'}
+                  </div>
+                  {!isEpochActive && (
+                    <div className="text-[10px] text-muted font-sans mt-0.5">
+                      {langKey === 'ru' ? 'Ожидание участников (мин. 1 с PnL роутингом)' : 'Waiting for entrants (min. 1 with PnL routing)'}
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -257,14 +267,14 @@ export const HourlyPoolView: React.FC<HourlyPoolViewProps> = ({
         <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
           <button
             onClick={() => setSelectedPair('all')}
-            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap flex items-center gap-2 ${
+            className={`px-3.5 py-2 min-h-[38px] rounded-xl text-xs font-bold transition whitespace-nowrap flex items-center gap-2.5 shrink-0 ${
               selectedPair === 'all'
                 ? 'bg-amber-500/20 text-amber-500 dark:text-amber-400 border border-amber-500/40 shadow-sm'
                 : 'bg-subpanel text-muted hover:text-primary border border-panel'
             }`}
           >
             <span>{t.allPairs}</span>
-            <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-panel text-muted border border-panel font-mono">
+            <span className="text-[10px] px-2 py-0.5 leading-none shrink-0 inline-flex items-center justify-center rounded-md bg-panel text-muted border border-panel font-mono">
               {allParticipants.length}
             </span>
           </button>
@@ -277,21 +287,21 @@ export const HourlyPoolView: React.FC<HourlyPoolViewProps> = ({
               <button
                 key={m.ticker}
                 onClick={() => setSelectedPair(m.ticker)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition whitespace-nowrap flex items-center gap-2 ${
+                className={`px-3.5 py-2 min-h-[38px] rounded-xl text-xs font-semibold transition whitespace-nowrap flex items-center gap-2.5 shrink-0 ${
                   isSel
                     ? 'bg-amber-500/20 text-amber-500 dark:text-amber-400 border border-amber-500/40 shadow-sm'
                     : 'bg-subpanel text-muted hover:text-primary border border-panel'
                 }`}
               >
                 {m.icon && (
-                  <img src={m.icon} alt="" className="w-4 h-4 rounded-full object-contain" />
+                  <img src={m.icon} alt="" className="w-4 h-4 rounded-full object-contain shrink-0" />
                 )}
                 <span>{m.base}</span>
-                <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-amber-500/10 text-amber-500 dark:text-amber-400 font-mono">
+                <span className="text-[10px] px-2 py-0.5 leading-none shrink-0 inline-flex items-center justify-center font-mono font-bold rounded-md bg-amber-500/15 border border-amber-500/30 text-amber-500 dark:text-amber-400">
                   {m.maxLeverage}x
                 </span>
                 {count > 0 && (
-                  <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-panel text-muted border border-panel font-mono">
+                  <span className="text-[10px] px-2 py-0.5 leading-none shrink-0 inline-flex items-center justify-center rounded-md bg-panel text-muted border border-panel font-mono">
                     {count}
                   </span>
                 )}
@@ -322,7 +332,7 @@ export const HourlyPoolView: React.FC<HourlyPoolViewProps> = ({
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-left font-mono text-xs numeric">
+            <table className="w-full text-left font-mono text-xs numeric min-w-[760px]">
               <thead>
                 <tr className="text-muted border-b border-panel text-[11px] bg-subpanel/40 font-sans">
                   <th className="py-3 px-4 font-normal">{t.rank}</th>
@@ -383,7 +393,7 @@ export const HourlyPoolView: React.FC<HourlyPoolViewProps> = ({
                               {p.address.slice(0, 6)}...{p.address.slice(-4)}
                             </span>
                             {isCurrentUser && (
-                              <span className="px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-500 dark:text-amber-400 text-[9px] font-bold">
+                              <span className="px-2 py-0.5 rounded-md leading-none bg-amber-500/20 text-amber-500 dark:text-amber-400 text-[10px] font-bold">
                                 {t.youBadge}
                               </span>
                             )}
@@ -408,12 +418,12 @@ export const HourlyPoolView: React.FC<HourlyPoolViewProps> = ({
                               <img
                                 src={market.icon}
                                 alt=""
-                                className="w-5 h-5 rounded-full object-contain"
+                                className="w-5 h-5 rounded-full object-contain shrink-0"
                               />
                             )}
                             <span className="text-primary font-semibold">{p.pair}</span>
                             {market && (
-                              <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-amber-500/10 text-amber-500 dark:text-amber-400 border border-amber-500/20 font-bold">
+                              <span className="text-[10px] px-2 py-0.5 leading-none shrink-0 inline-flex items-center justify-center rounded-md bg-amber-500/15 border border-amber-500/30 text-amber-500 dark:text-amber-400 font-bold font-mono">
                                 {market.maxLeverage}x
                               </span>
                             )}

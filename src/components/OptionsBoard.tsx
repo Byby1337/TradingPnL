@@ -81,7 +81,7 @@ export const OptionsBoard: React.FC<OptionsBoardProps> = ({
     : spotPrice;
 
   return (
-    <div className="flex-1 grid grid-cols-12 gap-[1px] bg-panel overflow-hidden">
+    <div className="flex-1 grid grid-cols-12 gap-[1px] bg-panel overflow-y-auto lg:overflow-hidden min-h-0">
       {/* Cards Matrix */}
       <section className="col-span-12 lg:col-span-8 xl:col-span-9 flex flex-col gap-[1px] bg-panel overflow-hidden border-r border-panel">
         <div className="h-11 border-b border-panel bg-panel px-4 flex items-center justify-between text-xs flex-shrink-0 z-10">

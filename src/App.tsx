@@ -837,8 +837,8 @@ export const App: React.FC = () => {
       )}
 
       {currentSection === 'perpetual' && (
-        <div className="flex-1 grid grid-cols-12 gap-[1px] bg-panel overflow-hidden min-h-0 lg:h-[calc(100vh-88px)]">
-          <section className={`col-span-12 ${chartColSpan} flex flex-col bg-panel overflow-hidden border-r border-panel h-full min-h-0`}>
+        <div className="flex-1 grid grid-cols-12 gap-[1px] bg-panel overflow-y-auto lg:overflow-hidden min-h-0 lg:h-[calc(100vh-88px)]">
+          <section className={`col-span-12 ${chartColSpan} flex flex-col bg-panel overflow-hidden border-r border-panel min-h-[480px] lg:h-full lg:min-h-0`}>
             <TradingViewChart
               currentMarket={currentMarket}
               theme={currentTheme}

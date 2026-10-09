@@ -8,7 +8,7 @@ interface InfoPageProps {
 }
 
 export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack, currentLang = 'en' }) => {
-  const [helpCategory, setHelpCategory] = useState<'all' | 'wallets' | 'perps' | 'options' | 'pools' | 'orders' | 'security'>('all');
+  const [helpCategory, setHelpCategory] = useState<'all' | 'wallets' | 'perps' | 'options' | 'pools' | 'lottery' | 'orders' | 'security'>('all');
   const t: Translations = TRANSLATIONS[(currentLang as LanguageCode) || 'en'] || TRANSLATIONS.en;
   const isRu = currentLang === 'ru';
 
@@ -170,8 +170,9 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack, currentLang = 
                 { id: 'perps', label: isRu ? '2. Бессрочные фьючерсы' : '2. Perpetual Futures' },
                 { id: 'options', label: isRu ? '3. 0DTE Опционы' : '3. 0DTE Options' },
                 { id: 'pools', label: isRu ? '4. Ликвидность и хранилища' : '4. Liquidity & Vaults' },
-                { id: 'orders', label: isRu ? '5. Исполнение ордеров' : '5. Order Execution' },
-                { id: 'security', label: isRu ? '6. Риски и безопасность' : '6. Risk & Security' }
+                { id: 'lottery', label: isRu ? '5. Почасовая лотерея и Шериф' : '5. Hourly Lottery & Sheriff' },
+                { id: 'orders', label: isRu ? '6. Исполнение ордеров' : '6. Order Execution' },
+                { id: 'security', label: isRu ? '7. Риски и безопасность' : '7. Risk & Security' }
               ].map((cat) => (
                 <button
                   key={cat.id}
@@ -341,10 +342,67 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack, currentLang = 
                 </div>
               )}
 
-              {(helpCategory === 'all' || helpCategory === 'orders') && (
+              {(helpCategory === 'all' || helpCategory === 'lottery') && (
                 <div className="p-5 rounded-2xl bg-panel border border-panel space-y-3">
                   <div className="flex items-center gap-2 text-primary font-bold text-sm">
                     <span className="w-7 h-7 rounded-lg bg-amber-500/15 text-amber-400 border border-amber-500/25 flex items-center justify-center text-xs font-mono">05</span>
+                    <span>
+                      {isRu
+                        ? 'Почасовая лотерея, титул Шерифа и правила розыгрыша'
+                        : 'Hourly Protocol Lottery, Sheriff Title & Rules'}
+                    </span>
+                  </div>
+                  <div className="space-y-2.5 text-muted leading-normal">
+                    <p>
+                      <strong>{isRu ? 'Условия запуска эпохи (Epoch Activation & Reset):' : 'Epoch Activation & Reset Conditions:'}</strong>{' '}
+                      {isRu
+                        ? 'Эпохи лотереи не запускаются вхолостую при пустом банке. Если в пуле нет участников, лотерея находится в режиме ожидания (Epoch #0). Первая эпоха (Epoch #1) и 60-минутный обратный отсчет до розыгрыша активируются только тогда, когда выполнены минимальные условия: хотя бы 1 активный участник совершил сделку с роутингом маржи/PnL в призовой фонд.'
+                        : 'Lottery epochs do not run idle when the prize pool is empty. If there are zero participants, the lottery remains in pending state (Epoch #0). Epoch #1 and the 60-minute countdown activate only once minimum requirements are met: at least 1 entrant places a trade routing margin/PnL into the prize pot.'}
+                    </p>
+                    <p>
+                      <strong>{isRu ? 'Автоматический роутинг PnL (Как принять участие):' : 'Automated PnL Routing (How to Enter):'}</strong>{' '}
+                      {isRu
+                        ? 'Трейдерам не нужно покупать отдельные билеты. При открытии и удержании позиций 10% маржи автоматически направляются в почасовой призовой пул соответствующей пары. Действует строгое правило: 1 кошелек = 1 билет на торговую пару, что предотвращает спам и искусственную накрутку шансов.'
+                        : 'Traders do not need to buy separate tickets. When maintaining open positions, 10% of margin is automatically routed into the hourly prize pool for that asset. A strict rule of 1 wallet = 1 entry per trading pair applies, preventing sybil spam and odds manipulation.'}
+                    </p>
+                    <p>
+                      <strong>{isRu ? 'Титул «Шериф» пары (Sheriff Title):' : 'Market Sheriff Title & Volume Royalty:'}</strong>{' '}
+                      {isRu
+                        ? 'Участник с наибольшим торговым объемом или вкладом в пару в рамках эпохи признается Шерифом рынка. Помимо повышенных шансов на розыгрыш, Шериф получает авторское вознаграждение 0.01% от торгового объема данной пары за эпоху.'
+                        : 'The entrant with the highest trading volume or contribution in a pair during the epoch earns the Sheriff title. Beyond higher lottery allocation, the Sheriff receives a 0.01% volume royalty on that market for the epoch duration.'}
+                    </p>
+                    <p>
+                      <strong>{isRu ? 'Распределение призового фонда:' : 'Prize Pot Distribution:'}</strong>{' '}
+                      {isRu
+                        ? 'Каждый час собранный банк распределяется по прозрачной математической модели:'
+                        : 'Every hour the prize pot is allocated transparently according to protocol mechanics:'}
+                      <br />
+                      <span className="font-mono text-amber-500 text-[11px] bg-subpanel px-2 py-0.5 rounded border border-panel inline-block mt-1">
+                        {isRu ? '• 50% — Выплата победителю эпохи (Sheriff Winner / Soft-loss rebate)' : '• 50% — Epoch Winner Payout (Sheriff Winner / Soft-loss rebate)'}
+                      </span>
+                      <br />
+                      <span className="font-mono text-amber-500 text-[11px] bg-subpanel px-2 py-0.5 rounded border border-panel inline-block mt-1">
+                        {isRu ? '• 25% — Казначейство протокола (Protocol Treasury / Ликвидность)' : '• 25% — Protocol Treasury (Liquidity Backstop)'}
+                      </span>
+                      <br />
+                      <span className="font-mono text-amber-500 text-[11px] bg-subpanel px-2 py-0.5 rounded border border-panel inline-block mt-1">
+                        {isRu ? '• 25% — Накопительный SuperJackpot для масштабных раундов' : '• 25% — Cumulative SuperJackpot for major event rounds'}
+                      </span>
+                    </p>
+                    <p>
+                      <strong>{isRu ? 'Анти-монопольный кулдаун (24-Hour Cooldown):' : 'Anti-Monopoly 24-Hour Cooldown:'}</strong>{' '}
+                      {isRu
+                        ? 'После победы адрес победителя получает 24-часовой кулдаун на получение главного джекпота, чтобы гарантировать честное и децентрализованное распределение наград между всеми участниками сообщества.'
+                        : 'Winning wallets enter a 24-hour jackpot cooldown to ensure equitable and decentralized reward distribution across all community members.'}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {(helpCategory === 'all' || helpCategory === 'orders') && (
+                <div className="p-5 rounded-2xl bg-panel border border-panel space-y-3">
+                  <div className="flex items-center gap-2 text-primary font-bold text-sm">
+                    <span className="w-7 h-7 rounded-lg bg-amber-500/15 text-amber-400 border border-amber-500/25 flex items-center justify-center text-xs font-mono">06</span>
                     <span>
                       {isRu
                         ? 'Типы ордеров и центральная книга ордеров (CLOB)'
@@ -377,7 +435,7 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack, currentLang = 
               {(helpCategory === 'all' || helpCategory === 'security') && (
                 <div className="p-5 rounded-2xl bg-panel border border-panel space-y-3">
                   <div className="flex items-center gap-2 text-primary font-bold text-sm">
-                    <span className="w-7 h-7 rounded-lg bg-amber-500/15 text-amber-400 border border-amber-500/25 flex items-center justify-center text-xs font-mono">06</span>
+                    <span className="w-7 h-7 rounded-lg bg-amber-500/15 text-amber-400 border border-amber-500/25 flex items-center justify-center text-xs font-mono">07</span>
                     <span>
                       {isRu
                         ? 'Аудиты, управление с мультиподписью и параметры риска'

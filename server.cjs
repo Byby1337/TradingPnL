@@ -597,18 +597,22 @@ async function handleRequest(req, res) {
     const pair = String(rawPair).replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 32);
     try {
       const participants = await db.getHourlyPoolParticipants(pair);
-      const PLATFORM_GENESIS = new Date('2026-10-02T00:00:00Z').getTime();
-      const epoch = Math.max(1, Math.floor((Date.now() - PLATFORM_GENESIS) / 3600000) + 1);
+      const allParticipants = await db.getHourlyPoolParticipants('all');
+      // Epoch resets to 0 (pending) if minimum conditions are not met (0 participants / pot empty)
+      // When at least 1 participant contributes routing, the epoch activates starting at Epoch #1
+      const isPoolActive = allParticipants.length > 0;
+      const epoch = isPoolActive ? 1 : 0;
       sendJson(res, {
         success: true,
         pair,
         epoch,
+        active: isPoolActive,
         participants,
         count: participants.length
       });
     } catch (err) {
       console.error('[API /api/hourly-pool error]:', err?.message);
-      sendJson(res, { error: 'Failed to retrieve pool data', participants: [] }, 500);
+      sendJson(res, { error: 'Failed to retrieve pool data', participants: [], epoch: 0, active: false }, 500);
     }
     return;
   }

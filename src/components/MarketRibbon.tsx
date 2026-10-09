@@ -175,8 +175,8 @@ export const MarketRibbon: React.FC<MarketRibbonProps> = ({
   const activeMeta = ASSET_META[currentMarket.base] || { icon: '•', color: '#d97706', badgeBg: 'bg-amber-500/10 text-amber-500 border-amber-500/30' };
 
   return (
-    <div className="h-9 border-b border-panel bg-panel px-4 flex items-center justify-between text-[11px] font-mono numeric flex-shrink-0 relative z-30">
-      <div className="flex items-center gap-5">
+    <div className="h-9 border-b border-panel bg-panel px-4 flex items-center justify-between text-[11px] font-mono numeric flex-shrink-0 relative z-30 overflow-x-auto scrollbar-none">
+      <div className="flex items-center gap-5 shrink-0">
         {/* Sleek Pair Dropdown */}
         <div className="relative" ref={menuRef}>
           <button
@@ -184,16 +184,16 @@ export const MarketRibbon: React.FC<MarketRibbonProps> = ({
             className="flex items-center gap-2 pr-3.5 border-r border-panel cursor-pointer hover:opacity-90 py-1 bg-transparent border-0 text-left outline-none group transition"
           >
             {currentMarket.icon ? (
-              <img src={currentMarket.icon} alt="" className="w-5 h-5 rounded-full object-contain" />
+              <img src={currentMarket.icon} alt="" className="w-5 h-5 rounded-full object-contain shrink-0" />
             ) : (
-              <div className={`w-5 h-5 rounded-full border flex items-center justify-center text-[10px] font-bold ${activeMeta.badgeBg}`}>
+              <div className={`w-5 h-5 rounded-full border flex items-center justify-center text-[10px] font-bold shrink-0 ${activeMeta.badgeBg}`}>
                 {activeMeta.icon}
               </div>
             )}
             <span className="font-bold text-primary text-[13px] font-sans group-hover:text-amber-400 transition-colors">
               {currentMarket.ticker}
             </span>
-            <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-400 font-mono font-bold">
+            <span className="text-[10px] px-2 py-0.5 leading-none shrink-0 inline-flex items-center justify-center rounded-md bg-amber-500/15 border border-amber-500/30 text-amber-400 font-mono font-bold">
               {currentMarket.maxLeverage}x
             </span>
             <span className={`text-[9px] text-muted transition-transform duration-200 ${showPairMenu ? 'rotate-180 text-amber-400' : ''}`}>
@@ -277,7 +277,7 @@ export const MarketRibbon: React.FC<MarketRibbonProps> = ({
                             <span className={`font-bold text-xs ${isSelected ? 'text-amber-400' : 'text-primary group-hover:text-amber-300'}`}>
                               {m.ticker}
                             </span>
-                            <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-400 font-mono font-bold">
+                            <span className="text-[10px] px-2 py-0.5 leading-none shrink-0 inline-flex items-center justify-center rounded-md bg-amber-500/15 border border-amber-500/30 text-amber-400 font-mono font-bold">
                               {m.maxLeverage}x
                             </span>
                           </div>
@@ -335,7 +335,7 @@ export const MarketRibbon: React.FC<MarketRibbonProps> = ({
         </div>
       </div>
 
-      <div className="hidden md:flex items-center gap-3 text-[11px] font-mono">
+      <div className="hidden md:flex items-center gap-3 text-[11px] font-mono shrink-0">
         <div className="flex items-center gap-1.5 bg-subpanel px-2.5 py-0.5 rounded border border-panel" title="Periodic funding rate applied between Long and Short positions">
           <span className="text-muted text-[10px] font-sans">Funding:</span>
           <span className={`font-semibold ${fundingData.fundingRate >= 0 ? 'text-[#0ecb81]' : 'text-[#f6465d]'}`}>

@@ -83,16 +83,16 @@ export const Navbar: React.FC<NavbarProps> = ({
   const activeLangObj = languages.find((l) => l.code === currentLang) || languages[0];
 
   return (
-    <header className="h-12 border-b border-panel bg-panel px-4 flex items-center justify-between flex-shrink-0 z-40 relative">
+    <header className="h-12 border-b border-panel bg-panel px-3 sm:px-4 flex items-center justify-between flex-shrink-0 z-40 relative gap-2 sm:gap-4 overflow-x-auto scrollbar-none">
       {/* Left: Brand Logo & Navigation */}
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-3 sm:gap-6 shrink-0">
         <div className="flex items-center cursor-pointer select-none" onClick={() => onSelectSection('perpetual')}>
           <span className="text-[17px] font-black tracking-tight text-primary font-sans hover:text-amber-400 transition-colors">
             23Trade
           </span>
         </div>
 
-        <nav className="flex items-center gap-1 font-medium text-[12px]">
+        <nav className="flex items-center gap-1 font-medium text-[12px] shrink-0">
           <button
             onClick={() => onSelectSection('perpetual')}
             className={`px-3 py-1.5 rounded transition ${
@@ -218,24 +218,24 @@ export const Navbar: React.FC<NavbarProps> = ({
       </div>
 
       {/* Right Controls */}
-      <div className="flex items-center gap-2.5 font-mono text-[11px]">
+      <div className="flex items-center gap-2 sm:gap-2.5 font-mono text-[11px] shrink-0">
         {/* Circle USDC Faucet Link */}
         <a
           href="https://faucet.circle.com/"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-1.5 px-2.5 py-1 bg-subpanel hover:bg-panel text-sky-600 dark:text-[#38bdf8] hover:text-sky-700 dark:hover:text-[#7dd3fc] border border-sky-500/30 hover:border-sky-500/50 rounded-lg text-xs font-semibold transition shadow-sm group"
+          className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 bg-subpanel hover:bg-panel text-sky-600 dark:text-[#38bdf8] hover:text-sky-700 dark:hover:text-[#7dd3fc] border border-sky-500/30 hover:border-sky-500/50 rounded-lg text-xs font-semibold transition shadow-sm group shrink-0"
           title="Get Arbitrum Sepolia USDC from Circle Official Faucet"
         >
-          <span>Faucet USDC</span>
-          <svg className="w-3 h-3 opacity-60 group-hover:opacity-100 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <span>Faucet<span className="hidden xs:inline"> USDC</span></span>
+          <svg className="w-3 h-3 opacity-60 group-hover:opacity-100 transition shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
           </svg>
         </a>
 
         {/* Trading Collateral Indicator */}
         {userAddress && (
-          <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-subpanel border border-panel rounded-lg font-mono">
+          <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 bg-subpanel border border-panel rounded-lg font-mono shrink-0">
             <span className="text-muted text-[10px]">{t.tradingBalance}:</span>
             <span className="text-[#0ecb81] font-bold text-xs">${userBalance.toFixed(2)} USDC</span>
             {onOpenDeposit && (
