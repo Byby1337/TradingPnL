@@ -6,7 +6,6 @@ import {
   CONTRACT_ADDRESSES
 } from '../constants/contracts';
 import {
-  ShieldCheck,
   Coins,
   ArrowDownCircle,
   ArrowUpCircle,
@@ -440,12 +439,7 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
         {/* Header Ribbon */}
         <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b border-panel gap-3">
           <div>
-            <div className="flex items-center gap-2.5">
-              <h1 className="text-xl font-bold text-primary tracking-wide">{t.liquidityPoolsTitle}</h1>
-              <span className="px-2 py-0.5 text-[10px] uppercase font-mono font-bold bg-[#10b981]/15 text-[#10b981] border border-[#10b981]/30 rounded">
-                {t.liveOnChain}
-              </span>
-            </div>
+            <h1 className="text-xl font-bold text-primary tracking-wide">{t.liquidityPoolsTitle}</h1>
             <p className="text-xs text-muted mt-1">
               {t.poolsSubtitle}
             </p>
@@ -539,11 +533,8 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
           </div>
         )}
 
-        {/* Main Vault Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-
-          {/* Card 1: USDC Option Underwriting Pool */}
-          <div className="md:col-span-2 bg-subpanel border border-panel rounded-xl p-5 space-y-5">
+        {/* USDC Option Underwriting Pool */}
+        <div className="bg-subpanel border border-panel rounded-xl p-5 space-y-5">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-panel pb-3 gap-2">
               <div className="flex items-center gap-2.5">
                 <div className="p-2 bg-[#10b981]/10 rounded-lg text-[#10b981] border border-[#10b981]/20">
@@ -818,85 +809,7 @@ export const PoolsView: React.FC<PoolsViewProps> = ({
             )}
           </div>
 
-          {/* Right Column: Other Protocol Vaults */}
-          <div className="space-y-4">
-
-            {/* Hourly Sheriff Protocol Pool */}
-            <div className="bg-subpanel border border-panel rounded-xl p-4 space-y-3 font-mono text-[11px]">
-              <div className="flex justify-between items-center font-sans border-b border-panel pb-2">
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-[#d97706]" />
-                  <span className="font-bold text-primary text-xs">{t.hourlyProtocolPool}</span>
-                </div>
-                <span className="text-[10px] text-[#10b981] font-mono font-semibold">{t.activeEpoch}</span>
-              </div>
-
-              <div className="space-y-2 text-muted">
-                <div className="flex justify-between">
-                  <span>{t.revenueStream}</span>
-                  <span className="text-primary font-bold">20% PnL Turnover</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>{t.epochDuration}</span>
-                  <span className="text-primary">60 Minutes</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>{t.distributionSplit}</span>
-                  <span className="text-primary">50% / 25% / 25%</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>{t.quorumBarrier}</span>
-                  <span className="text-[#f59e0b]">50+ Active Entrants</span>
-                </div>
-              </div>
-            </div>
-
-            {/* 30-Day Reserve Vault */}
-            <div className="bg-subpanel border border-panel rounded-xl p-4 space-y-3 font-mono text-[11px]">
-              <div className="flex justify-between items-center font-sans border-b border-panel pb-2">
-                <div className="flex items-center gap-2">
-                  <Coins className="w-4 h-4 text-[#3b82f6]" />
-                  <span className="font-bold text-primary text-xs">{t.reserveVault}</span>
-                </div>
-                <span className="text-[10px] text-muted font-mono">{t.monthlyJackpot}</span>
-              </div>
-
-              <div className="space-y-2 text-muted">
-                <div className="flex justify-between">
-                  <span>{t.firstPlace}</span>
-                  <span className="text-primary font-bold">35% {t.accumulatedPot}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>{t.secondPlace}</span>
-                  <span className="text-primary">20% {t.accumulatedPot}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>{t.thirdPlace}</span>
-                  <span className="text-primary">15% {t.accumulatedPot}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>{t.otherPlaces}</span>
-                  <span className="text-primary">{t.sharedProRata}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Security Guarantee Box */}
-            <div className="bg-panel border border-panel rounded-xl p-3.5 space-y-1.5 text-xs">
-              <div className="flex items-center gap-1.5 text-[#10b981] font-bold text-[11px]">
-                <ShieldCheck className="w-3.5 h-3.5" />
-                {t.securityTitle}
-              </div>
-              <p className="text-[10px] text-muted leading-relaxed">
-                {t.securityDesc}
-              </p>
-            </div>
-
-          </div>
-
         </div>
-
       </div>
-    </div>
-  );
-};
+    );
+  };
