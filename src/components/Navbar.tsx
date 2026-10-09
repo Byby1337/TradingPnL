@@ -83,7 +83,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const activeLangObj = languages.find((l) => l.code === currentLang) || languages[0];
 
   return (
-    <header className="h-12 border-b border-panel bg-panel px-3 sm:px-4 flex items-center justify-between flex-shrink-0 z-40 relative gap-2 sm:gap-4 overflow-x-auto scrollbar-none">
+    <header className="h-12 border-b border-panel bg-panel px-3 sm:px-4 flex items-center justify-between flex-shrink-0 z-50 relative gap-2 sm:gap-4">
       {/* Left: Brand Logo & Navigation */}
       <div className="flex items-center gap-3 sm:gap-6 shrink-0">
         <div className="flex items-center cursor-pointer select-none" onClick={() => onSelectSection('perpetual')}>
@@ -159,7 +159,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
 
             {showMoreMenu && (
-              <div className="absolute left-0 top-10 w-60 bg-[#17110c]/95 backdrop-blur-xl border border-[#3b2d22] shadow-[0_20px_50px_rgba(0,0,0,0.7)] rounded-2xl p-2 z-50 font-sans animate-in fade-in zoom-in-95 duration-150 space-y-1">
+              <div className="absolute left-0 top-full mt-2 w-64 bg-panel/95 backdrop-blur-xl border border-panel shadow-2xl rounded-2xl p-2 z-[100] font-sans animate-in fade-in zoom-in-95 duration-150 space-y-1">
                 <button
                   onClick={() => {
                     setShowMoreMenu(false);
@@ -167,17 +167,17 @@ export const Navbar: React.FC<NavbarProps> = ({
                   }}
                   className={`w-full p-2.5 rounded-xl text-left transition-all flex items-center gap-3 group cursor-pointer ${
                     currentSection === 'privacy'
-                      ? 'bg-[#281d14] border border-amber-500/30'
-                      : 'hover:bg-[#221912] border border-transparent hover:border-[#382b20]'
+                      ? 'bg-amber-500/15 border border-amber-500/30 text-amber-500'
+                      : 'hover:bg-subpanel border border-transparent hover:border-panel'
                   }`}
                 >
-                  <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 group-hover:bg-amber-500/20 transition">
+                  <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500 group-hover:bg-amber-500/20 transition">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-xs font-semibold text-primary group-hover:text-amber-300 transition-colors">
+                    <span className="text-xs font-semibold text-primary group-hover:text-amber-400 transition-colors">
                       {t.privacyPolicy}
                     </span>
                     <span className="text-[10px] text-muted">
@@ -193,17 +193,17 @@ export const Navbar: React.FC<NavbarProps> = ({
                   }}
                   className={`w-full p-2.5 rounded-xl text-left transition-all flex items-center gap-3 group cursor-pointer ${
                     currentSection === 'help'
-                      ? 'bg-[#281d14] border border-amber-500/30'
-                      : 'hover:bg-[#221912] border border-transparent hover:border-[#382b20]'
+                      ? 'bg-amber-500/15 border border-amber-500/30 text-amber-500'
+                      : 'hover:bg-subpanel border border-transparent hover:border-panel'
                   }`}
                 >
-                  <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 group-hover:bg-amber-500/20 transition">
+                  <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500 group-hover:bg-amber-500/20 transition">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-xs font-semibold text-primary group-hover:text-amber-300 transition-colors">
+                    <span className="text-xs font-semibold text-primary group-hover:text-amber-400 transition-colors">
                       {t.helpCenter}
                     </span>
                     <span className="text-[10px] text-muted">
@@ -267,7 +267,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
 
           {showLangMenu && (
-            <div className="absolute right-0 top-10 w-52 max-h-72 overflow-y-auto bg-[#17110c]/95 backdrop-blur-xl border border-[#3b2d22] shadow-[0_20px_50px_rgba(0,0,0,0.7)] rounded-2xl p-1.5 z-50 font-sans animate-in fade-in zoom-in-95 duration-150 space-y-0.5">
+            <div className="absolute right-0 top-full mt-2 w-52 max-h-72 overflow-y-auto bg-panel/95 backdrop-blur-xl border border-panel shadow-2xl rounded-2xl p-1.5 z-[100] font-sans animate-in fade-in zoom-in-95 duration-150 space-y-0.5">
               {languages.map((l) => {
                 const isSelected = l.code === currentLang;
                 return (
@@ -345,7 +345,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               </div>
 
               {showWalletMenu && (
-                <div className="absolute right-0 top-10 w-72 bg-[#17110c]/95 backdrop-blur-xl border border-[#3b2d22] shadow-[0_20px_50px_rgba(0,0,0,0.7)] rounded-2xl p-3 z-50 font-sans animate-in fade-in zoom-in-95 duration-150 space-y-2.5">
+                <div className="absolute right-0 top-full mt-2 w-72 bg-panel/95 backdrop-blur-xl border border-panel shadow-2xl rounded-2xl p-3 z-[100] font-sans animate-in fade-in zoom-in-95 duration-150 space-y-2.5">
                   <div className="p-2.5 bg-[#120d09] border border-[#2d2219] rounded-xl flex items-center justify-between">
                     <div className="flex flex-col">
                       <span className="text-[10px] text-muted uppercase tracking-wider font-semibold">{t.connected}</span>
