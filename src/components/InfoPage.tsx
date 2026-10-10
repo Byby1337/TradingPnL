@@ -8,7 +8,7 @@ interface InfoPageProps {
 }
 
 export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack, currentLang = 'en' }) => {
-  const [helpCategory, setHelpCategory] = useState<'all' | 'wallets' | 'perps' | 'options' | 'pools' | 'lottery' | 'orders' | 'security'>('all');
+  const [helpCategory, setHelpCategory] = useState<'all' | 'wallets' | 'perps' | 'options' | 'pools' | 'lottery' | 'points' | 'orders' | 'security'>('all');
   const t: Translations = TRANSLATIONS[(currentLang as LanguageCode) || 'en'] || TRANSLATIONS.en;
   const isRu = currentLang === 'ru';
 
@@ -171,8 +171,9 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack, currentLang = 
                 { id: 'options', label: isRu ? '3. 0DTE Опционы' : '3. 0DTE Options' },
                 { id: 'pools', label: isRu ? '4. Ликвидность и хранилища' : '4. Liquidity & Vaults' },
                 { id: 'lottery', label: isRu ? '5. Почасовая лотерея и Шериф' : '5. Hourly Lottery & Sheriff' },
-                { id: 'orders', label: isRu ? '6. Исполнение ордеров' : '6. Order Execution' },
-                { id: 'security', label: isRu ? '7. Риски и безопасность' : '7. Risk & Security' }
+                { id: 'points', label: isRu ? '6. Программа поинтов (Stars)' : '6. Stars Points Program' },
+                { id: 'orders', label: isRu ? '7. Исполнение ордеров' : '7. Order Execution' },
+                { id: 'security', label: isRu ? '8. Риски и безопасность' : '8. Risk & Security' }
               ].map((cat) => (
                 <button
                   key={cat.id}
@@ -399,10 +400,107 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack, currentLang = 
                 </div>
               )}
 
-              {(helpCategory === 'all' || helpCategory === 'orders') && (
+              {(helpCategory === 'all' || helpCategory === 'points') && (
                 <div className="p-5 rounded-2xl bg-panel border border-panel space-y-3">
                   <div className="flex items-center gap-2 text-primary font-bold text-sm">
                     <span className="w-7 h-7 rounded-lg bg-amber-500/15 text-amber-400 border border-amber-500/25 flex items-center justify-center text-xs font-mono">06</span>
+                    <span>
+                      {isRu
+                        ? 'Программа поинтов (Stars ⭐): формулы, ранги и экономика'
+                        : 'Stars (⭐) Points Program: Formulas, Tiers & Economics'}
+                    </span>
+                  </div>
+                  <div className="space-y-2.5 text-muted leading-normal">
+                    <p>
+                      <strong>{isRu ? 'Архитектурный принцип и Stars (⭐):' : 'Architecture & Stars (⭐) Accounting Unit:'}</strong>{' '}
+                      {isRu
+                        ? 'Программа Stars ориентирована на качество сделок и реальное удержание открытого интереса (Open Interest), а не на пустую накрутку объемов скриптовыми ботами. Психологический бенчмарк программы: 1 Star ≈ $1.00 USDC. Все начисления рассчитываются автоматически смарт-контрактами и алгоритмическими правилами протокола.'
+                        : 'The Stars program prioritizes trading acumen and genuine open interest retention over manipulative wash volume. The psychological economic anchor is 1 Star ≈ $1.00 USDC. All allocations are governed transparently by smart contracts and protocol scoring rules.'}
+                    </p>
+                    <p>
+                      <strong>{isRu ? 'Динамический множитель первопроходцев (Early Adopters Multiplier):' : 'Dynamic Early Adopter Multiplier Curve:'}</strong>{' '}
+                      {isRu
+                        ? 'Ранние трейдеры защищены динамической кривой сложности. Пока комьюнити формируется, множитель ранней эпохи увеличивает начисления:'
+                        : 'Early participants benefit from an algorithmic difficulty curve. While the community bootstraps, points accrue at an elevated rate:'}
+                      <br />
+                      <span className="font-mono text-amber-400 text-[11px] bg-subpanel px-2 py-0.5 rounded border border-panel inline-block mt-1">
+                        M_early(N) = 1.0 + 30 / √N
+                      </span>
+                      <br />
+                      <span className="text-[11px] text-muted">
+                        {isRu
+                          ? 'где N — текущее количество кошельков с открытой позицией (Wallets with Open Positions). При N=25 множитель составляет 7.0x, при N=100 — 4.0x, при N=1 000 — 1.95x, а при N ≥ 25 000 асимптотически приближается к 1.0x. С ростом базы фарм становится дороже естественным образом.'
+                          : 'where N is the current count of unique wallets with open positions. At N=25 the boost is 7.0x, at N=100 it is 4.0x, at N=1,000 it is 1.95x, scaling smoothly to 1.0x at N ≥ 25,000. Mining difficulty scales organically as adoption deepens.'}
+                      </span>
+                    </p>
+                    <p>
+                      <strong>{isRu ? 'Правила начисления за бессрочные фьючерсы (Perps Scoring):' : 'Perpetual Futures Scoring Rules:'}</strong>{' '}
+                      {isRu
+                        ? 'Поинты начисляются за каждую закрытую позицию по строгой анти-сибил модели:'
+                        : 'Stars accrue per closed position under strict anti-sybil validation:'}
+                      <br />
+                      <span className="font-mono text-amber-500 text-[11px] bg-subpanel px-2 py-0.5 rounded border border-panel inline-block mt-1">
+                        {isRu ? '• Базовый бонус: +1.0 Star при ROE ≥ +30% и длительности сделки > 20 сек' : '• Base Win: +1.0 Star when ROE ≥ +30% and trade duration > 20s'}
+                      </span>
+                      <br />
+                      <span className="font-mono text-amber-500 text-[11px] bg-subpanel px-2 py-0.5 rounded border border-panel inline-block mt-1">
+                        {isRu ? '• Анти-скальп фильтр: сделки длительностью ≤ 20 сек при ROE ≥ +30% получают лишь 10% (+0.1 Star)' : '• Anti-Scalp Filter: trades held ≤ 20s with ROE ≥ +30% receive 10% penalty (+0.1 Star)'}
+                      </span>
+                      <br />
+                      <span className="font-mono text-amber-500 text-[11px] bg-subpanel px-2 py-0.5 rounded border border-panel inline-block mt-1">
+                        {isRu ? '• Мейкер-бонус: +0.25 Star за пассивный лимитный ордер, исполненный в течение 24 ч' : '• Maker Bonus: +0.25 Star for passive limit orders filled within 24h'}
+                      </span>
+                      <br />
+                      <span className="font-mono text-amber-500 text-[11px] bg-subpanel px-2 py-0.5 rounded border border-panel inline-block mt-1">
+                        {isRu ? '• Бонус за удержание (Holding): +1.5 Stars за позицию, удерживаемую ≥ 24 ч (независимо от PnL)' : '• Holding Bonus: +1.5 Stars for sustaining positions ≥ 24h (regardless of final PnL)'}
+                      </span>
+                      <br />
+                      <span className="font-mono text-amber-500 text-[11px] bg-subpanel px-2 py-0.5 rounded border border-panel inline-block mt-1">
+                        {isRu ? '• Ликвидация: 0.0 Stars' : '• Liquidation Penalty: 0.0 Stars'}
+                      </span>
+                    </p>
+                    <p>
+                      <strong>{isRu ? 'Протокольный кэшбэк маржи (Protocol Fee Rebate):' : 'Protocol Margin Fee Rebate:'}</strong>{' '}
+                      {isRu
+                        ? 'При открытии позиции 10% маржи направляется в пул, из которого 25% составляет доход протокола. 25% от этой суммы возвращается трейдеру в виде Stars: Stars_dev = Margin × 0.00625.'
+                        : 'Upon opening a position, 10% margin routes to the pool, 25% of which represents protocol development share. 25% of that fee is rebated in Stars: Stars_dev = Margin × 0.00625.'}
+                    </p>
+                    <p>
+                      <strong>{isRu ? 'Лотерейный буст и выбор SuperJackpot (Gamble Multiplier):' : 'Lottery Boost & SuperJackpot Multiplier:'}</strong>{' '}
+                      {isRu
+                        ? 'Победа в часовой эпохе дает +100 Stars и 1.3x буст на 24 часа. Победитель SuperJackpot может выбрать либо чистый выигрыш в USDC, либо Stars по формуле среднего фандинга:'
+                        : 'An hourly epoch win grants +100 Stars and a 1.3x trading boost for 24 hours. The SuperJackpot winner can claim pure USDC or convert to Stars via the monthly average funding formula:'}
+                      <br />
+                      <span className="font-mono text-amber-400 text-[11px] bg-subpanel px-2 py-0.5 rounded border border-panel inline-block mt-1">
+                        Multiplier = (N_participants / 10) × FR_avg^month
+                      </span>
+                      <br />
+                      <span className="text-[11px] text-muted">
+                        {isRu
+                          ? 'Формула математически сбалансирована (ожидаемая ценность ~51%), предоставляя честный выбор 50/50 между гарантированным USDC и потенциально кратно большим пакетом Stars при активном рынке.'
+                          : 'The formula maintains fair 50/50 expected value parity (~51%), offering a calculated gamble between guaranteed USDC cash or outsized Stars allocation during high-velocity markets.'}
+                      </span>
+                    </p>
+                    <p>
+                      <strong>{isRu ? 'Поставка ликвидности в хранилища (Vaults):' : 'Liquidity Vault Emissions:'}</strong>{' '}
+                      {isRu
+                        ? 'Поставщики капитала в 30-Day Reserve Vault и USDC Option LP Pool получают 0.5 Stars в сутки за каждые $100 USDC депозита без рыночного риска.'
+                        : 'Capital providers to the 30-Day Reserve Vault and USDC Option LP Pool earn 0.5 Stars daily per $100 USDC committed.'}
+                    </p>
+                    <p>
+                      <strong>{isRu ? 'Ранги (Tiers) и Реферальная программа:' : 'Tier Hierarchy & Referral Model:'}</strong>{' '}
+                      {isRu
+                        ? 'Прогресс делится на 5 ступеней: Recruit (0–25), Frontier Trader (25–100), Deputy (100–500), Sheriff (500–2 500) и Marshal (2 500+). Прямой реферер получает 10% от Stars приглашенного, второй уровень — 5%, а приглашенный трейдер получает 5% пожизненную скидку на комиссии.'
+                        : 'Progress spans 5 institutional tiers: Recruit (0–25), Frontier Trader (25–100), Deputy (100–500), Sheriff (500–2,500), and Marshal (2,500+). Direct referrers receive 10% of referee Stars, Tier-2 invites receive 5%, while new invitees get a permanent 5% fee discount.'}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {(helpCategory === 'all' || helpCategory === 'orders') && (
+                <div className="p-5 rounded-2xl bg-panel border border-panel space-y-3">
+                  <div className="flex items-center gap-2 text-primary font-bold text-sm">
+                    <span className="w-7 h-7 rounded-lg bg-amber-500/15 text-amber-400 border border-amber-500/25 flex items-center justify-center text-xs font-mono">07</span>
                     <span>
                       {isRu
                         ? 'Типы ордеров и центральная книга ордеров (CLOB)'
@@ -435,7 +533,7 @@ export const InfoPage: React.FC<InfoPageProps> = ({ type, onBack, currentLang = 
               {(helpCategory === 'all' || helpCategory === 'security') && (
                 <div className="p-5 rounded-2xl bg-panel border border-panel space-y-3">
                   <div className="flex items-center gap-2 text-primary font-bold text-sm">
-                    <span className="w-7 h-7 rounded-lg bg-amber-500/15 text-amber-400 border border-amber-500/25 flex items-center justify-center text-xs font-mono">07</span>
+                    <span className="w-7 h-7 rounded-lg bg-amber-500/15 text-amber-400 border border-amber-500/25 flex items-center justify-center text-xs font-mono">08</span>
                     <span>
                       {isRu
                         ? 'Аудиты, управление с мультиподписью и параметры риска'
